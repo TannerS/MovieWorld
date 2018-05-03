@@ -11,6 +11,8 @@ public class MovieConfig {
     public static String LARGE  = "LARGE";
     public static String ORIGINAL = "original";
 
+    public static String ACTIVITY_KEY = "ADDTIONAL_MOVIE_INFO";
+
     public static String API_BASE = "https://api.themoviedb.org/3";
     public static String API_IMAGE_BASE = "https://image.tmdb.org/t/p";
     public static TreeMap<String, String> API_IMAGE_SIZES = new TreeMap<String, String>() {{

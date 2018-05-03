@@ -37,28 +37,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyItemRangeInserted(startPos, mItems.size());
     }
 
-    private void loadImage(String mUrl, ImageView view) {
-        Glide.with(mContext)
-                .load(mUrl)
-                .apply(new RequestOptions()
-                        .centerCrop()
-//                        .error()
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                .transition(new DrawableTransitionOptions().crossFade())
-                .into(view);
-    }
-
-    // TODO ******* CALL BACK, PASS THIS IN FROM MAIN ******
-//    private String formatUrl(String mUrl)
-//    {
-//        return (new StringBuilder())
-//                .append(MovieConfig.API_IMAGE_BASE)
-//                .append("/")
-//                .append(MovieConfig.API_IMAGE_SIZES.get(MovieConfig.LARGE))
-//                .append("/")
-//                .append(mUrl).toString();
-//    }
-
     @Override
     public int getItemCount() {
         return mMovieResults == null ? 0 : mMovieResults.size();
@@ -68,26 +46,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieResult mItem = mMovieResults.get(position);
-        loadImage(this.mImageCallback.formatUrl(mItem.getPoster_path()), holder.image);
+        holder.loadImage(this.mImageCallback.formatUrl(mItem.getPoster_path()));
     }
 
-
-    // TODO need to create grid view item id
     @Override
     public MovieAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.id.activity_main_gridview_main_item, parent, false);
-        return new MovieViewHolder(mContext, view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
+        return new MovieViewHolder(view);
     }
 
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
 
-        public MovieViewHolder(final Context mContext, View view) {
+        public MovieViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             //todo create imageview id inside grid item
-            image = view.findViewById(R.id.);
+            image = view.findViewById(R.id.grid_item_imageview);
         }
 
         @Override
@@ -97,17 +73,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mImageOnClickListener.onClick(mMovieObject);
         }
 
-        // TODO **** this is callback to pass into it ****
-//        try {
-//            String mMovieObjectJson = JsonUtil.movieObjectToJson(mMovieObject);
-//            Intent intent = new Intent(mContext, ****.class);
-//            intent.putExtra(<CLASS>.<KEY>, mMovieObjectJson);
-//            mContext.startActivity(intent);
-//
-//
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        /*
+            Got the idea of putting this method in here from
+            https://willowtreeapps.com/ideas/android-fundamentals-working-with-the-recyclerview-adapter-and-viewholder-pattern/
+         */
+        public void loadImage(String mUrl) {
+            Glide.with(mContext)
+                    .load(mUrl)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+//                        .error()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .transition(new DrawableTransitionOptions().crossFade())
+                    .into(this.image);
+        }
     }
 }
 
