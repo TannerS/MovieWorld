@@ -9,7 +9,6 @@ public class MovieResult
     public MovieResult() {
     }
 
-
     private int vote_count;
     private int id;
     private boolean video;

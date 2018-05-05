@@ -4,7 +4,11 @@ import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 
+/**
+ * Movie model for popular and top rated movies
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 public class MovieRoot {
     private int page;
     private int total_results;

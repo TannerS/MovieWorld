@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -18,6 +17,9 @@ import com.dev.tanners.movieworld.api.model.results.MovieResult;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for the movie objects to display in a grid
+ */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context mContext;
     private IImageBackDropUrlCallback mImageCallback;
@@ -62,7 +64,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public MovieViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            //todo create imageview id inside grid item
             image = view.findViewById(R.id.grid_item_imageview);
         }
 
