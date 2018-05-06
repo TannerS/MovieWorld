@@ -1,11 +1,13 @@
-package com.dev.tanners.movieworld.api.rest.config;
+package com.dev.tanners.movieworld.api;
+
+import android.net.Uri;
 
 import com.dev.tanners.movieworld.api.util.DefaultValueTreeMap;
 
 /**
  * A class that holds static constants of themoviedb restful api urls partials
  */
-public class RestConfig {
+public class ApiBuilder {
     // image sizes
     public static String TINY = "TINY";
     public static String XSMALL = "EXTRA SMALL";
@@ -14,12 +16,13 @@ public class RestConfig {
     public static String MEDIUM  = "MEDIUM";
     public static String LARGE  = "LARGE";
     public static String ORIGINAL = "original";
-
-
-    public static String KEY = "";
-
+    public static String API_KEY = "api_key=";
     public static String API_BASE = "https://api.themoviedb.org/3";
     public static String API_IMAGE_BASE = "https://image.tmdb.org/t/p";
+    public static String API_POPULAR_PARTIAL = "movie/popular";
+    public static String API_TOP_PARTIAL = "movie/top_rated";
+    public static String API_QUERY_OPTIONS_LANG = "language=en-US";
+    public static String API_QUERY_OPTIONS_PAGE = "page=";
 
     /*
         This is a way to get the sizes of the images for the url,

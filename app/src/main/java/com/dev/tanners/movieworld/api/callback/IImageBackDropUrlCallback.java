@@ -6,5 +6,10 @@ package com.dev.tanners.movieworld.api.callback;
  * url to properly have the url to view the image
  */
 public interface IImageBackDropUrlCallback {
+    /**
+     * Format url before rest call
+     * @param object
+     * @return
+     */
     public String formatUrl(String object);
 }

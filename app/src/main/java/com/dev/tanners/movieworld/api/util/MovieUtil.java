@@ -4,7 +4,10 @@ import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonUtil {
+/**
+ * Util class for movie objects
+ */
+public class MovieUtil {
     /**
      * Convert <class>MovieResult</class> object to a json string
      *

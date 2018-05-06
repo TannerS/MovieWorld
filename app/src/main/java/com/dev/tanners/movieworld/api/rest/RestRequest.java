@@ -6,20 +6,33 @@ import com.dev.tanners.movieworld.network.ConnectionRequest;
 import com.dev.tanners.movieworld.network.Request;
 import org.apache.commons.io.IOUtils;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 /**
- *
+ * Restful api request class that can map any object to json using the proper callback
+ * passed in as a generic
  */
 public class RestRequest extends Request<MovieRoot, IRestObjectMappingCallback>
 {
+    /**
+     * Design a rest http request with the http headers, body, and calling url.
+     * Also designed with a callback for object -> json mapping
+     *
+     * @param headers
+     * @param mUrl
+     * @param body
+     * @param mCallback
+     * @return
+     * @throws IOException
+     */
     @Override
-    public List<MovieRoot> restJsonMapping(HashMap<String, String> headers, String mUrl, String body, IRestObjectMappingCallback mCallback) throws IOException {
+    public MovieRoot restJsonMapping(HashMap<String, String> headers, URL mUrl, String body, IRestObjectMappingCallback mCallback) throws IOException {
         // temp list of images
-        List<MovieRoot> mData = null;
+        MovieRoot mData = null;
         // make connect to url
             mConnectionRequest = new ConnectionRequest(mUrl);
         // if set body does not exist
@@ -50,7 +63,7 @@ public class RestRequest extends Request<MovieRoot, IRestObjectMappingCallback>
                 // get string response
                 String response = IOUtils.toString(mConnectionRequest.getConnection().getInputStream(), StandardCharsets.UTF_8.name().toLowerCase(Locale.getDefault()));
                 // callback to handle any object that response matches too
-                mData = mCallback.getMappedObject(response);
+                mData = (MovieRoot) mCallback.getMappedObject(response);
                 // close connection
                 mConnectionRequest.closeConnection();
             }

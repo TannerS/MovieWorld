@@ -18,7 +18,7 @@ import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import java.util.ArrayList;
 
 /**
- * Adapter for the movie objects to display in a grid
+ * Adapter for the movie objects
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context mContext;
@@ -26,6 +26,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private ArrayList<MovieResult> mMovieResults;
     private IImageOnClickListener mImageOnClickListener;
 
+    /**
+     * @param mContext
+     * @param mMovieResults
+     * @param mImageCallback
+     * @param mImageOnClickListener
+     */
     public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageBackDropUrlCallback mImageCallback, IImageOnClickListener mImageOnClickListener ) {
         this.mContext = mContext;
         this.mMovieResults = mMovieResults;
@@ -33,24 +39,39 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.mImageOnClickListener = mImageOnClickListener;
     }
 
+    /**
+     * @param mItems
+     */
     public void updateAdapter(ArrayList<MovieResult> mItems) {
         int startPos = this.mMovieResults.size() + 1;
         this.mMovieResults.addAll(mItems);
         notifyItemRangeInserted(startPos, mItems.size());
     }
 
+    /**
+     * @return
+     */
     @Override
     public int getItemCount() {
         return mMovieResults == null ? 0 : mMovieResults.size();
     }
 
 
+    /**
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieResult mItem = mMovieResults.get(position);
         holder.loadImage(this.mImageCallback.formatUrl(mItem.getPoster_path()));
     }
 
+    /**
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public MovieAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
@@ -58,15 +79,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
 
+    /**
+     *
+     */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
 
+        /**
+         * @param view
+         */
         public MovieViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             image = view.findViewById(R.id.grid_item_imageview);
         }
 
+        /**
+         * @param v
+         */
         @Override
         public void onClick(View v) {
             int mAdapterPos = getAdapterPosition();
@@ -74,9 +104,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mImageOnClickListener.onClick(mMovieObject);
         }
 
-        /*
-            Got the idea of putting this method in here from
-            https://willowtreeapps.com/ideas/android-fundamentals-working-with-the-recyclerview-adapter-and-viewholder-pattern/
+        /**
+         *  Got the idea of putting this method in here from
+         *  https://willowtreeapps.com/ideas/android-fundamentals-working-with-the-recyclerview-adapter-and-viewholder-pattern/
+         * @param mUrl
          */
         public void loadImage(String mUrl) {
             Glide.with(mContext)

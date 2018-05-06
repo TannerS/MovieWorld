@@ -17,6 +17,8 @@ import java.util.Map;
  * This is a fully functional; http request connect class.
  * Able to set http requirements such as
  * connection type, headers, body, etc
+ *
+ * <strong>This class is outdated</strong>
  */
 public class ConnectionRequest {
     // type of connection
@@ -42,14 +44,18 @@ public class ConnectionRequest {
     private HashMap<String, String> mEntries;
     private boolean mIsGood;
     private String mBody;
-    private String mUrl;
+    private URL mUrl;
     private String mRequestype;
     private PrintWriter writer;
     private String mCharset;
     private final String LINE_BREAK = "\r\n";
 
 
-    public ConnectionRequest(String mUrl) {
+    /**
+     * Constructor
+     * @param mUrl
+     */
+    public ConnectionRequest(URL mUrl) {
         mEntries = new HashMap<String, String>();
         mConnectionTimeOut = 10000;
         mReadTimeOut = 5000;
@@ -220,7 +226,7 @@ public class ConnectionRequest {
         try
         {
             // open connect from url object
-            connection = (HttpURLConnection) (new URL(mUrl)).openConnection();
+            connection = (HttpURLConnection) mUrl.openConnection();
             // set options
             mIsGood = true;
             setDefaults();

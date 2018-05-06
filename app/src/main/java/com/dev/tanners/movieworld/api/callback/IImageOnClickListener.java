@@ -7,5 +7,9 @@ import com.dev.tanners.movieworld.api.model.results.MovieResult;
  * This will handle clicking on the movies
  */
 public interface IImageOnClickListener {
+    /**
+     * Onclick listener for movie object data
+     * @param mMovieResult
+     */
     public void onClick(MovieResult mMovieResult);
 }
