@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<!--https://stackoverflow.com/questions/43299956/how-do-i-decrease-the-space-between-cards-in-a-cardview-within-a-recyclerview?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa-->
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:elevation="1dp"
+    app:cardCornerRadius="5dp"
+    app:cardMaxElevation="2dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="false">
 
+    <!--
+        android:src
+        https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+    -->
     <ImageView
+        android:padding="3dp"
         android:id="@+id/grid_item_imageview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/grid_item_height"
-        android:contentDescription="@string/grid_item_imageview_desc"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/grid_item_imageview_desc"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:background="@drawable/rounded_image"
+        android:src="@android:color/transparent" />
 
-</LinearLayout>
+</android.support.v7.widget.CardView>

@@ -21,7 +21,6 @@ public class MovieResult
     private String backdrop_path;
     private boolean adult;
     private String overview;
-    // TODO convert to datetime object?
 
     public int getVote_count() {
         return vote_count;

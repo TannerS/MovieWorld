@@ -1,0 +1,5 @@
+<!--https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="15dp" />
+</shape>

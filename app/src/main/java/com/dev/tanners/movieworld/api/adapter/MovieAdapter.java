@@ -92,6 +92,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             super(view);
             view.setOnClickListener(this);
             image = view.findViewById(R.id.grid_item_imageview);
+            image.setClipToOutline(true);
         }
 
         /**
@@ -112,8 +113,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void loadImage(String mUrl) {
             Glide.with(mContext)
                     .load(mUrl)
-                    .apply(new RequestOptions()
-                            .centerCrop()
+                    .apply(new RequestOptions().fitCenter()
+
+//                            .centerCrop().fitCenter()
 //                        .error()
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .transition(new DrawableTransitionOptions().crossFade())
