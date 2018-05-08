@@ -1,94 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
     android:background="@color/light_gray"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context=".MainActivity">
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--android:orientation="vertical"-->
-    <!--android:id="@+id/main_header">-->
-
-    <!--<ImageView-->
-    <!--android:layout_width="75dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:src="@drawable/clapperboard"-->
-    <!--android:scaleType="fitXY"-->
-    <!--android:padding="5dp"/>-->
-
-    <!--<Switch-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:checked="true"-->
-    <!--android:text="List Type"-->
-    <!--android:showText="true"-->
-    <!--android:textOff="Popular"-->
-    <!--android:textOn="Top Rated"/>&lt;!&ndash; text to be displayed whenever current state is checked&ndash;&gt;-->
-
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="500dp"-->
-    <!--android:orientation="vertical">-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/activity_main_gridview"
+    <!--http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4-->
+    <!--https://www.journaldev.com/10096/android-viewpager-example-tutorial-->
+    <!--https://www.journaldev.com/10096/android-viewpager-example-tutorial-->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/main_tabs"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="#FFF" />
 
-    <ProgressBar
-        android:id="@+id/loading_progressbar"
-        style="?android:attr/progressBarStyle"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:indeterminate="true"
-        android:padding="5dp" />
+        android:layout_height="wrap_content"/>
 
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/main_header"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--android:layout_gravity="bottom|center_horizontal"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:gravity="bottom|center_horizontal"-->
-    <!--android:orientation="vertical"-->
-    <!--app:layout_constraintBottom_toTopOf="@+id/activity_main_gridview">-->
-
-    <!--<ProgressBar-->
-    <!--android:id="@+id/display_progress_bar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="100dp"-->
-    <!--android:layout_gravity="bottom"-->
-    <!--android:adjustViewBounds="true"-->
-    <!--android:cropToPadding="true"-->
-    <!--android:indeterminate="true"-->
-    <!--android:padding="5dp"-->
-    <!--android:visibility="visible"-->
-    <!--tools:layout_editor_absoluteY="255dp" />-->
-    <!--</LinearLayout>-->
-    <!---->
-    <!--</LinearLayout>-->
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

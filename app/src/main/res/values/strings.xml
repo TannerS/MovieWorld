@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MovieWorld</string>
     <string name="grid_item_imageview_desc">Photo to hold movie poster</string>
+    <string name="popular_title">Popular</string>
+    <string name="top_rated_title">Top Rated</string>
 </resources>

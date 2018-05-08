@@ -24,9 +24,6 @@ public class MovieActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     private void getActivityObjectFromJson() throws IOException {
