@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpFragments();
-
+        // prevents shadow that messes up UI with tabs
         getSupportActionBar().setElevation(0);
     }
 
@@ -75,25 +75,34 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /**
+     * http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4
+
+     *
      * Adapter to handle fragments for the viewpager UI
      */
     private class TabbedFragmentPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<Fragment>();
         private final List<String> mTitleList = new ArrayList<String>();
+
         /**
-         * http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4
-         *
          * @param mFragmentManager
          */
         public TabbedFragmentPagerAdapter(FragmentManager mFragmentManager ) {
             super(mFragmentManager);
         }
 
+        /**
+         * @param position
+         * @return
+         */
         @Override
         public Fragment getItem(int position) {
             return this.mFragmentList.get(position);
         }
 
+        /**
+         * @return
+         */
         @Override
         public int getCount() {
             return this.mFragmentList.size();
@@ -109,7 +118,10 @@ public class MainActivity extends AppCompatActivity{
             return  mTitleList.get(position);
         }
 
-
+        /**
+         * @param mFragment
+         * @param mTitle
+         */
         public void addItem(Fragment mFragment, String mTitle)
         {
             mFragmentList.add(mFragment);
