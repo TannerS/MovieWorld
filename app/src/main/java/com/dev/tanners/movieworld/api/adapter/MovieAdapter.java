@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.callback.IImageBackDropUrlCallback;
+import com.dev.tanners.movieworld.api.MovieApiHelper;
 import com.dev.tanners.movieworld.api.callback.IImageOnClickListener;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 
@@ -22,20 +22,17 @@ import java.util.ArrayList;
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context mContext;
-    private IImageBackDropUrlCallback mImageCallback;
     private ArrayList<MovieResult> mMovieResults;
     private IImageOnClickListener mImageOnClickListener;
 
     /**
      * @param mContext
      * @param mMovieResults
-     * @param mImageCallback
      * @param mImageOnClickListener
      */
-    public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageBackDropUrlCallback mImageCallback, IImageOnClickListener mImageOnClickListener ) {
+    public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageOnClickListener mImageOnClickListener ) {
         this.mContext = mContext;
         this.mMovieResults = mMovieResults;
-        this.mImageCallback = mImageCallback;
         this.mImageOnClickListener = mImageOnClickListener;
     }
 
@@ -64,7 +61,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieResult mItem = mMovieResults.get(position);
-        holder.loadImage(this.mImageCallback.formatUrl(mItem.getPoster_path()));
+        holder.loadImage(MovieApiHelper.formatPathToRestPath(mItem.getPoster_path(), MovieApiHelper.MEDIUM));
     }
 
     /**
@@ -80,7 +77,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
 
     /**
-     *
+     * VIew holder to hold UI elements to be recycled
      */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
@@ -114,8 +111,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Glide.with(mContext)
                     .load(mUrl)
                     .apply(new RequestOptions().fitCenter()
-
-//                            .centerCrop().fitCenter()
+                            // TODO error place handler
 //                        .error()
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .transition(new DrawableTransitionOptions().crossFade())

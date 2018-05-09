@@ -1,32 +1,25 @@
 package com.dev.tanners.movieworld;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import com.dev.tanners.movieworld.api.MovieApi;
 import com.dev.tanners.movieworld.api.MovieApiHelper;
 import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
-import com.dev.tanners.movieworld.api.callback.IImageBackDropUrlCallback;
 import com.dev.tanners.movieworld.api.callback.IImageOnClickListener;
 import com.dev.tanners.movieworld.api.model.MovieRoot;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +52,7 @@ public class MovieFragment extends Fragment {
     // view for current fragment layout view
     protected View view;
     // state to show which list is loaded
-    protected enum State {TOP, POP, NA}
+    protected enum State {TOP, POP}
     protected State mState;
 
     public MovieFragment() {
@@ -84,10 +77,6 @@ public class MovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_movie, container, false);
-        // default state so parent class does not call it
-        mState = State.NA;
-
-
         // load resources
         loadResources(view);
         // set up callbacks for rest calls for recyclerview
@@ -168,27 +157,6 @@ public class MovieFragment extends Fragment {
                     getContext(),
                     mMovieResults,
                     /*
-                        The rest call has the path of the image for said movie
-                        as a relative path, this callback is set to be able to pass in
-                        the configuration for the image to be added to the url
-                        of that relative path to get the full url for said movie image.
-
-                        This does not have to be done via a callback but, I like to have
-                        the activity calling the adapter as the main point
-                        to enter configuration for the adapter
-                    */
-                    new IImageBackDropUrlCallback() {
-                        @Override
-                        public String formatUrl(String mUrl) {
-                            return (new StringBuilder())
-                                    .append(MovieApiHelper.API_IMAGE_BASE)
-//                                    .append("/")
-                                    .append(MovieApiHelper.MEDIUM)
-//                                    .append("/")
-                                    .append(mUrl).toString();
-                        }
-                    },
-                    /*
                         This does not have to be done via a callback but, I like to have
                         the activity calling the adapter as the main point
                         to enter configuration for the adapter.
@@ -204,6 +172,19 @@ public class MovieFragment extends Fragment {
                         public void onClick(MovieResult mMovieResult) {
                             try {
                                 ObjectMapper mapper = new ObjectMapper();
+                                // modify relative path
+                                mMovieResult.setPoster_path(
+                                        MovieApiHelper.formatPathToRestPath(
+                                                mMovieResult.getPoster_path(),
+                                                MovieApiHelper.MEDIUM
+                                        ));
+                                // modify relative path
+                                mMovieResult.setBackdrop_path(
+                                        MovieApiHelper.formatPathToRestPath(
+                                                mMovieResult.getBackdrop_path(),
+                                                MovieApiHelper.ORIGINAL
+                                        ));
+                                // convert object to json
                                 String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
                                 Intent intent = new Intent(getContext(), MovieActivity.class);
                                 intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResultJson);
@@ -271,9 +252,15 @@ public class MovieFragment extends Fragment {
              */
             @Override
             public void onResponse(Call<MovieRoot> call, Response<MovieRoot> response) {
-                Log.i("RETROCALL_URL", call.request().url().toString());
-                // set up recyclerview
-                setUpRecycler(response.body().getResults());
+                // check for good call
+                if(response.code() == 200)
+                {
+                    // set up recyclerview
+                    setUpRecycler(response.body().getResults());
+                }
+                else {
+                    // TODO error handling
+                }
             }
 
             /**

@@ -1,110 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MovieActivity"
+    android:background="@color/colorPrimary">
+
+<ImageView
+    android:id="@+id/backsplah_image"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MovieActivity">
+    android:layout_height="200dp"
+    android:adjustViewBounds="true"
+    android:cropToPadding="false"
+    app:layout_constraintEnd_toStartOf="@+id/poster_image"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:scaleType="fitXY"/>
 
-    <!--<FrameLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
+<ImageView
+    android:id="@+id/poster_image"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginTop="125dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/backsplah_image"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:layout_constraintEnd_toStartOf="@+id/poster_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/poster_image"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/poster_image"
+    android:id="@+id/plot_synopsis_container">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/plot_synopsis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Plot Synopsis"
-        android:gravity="center"
+        android:gravity="center" />
 
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poster_image" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Title"
-        android:textAlignment="center"
-        android:gravity="center"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/poster_image"
-        app:layout_constraintTop_toBottomOf="@+id/backsplah_image" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@+id/poster_image"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/ic_star_black_24dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="75dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        android:textAlignment="center"
-
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="75dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="TextView"
-        android:gravity="center"
-        android:textAlignment="center"
-
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+</ScrollView>
 
 
-    <!--</FrameLayout>-->
+
+<TextView
+    android:id="@+id/Title"
+    android:layout_width="0dp"
+    android:layout_height="25dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:text="Title"
+    android:textAlignment="center"
+    android:gravity="center"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/poster_image"
+    app:layout_constraintTop_toBottomOf="@+id/backsplah_image" />
+
+<ImageView
+    android:id="@+id/star"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
+    app:layout_constraintEnd_toStartOf="@+id/rating"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"
+    app:layout_constraintStart_toEndOf="@+id/poster_image"
+    app:layout_constraintTop_toBottomOf="@+id/Title"
+    app:srcCompat="@drawable/ic_star_black_24dp" />
+
+<TextView
+    android:id="@+id/rating"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="8dp"
+    android:gravity="center"
+
+    android:text="TextView"
+    android:textAlignment="center"
+    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
+    app:layout_constraintStart_toEndOf="@+id/star"
+    app:layout_constraintTop_toBottomOf="@+id/Title" />
+
+<TextView
+    android:id="@+id/release_date"
+    android:layout_width="75dp"
+    android:layout_height="25dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:gravity="center"
+    android:text="TextView"
+    android:textAlignment="center"
+    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/rating"
+    app:layout_constraintTop_toBottomOf="@+id/Title"
+    />
+
+
+
+<!--</FrameLayout>-->
 
 
 </android.support.constraint.ConstraintLayout>

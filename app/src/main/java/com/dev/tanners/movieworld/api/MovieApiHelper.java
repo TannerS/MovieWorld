@@ -11,7 +11,7 @@ public class MovieApiHelper {
     public final static String MEDIUM  = "w500";
     public final static String LARGE  = "w780";
     public final static String ORIGINAL = "original";
-    public final static String KEY = "";
+    public final static String KEY = "ac6c0aefbf0b9e0799ef5bf0dc724a80";
     public final static String API_KEY = "api_key";
     public final static String API_BASE = "https://api.themoviedb.org/3/";
     public final static String API_IMAGE_BASE = "https://image.tmdb.org/t/p/";
@@ -91,13 +91,30 @@ public class MovieApiHelper {
         top_queries.put(MovieApiHelper.API_QUERY_OPTIONS_PAGE, String.valueOf(++tempValue));
     }
 
-    public void resetPopPage()
-    {
-        pop_queries.put(MovieApiHelper.API_QUERY_OPTIONS_PAGE, String.valueOf(1));
-    }
+//    public void resetPopPage()
+//    {
+//        pop_queries.put(MovieApiHelper.API_QUERY_OPTIONS_PAGE, String.valueOf(1));
+//    }
+//
+//    public void resetTopPage()
+//    {
+//        top_queries.put(MovieApiHelper.API_QUERY_OPTIONS_PAGE, String.valueOf(1));
+//    }
 
-    public void resetTopPage()
+    /**
+     * Image paths are relative, not absolute, this fixes that with a preset size.
+     * Possible to add ability to pass in size, but for now not needed
+     *
+     * @param mUrl
+     * @return
+     */
+    public static String formatPathToRestPath(String mUrl, String mSize)
     {
-        top_queries.put(MovieApiHelper.API_QUERY_OPTIONS_PAGE, String.valueOf(1));
+        return (new StringBuilder())
+                .append(MovieApiHelper.API_IMAGE_BASE)
+                .append("/")
+                .append(mSize)
+                .append("/")
+                .append(mUrl).toString();
     }
 }

@@ -10,15 +10,6 @@ import android.view.ViewGroup;
 
 import com.dev.tanners.movieworld.api.MovieApiHelper;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TopRatedFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TopRatedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TopRatedFragment extends MovieFragment {
     public TopRatedFragment() {
         // let fragment know which state it is
