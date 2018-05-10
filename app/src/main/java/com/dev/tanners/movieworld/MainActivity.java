@@ -7,13 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main entry point
+ */
 public class MainActivity extends AppCompatActivity{
     // view pager to sliding fragments
     private ViewPager mViewPager;
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
     /**
      * @param menu
      * @return
@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity{
 
         switch(item.getItemId())
         {
-            case R.id.credits_menu_item:
-                // TODO make activity or dialog to give credits to any material that request it
-                break;
+//            case R.id.credits_menu_item:
+                // TODO diaglog to give credit if needed
+//                break;
         }
 
         return super.onOptionsItemSelected(item);

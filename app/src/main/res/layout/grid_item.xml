@@ -10,14 +10,16 @@
     app:cardCornerRadius="5dp"
     app:cardMaxElevation="2dp"
     app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="false">
+    app:cardPreventCornerOverlap="false"
+    app:cardBackgroundColor="@color/colorPrimary"
+    android:background="@color/colorPrimary">
 
     <!--
         android:src
         https://stackoverflow.com/questions/2459916/how-to-make-an-imageview-with-rounded-corners?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
     -->
     <ImageView
-        android:padding="3dp"
+        android:padding="5dp"
         android:id="@+id/grid_item_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

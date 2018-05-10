@@ -1,6 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MovieWorld</string>
     <string name="grid_item_imageview_desc">Photo to hold movie poster</string>
     <string name="popular_title">Popular</string>
     <string name="top_rated_title">Top Rated</string>
+    <string name="loading_image_error">Error loading data</string>
+    <string name="loading_image_error_dismiss">CLOSE</string>
+    <string name="tiny_rest_image_size">w92</string>
+    <string name="xsmall_rest_image_size">w154</string>
+    <string name="small_rest_image_size">w185</string>
+    <string name="small_med_rest_image_size">w342</string>
+    <string name="med_rest_image_size">w500</string>
+    <string name="large_rest_image_size">w780</string>
+    <string name="original_rest_image_size">original</string>
 </resources>

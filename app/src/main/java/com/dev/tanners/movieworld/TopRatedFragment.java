@@ -1,15 +1,15 @@
 package com.dev.tanners.movieworld;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dev.tanners.movieworld.api.MovieApiHelper;
 
+/**
+ * Contains top rated movies data
+ */
 public class TopRatedFragment extends MovieFragment {
     public TopRatedFragment() {
         // let fragment know which state it is
@@ -26,11 +26,14 @@ public class TopRatedFragment extends MovieFragment {
         return new TopRatedFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    /**
+     * Load methods after view has been loaded
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);

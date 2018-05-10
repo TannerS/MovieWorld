@@ -3,6 +3,9 @@ package com.dev.tanners.movieworld.util;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+/**
+ * Class for templates for snackbars
+ */
 public class SimpleSnackBarBuilder {
 
     /**
@@ -56,7 +59,6 @@ public class SimpleSnackBarBuilder {
 
         return mSnackBar;
     }
-
 
     /**
      * create snackbar

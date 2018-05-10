@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import com.dev.tanners.movieworld.api.MovieApi;
 import com.dev.tanners.movieworld.api.MovieApiHelper;
 import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
-import com.dev.tanners.movieworld.api.callback.IImageOnClickListener;
 import com.dev.tanners.movieworld.api.model.MovieRoot;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
@@ -25,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-
 
 /**
  * Base fragment class for common functionality
@@ -167,7 +165,7 @@ public class MovieFragment extends Fragment {
                         without editing the adapter, a user should be able to change the callback
                         if needed
                      */
-                    new IImageOnClickListener() {
+                    new MovieAdapter.IImageOnClickListener() {
                         @Override
                         public void onClick(MovieResult mMovieResult) {
                             try {
@@ -182,7 +180,7 @@ public class MovieFragment extends Fragment {
                                 mMovieResult.setBackdrop_path(
                                         MovieApiHelper.formatPathToRestPath(
                                                 mMovieResult.getBackdrop_path(),
-                                                MovieApiHelper.ORIGINAL
+                                                MovieApiHelper.LARGE
                                         ));
                                 // convert object to json
                                 String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
@@ -227,12 +225,11 @@ public class MovieFragment extends Fragment {
         Retrofit mRetrofit = new Retrofit.Builder()
                 .baseUrl(MovieApiHelper.API_BASE)
                 .addConverterFactory(JacksonConverterFactory.create(mMapper))
-//                .setLogLevel(BuildConfig.DEBUG)
                 .build();
         // align object with api interface that says how to make calls
         mMovieApi = mRetrofit.create(MovieApi.class);
         // set up helper
-        mApiHelper = new MovieApiHelper();
+        mApiHelper = new MovieApiHelper(getActivity());
     }
 
     /**
@@ -259,7 +256,7 @@ public class MovieFragment extends Fragment {
                     setUpRecycler(response.body().getResults());
                 }
                 else {
-                    // TODO error handling
+                    displayError();
                 }
             }
 
@@ -304,9 +301,9 @@ public class MovieFragment extends Fragment {
      */
     protected void displayError() {
         SimpleSnackBarBuilder.createAndDisplaySnackBar(view.findViewById(R.id.main_root_container),
-                "Error loading page data",
+                getString(R.string.loading_image_error),
                 Snackbar.LENGTH_INDEFINITE,
-                "CLOSE");
+                getString(R.string.loading_image_error_dismiss));
     }
 
     /**
@@ -316,5 +313,4 @@ public class MovieFragment extends Fragment {
     {
         mProgressBar = view.findViewById(R.id.loading_progressbar);
     }
-
 }

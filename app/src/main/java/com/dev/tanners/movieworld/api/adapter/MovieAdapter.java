@@ -6,15 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
 import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.MovieApiHelper;
-import com.dev.tanners.movieworld.api.callback.IImageOnClickListener;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
-
+import com.dev.tanners.movieworld.util.ImageDisplay;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +32,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
+     * Update adapter with new data
+     *
      * @param mItems
      */
     public void updateAdapter(ArrayList<MovieResult> mItems) {
@@ -46,6 +43,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
+     * Returns number of items in list
+     *
      * @return
      */
     @Override
@@ -53,8 +52,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMovieResults == null ? 0 : mMovieResults.size();
     }
 
-
     /**
+     * Bind views
+     *
      * @param holder
      * @param position
      */
@@ -65,6 +65,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
+     * Creates the views
+     *
      * @param parent
      * @param viewType
      * @return
@@ -75,14 +77,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return new MovieViewHolder(view);
     }
 
-
     /**
+     *  Holds the view elements
+     *
      * VIew holder to hold UI elements to be recycled
      */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
 
         /**
+         * Constructor
+         *
          * @param view
          */
         public MovieViewHolder(View view) {
@@ -93,6 +98,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         /**
+         * Onclick listener
+         *
          * @param v
          */
         @Override
@@ -103,20 +110,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         /**
-         *  Got the idea of putting this method in here from
-         *  https://willowtreeapps.com/ideas/android-fundamentals-working-with-the-recyclerview-adapter-and-viewholder-pattern/
+         * Load image from url into view
+         *
          * @param mUrl
          */
         public void loadImage(String mUrl) {
-            Glide.with(mContext)
-                    .load(mUrl)
-                    .apply(new RequestOptions().fitCenter()
-                            // TODO error place handler
-//                        .error()
-                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                    .transition(new DrawableTransitionOptions().crossFade())
-                    .into(this.image);
+            // call helper class to load image
+            ImageDisplay.loadImage(mContext, mUrl, R.drawable.ic_error, this.image);
         }
+    }
+
+    /**
+     * OnClick callback for images for movie adapter
+     */
+    public interface IImageOnClickListener {
+        /**
+         * Onclick listener for movie object data
+         * @param mMovieResult
+         */
+        public void onClick(MovieResult mMovieResult);
     }
 }
 
