@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpFragments();
-        // prevents shadow that messes up UI with tabs
-        getSupportActionBar().setElevation(0);
+        // load toolbar
+        setSupportActionBar( (Toolbar) findViewById(R.id.main_toolbar));
     }
 
     /**

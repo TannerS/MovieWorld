@@ -2,6 +2,7 @@ package com.dev.tanners.movieworld;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
@@ -28,7 +29,8 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-
+        // load toolbar
+        setSupportActionBar( (Toolbar) findViewById(R.id.main_toolbar));
         // extract json of Movie object for UI from previous activity
         try {
             getActivityObjectFromJson();
@@ -42,9 +44,11 @@ public class MovieActivity extends AppCompatActivity {
 
         // load views
         ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovieResult.getOverview());
-        ((TextView) findViewById(R.id.Title)).setText(this.mMovieResult.getTitle());
         ((TextView) findViewById(R.id.rating)).setText(String.valueOf(this.mMovieResult.getVote_average()));
         ((TextView) findViewById(R.id.release_date)).setText(this.mMovieResult.getRelease_date());
+
+        // set title of toolbar for activity
+        getSupportActionBar().setTitle(this.mMovieResult.getTitle());
     }
 
     /**

@@ -10,8 +10,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <!--http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4-->
-    <!--https://www.journaldev.com/10096/android-viewpager-example-tutorial-->
     <!--https://www.journaldev.com/10096/android-viewpager-example-tutorial-->
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tabs"

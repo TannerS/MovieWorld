@@ -116,7 +116,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
          */
         public void loadImage(String mUrl) {
             // call helper class to load image
-            ImageDisplay.loadImage(mContext, mUrl, R.drawable.ic_error, this.image);
+            ImageDisplay.loadImage(mContext, mUrl, R.drawable.ic_error, this.image, R.drawable.ic_movie);
         }
     }
 

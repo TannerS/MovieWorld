@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MovieWorld</string>
+    <string name="app_name">Movie World</string>
     <string name="grid_item_imageview_desc">Photo to hold movie poster</string>
     <string name="popular_title">Popular</string>
     <string name="top_rated_title">Top Rated</string>
@@ -13,4 +13,5 @@
     <string name="med_rest_image_size">w500</string>
     <string name="large_rest_image_size">w780</string>
     <string name="original_rest_image_size">original</string>
+    <string name="credits">Credits</string>
 </resources>

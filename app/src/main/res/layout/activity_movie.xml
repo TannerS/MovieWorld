@@ -1,119 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".MovieActivity"
-    android:background="@color/colorPrimary">
-
-<ImageView
-    android:id="@+id/backsplah_image"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:adjustViewBounds="true"
-    android:cropToPadding="false"
-    app:layout_constraintEnd_toStartOf="@+id/poster_image"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:scaleType="fitXY"/>
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    tools:context=".MovieActivity">
 
-<ImageView
-    android:id="@+id/poster_image"
-    android:layout_width="100dp"
-    android:layout_height="150dp"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="125dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/toolbar_container"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/poster_image"
-    android:id="@+id/plot_synopsis_container">
+    <ImageView
+        android:id="@+id/backsplah_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
 
-    <TextView
-        android:id="@+id/plot_synopsis"
+    <ImageView
+        android:id="@+id/poster_image"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="125dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backsplah_image" />
+
+    <ScrollView
+        android:id="@+id/plot_synopsis_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/poster_image">
+
+        <TextView
+            android:id="@+id/plot_synopsis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="PLACE HOLDER FOR EDITOR"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/rating_container"
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Plot Synopsis"
-        android:gravity="center" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/poster_image"
+        app:layout_constraintTop_toBottomOf="@+id/backsplah_image">
 
-</ScrollView>
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            app:srcCompat="@drawable/ic_star_black_24dp" />
 
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="PLACE HOLDER FOR EDITOR"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack" />
 
+    </LinearLayout>
 
-<TextView
-    android:id="@+id/Title"
-    android:layout_width="0dp"
-    android:layout_height="25dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:text="Title"
-    android:textAlignment="center"
-    android:gravity="center"
-
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/poster_image"
-    app:layout_constraintTop_toBottomOf="@+id/backsplah_image" />
-
-<ImageView
-    android:id="@+id/star"
-    android:layout_width="25dp"
-    android:layout_height="25dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
-    app:layout_constraintEnd_toStartOf="@+id/rating"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintHorizontal_chainStyle="spread_inside"
-    app:layout_constraintStart_toEndOf="@+id/poster_image"
-    app:layout_constraintTop_toBottomOf="@+id/Title"
-    app:srcCompat="@drawable/ic_star_black_24dp" />
-
-<TextView
-    android:id="@+id/rating"
-    android:layout_width="25dp"
-    android:layout_height="25dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginTop="8dp"
-    android:gravity="center"
-
-    android:text="TextView"
-    android:textAlignment="center"
-    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
-    app:layout_constraintStart_toEndOf="@+id/star"
-    app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-<TextView
-    android:id="@+id/release_date"
-    android:layout_width="75dp"
-    android:layout_height="25dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:gravity="center"
-    android:text="TextView"
-    android:textAlignment="center"
-    app:layout_constraintBottom_toTopOf="@+id/plot_synopsis_container"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/rating"
-    app:layout_constraintTop_toBottomOf="@+id/Title"
-    />
+    <TextView
+        android:id="@+id/release_date"
+        android:layout_width="75dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="PLACE HOLDER FOR EDITOR"
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/poster_image"
+        app:layout_constraintTop_toBottomOf="@+id/rating_container" />
 
 
-
-<!--</FrameLayout>-->
-
+    <View
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
