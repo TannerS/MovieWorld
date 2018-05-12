@@ -3,8 +3,11 @@ package com.dev.tanners.movieworld;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dev.tanners.movieworld.api.MovieApiHelper;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,11 +40,26 @@ public class MovieActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // call helper method to load images
-        ImageDisplay.loadImage(this, this.mMovieResult.getPoster_path(), R.drawable.ic_error, (ImageView) findViewById(R.id.poster_image));
-        ImageDisplay.loadImage(this, this.mMovieResult.getBackdrop_path(), R.drawable.ic_error, (ImageView) findViewById(R.id.backsplah_image));
-
+        // since image is passed in as realtive path
+        // and not absolute
+        ImageDisplay.loadImage(
+                this,
+                MovieApiHelper.formatPathToRestPath(
+                        mMovieResult.getPoster_path(),
+                        MovieApiHelper.MEDIUM
+                ),
+                R.drawable.ic_error,
+                (ImageView) findViewById(R.id.poster_image)
+        );
+        ImageDisplay.loadImage(
+                this,
+                MovieApiHelper.formatPathToRestPath(
+                        mMovieResult.getBackdrop_path(),
+                        MovieApiHelper.MEDIUM
+                ),
+                R.drawable.ic_error,
+                (ImageView) findViewById(R.id.backsplah_image));
         // load views
         ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovieResult.getOverview());
         ((TextView) findViewById(R.id.rating)).setText(String.valueOf(this.mMovieResult.getVote_average()));
@@ -57,8 +75,11 @@ public class MovieActivity extends AppCompatActivity {
      * @throws IOException
      */
     private void getActivityObjectFromJson() throws IOException {
+        // get movie object json string
         String mMoveResultJson = getIntent().getStringExtra(MOVIE_ACTIVITY_BUNDLE_KEY);
+        // create object mapper
         ObjectMapper mMapper = new ObjectMapper();
+        // map json to object
         this.mMovieResult = mMapper.readValue(mMoveResultJson, MovieResult.class);
     }
 }

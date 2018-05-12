@@ -22,7 +22,7 @@ public interface MovieApi {
     Call<MovieRoot> getPopular(@QueryMap Map<String, String> options);
 
     /**
-     * Path to popular movie rest call
+     * Path to top rated movie rest call
      *
      * @param options
      * @return

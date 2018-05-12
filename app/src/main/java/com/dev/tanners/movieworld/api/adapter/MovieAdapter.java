@@ -37,8 +37,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * @param mItems
      */
     public void updateAdapter(ArrayList<MovieResult> mItems) {
+        // want to get pos of last item in list
         int startPos = this.mMovieResults.size() + 1;
+        // add new items to current adapter items
         this.mMovieResults.addAll(mItems);
+        // update recyclerview at position 'startPos'
         notifyItemRangeInserted(startPos, mItems.size());
     }
 
@@ -92,6 +95,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
          */
         public MovieViewHolder(View view) {
             super(view);
+            // set gri item with a on click
             view.setOnClickListener(this);
             image = view.findViewById(R.id.grid_item_imageview);
             image.setClipToOutline(true);

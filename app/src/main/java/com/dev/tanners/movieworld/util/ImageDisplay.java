@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,7 +22,6 @@ public class ImageDisplay
      *
      * @param mContext
      * @param mResource
-     * @param mError
      * @param mImageView
      */
     public static void loadImage(Context mContext, String mResource, ImageView mImageView, int mPlaceHolder) {

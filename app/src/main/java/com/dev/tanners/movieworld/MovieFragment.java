@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Base fragment class for common functionality
+ * Base fragment class for common functionality for sub classes
  * */
 public class MovieFragment extends Fragment {
     // number of grid columns
@@ -52,18 +53,6 @@ public class MovieFragment extends Fragment {
     // state to show which list is loaded
     protected enum State {TOP, POP}
     protected State mState;
-
-    public MovieFragment() {
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment MovieFragment.
-     */
-    public static MovieFragment newInstance() {
-        return new MovieFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,11 +96,11 @@ public class MovieFragment extends Fragment {
                 // if at bottom of list, and there is not an already network call updating the adatper,
                 // and all those results are updated, update the list with next set of results
                 if ((mPastCount + mVisibleCount >= mTotalCount) && !loading) {
-
+                    // show progress bar to show data "should" be loading
                     mProgressBar.setVisibility(View.VISIBLE);
-
+                    // setbool to show data is already doing a request
                     loading = true;
-
+                    // depending on the type of request
                     if(mState == State.POP)
                     {
                         // increase page number so this will set age number
@@ -170,18 +159,6 @@ public class MovieFragment extends Fragment {
                         public void onClick(MovieResult mMovieResult) {
                             try {
                                 ObjectMapper mapper = new ObjectMapper();
-                                // modify relative path
-                                mMovieResult.setPoster_path(
-                                        MovieApiHelper.formatPathToRestPath(
-                                                mMovieResult.getPoster_path(),
-                                                MovieApiHelper.MEDIUM
-                                        ));
-                                // modify relative path
-                                mMovieResult.setBackdrop_path(
-                                        MovieApiHelper.formatPathToRestPath(
-                                                mMovieResult.getBackdrop_path(),
-                                                MovieApiHelper.LARGE
-                                        ));
                                 // convert object to json
                                 String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
                                 Intent intent = new Intent(getContext(), MovieActivity.class);
@@ -195,8 +172,10 @@ public class MovieFragment extends Fragment {
             );
             // depending on the version of the OS, add listener to the recycler view
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                // set listener
                 mMovieRecyclerView.addOnScrollListener(getListener());
             } else {
+                // set listener
                 mMovieRecyclerView.setOnScrollListener(getListener());
             }
             // set adapter
@@ -249,13 +228,10 @@ public class MovieFragment extends Fragment {
              */
             @Override
             public void onResponse(Call<MovieRoot> call, Response<MovieRoot> response) {
-                // check for good call
-                if(response.code() == 200)
-                {
+                if (response.isSuccessful()) {
                     // set up recyclerview
                     setUpRecycler(response.body().getResults());
-                }
-                else {
+                } else {
                     displayError();
                 }
             }

@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity{
         // Add Fragments to adapter one by one
         mViewPagerAdapter.addItem(PopularFragment.newInstance(), "Popular");
         mViewPagerAdapter.addItem(TopRatedFragment.newInstance(), "Top Rated");
-
+        // set adapter
         mViewPager.setAdapter(mViewPagerAdapter);
-
+        // set tabs for fragments
         TabLayout tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(mViewPager);
     }
@@ -103,33 +103,6 @@ public class MainActivity extends AppCompatActivity{
             mFragmentList.add(mFragment);
             mTitleList.add(mTitle);
         }
-    }
-
-    /**
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    /**
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId())
-        {
-//            case R.id.credits_menu_item:
-                // TODO diaglog to give credit if needed
-//                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**

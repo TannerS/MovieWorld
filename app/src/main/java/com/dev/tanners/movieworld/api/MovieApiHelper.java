@@ -2,6 +2,7 @@ package com.dev.tanners.movieworld.api;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.dev.tanners.movieworld.R;
 import java.util.HashMap;
@@ -144,6 +145,8 @@ public class MovieApiHelper {
      */
     public static String formatPathToRestPath(String mUrl, String mSize)
     {
+        Log.i("IMAGE_DEBUG", mUrl);
+
         return (new StringBuilder())
                 .append(MovieApiHelper.API_IMAGE_BASE)
                 .append("/")
