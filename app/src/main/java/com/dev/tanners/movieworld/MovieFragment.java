@@ -1,18 +1,21 @@
 package com.dev.tanners.movieworld;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import com.dev.tanners.movieworld.api.MovieApi;
-import com.dev.tanners.movieworld.api.MovieApiHelper;
+import com.dev.tanners.movieworld.api.MovieApiList;
+import com.dev.tanners.movieworld.api.MovieApiPaths;
+import com.dev.tanners.movieworld.api.MovieApiBase;
+import com.dev.tanners.movieworld.api.MovieApiPopular;
+import com.dev.tanners.movieworld.api.MovieApiTopRated;
 import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.MovieRoot;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
@@ -20,6 +23,7 @@ import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,21 +33,19 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Base fragment class for common functionality for sub classes
  * */
-public class MovieFragment extends Fragment {
+public abstract class MovieFragment extends Fragment {
     // number of grid columns
     protected final int mColumns = 2;
     // retrofit interface object
     protected Callback<MovieRoot> mResponseCallback;
     // interface for rest calls using retrofit
-    protected MovieApi mMovieApi;
+    protected MovieApiPaths mMovieApiPaths;
     // layout manager for endless scrolling
     protected GridLayoutManager mGridLayoutManager;
     // recyclerview
     protected RecyclerView mMovieRecyclerView;
     // used to check for loading new movies before loading more
     protected boolean loading;
-    // used to help keep track of pages
-    protected MovieApiHelper mApiHelper;
     // adapter
     protected MovieAdapter mMovieAdapter;
     // progressbar for endless scrolling
@@ -53,6 +55,10 @@ public class MovieFragment extends Fragment {
     // state to show which list is loaded
     protected enum State {TOP, POP}
     protected State mState;
+    // movie object for extra functionality
+    protected MovieApiList mMovieApiList;
+    // current activity context
+    protected Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +66,7 @@ public class MovieFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_movie, container, false);
         // load resources
@@ -81,7 +86,7 @@ public class MovieFragment extends Fragment {
      *
      * @return
      */
-    protected RecyclerView.OnScrollListener getListener() {
+    protected RecyclerView.OnScrollListener getListener(final MovieApiList mMovieApiList) {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -105,93 +110,19 @@ public class MovieFragment extends Fragment {
                     {
                         // increase page number so this will set age number
                         // in rest call to get more movies
-                        mApiHelper.increasePopPage();
-                        loadList(MovieApiHelper.API_POPULAR);
+                        mMovieApiList.increasePage();
+                        loadList(MovieApiPopular.ID, mMovieApiList.getQueries());
                     }
                     else if(mState == State.TOP)
                     {
                         // increase page number so this will set age number
                         // in rest call to get more movies
-                        mApiHelper.increaseTopPage();
-                        loadList(MovieApiHelper.API_TOP);
+                        mMovieApiList.increasePage();
+                        loadList(MovieApiTopRated.ID, mMovieApiList.getQueries());
                     }
                 }
             }
         };
-    }
-
-    /**
-     * Set up recyclerview
-     */
-    protected void setUpRecycler(ArrayList<MovieResult> mMovieResults)
-    {
-        // this is a check for endless scrolling
-        // if this is not null, then update adapter, dont create it
-        if(mMovieRecyclerView == null) {
-            // call for data here
-            mMovieRecyclerView = view.findViewById(R.id.fragment_gridview);
-            /*
-                Credit for loading gridview
-                https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-             */
-            mGridLayoutManager = new GridLayoutManager(getContext(), mColumns);
-            // smooth scrolling to help with endless scrolling
-            mGridLayoutManager.setSmoothScrollbarEnabled(true);
-            // set up with layout manager
-            mMovieRecyclerView.setLayoutManager(mGridLayoutManager);
-            // create adapter
-            mMovieAdapter = new MovieAdapter(
-                    getContext(),
-                    mMovieResults,
-                    /*
-                        This does not have to be done via a callback but, I like to have
-                        the activity calling the adapter as the main point
-                        to enter configuration for the adapter.
-
-                        In this case, it is easier option then passing in "context" into the class
-                        and hard coding the callback for onclick. I feel this is a good option so that,
-                        giving the user more control over configuring the way it acts
-                        without editing the adapter, a user should be able to change the callback
-                        if needed
-                     */
-                    new MovieAdapter.IImageOnClickListener() {
-                        @Override
-                        public void onClick(MovieResult mMovieResult) {
-                            try {
-                                ObjectMapper mapper = new ObjectMapper();
-                                // convert object to json
-                                String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
-                                Intent intent = new Intent(getContext(), MovieActivity.class);
-                                intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResultJson);
-                                startActivity(intent);
-                            } catch (JsonProcessingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-            );
-            // depending on the version of the OS, add listener to the recycler view
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-                // set listener
-                mMovieRecyclerView.addOnScrollListener(getListener());
-            } else {
-                // set listener
-                mMovieRecyclerView.setOnScrollListener(getListener());
-            }
-            // set adapter
-            mMovieRecyclerView.setAdapter(mMovieAdapter);
-        }
-        else
-        {
-            // update adapter
-            mMovieAdapter.updateAdapter(mMovieResults);
-            // this assumes the progressbar is visible from earlier
-            // so since data is updated, hide it
-            mProgressBar.setVisibility(View.GONE);
-            // reset loading so user can load more on scroll
-        }
-        // prevents loading more before previous request is done
-        loading = false;
     }
 
     /**
@@ -202,13 +133,13 @@ public class MovieFragment extends Fragment {
         ObjectMapper mMapper = new ObjectMapper();
         // build rest api call
         Retrofit mRetrofit = new Retrofit.Builder()
-                .baseUrl(MovieApiHelper.API_BASE)
+                .baseUrl(MovieApiBase.API_BASE)
                 .addConverterFactory(JacksonConverterFactory.create(mMapper))
                 .build();
         // align object with api interface that says how to make calls
-        mMovieApi = mRetrofit.create(MovieApi.class);
+        mMovieApiPaths = mRetrofit.create(MovieApiPaths.class);
         // set up helper
-        mApiHelper = new MovieApiHelper(getActivity());
+//        mApiHelper = new MovieApiBase(getActivity());
     }
 
     /**
@@ -230,7 +161,8 @@ public class MovieFragment extends Fragment {
             public void onResponse(Call<MovieRoot> call, Response<MovieRoot> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-                    setUpRecycler(response.body().getResults());
+//                    setUpRecycler(response.body().getResults());
+                    mMovieAdapter.updateAdapter(response.body().getResults());
                 } else {
                     displayError();
                 }
@@ -256,18 +188,18 @@ public class MovieFragment extends Fragment {
      *
      * @param type
      */
-    protected void loadList(String type)
+    protected void loadList(String type, HashMap<String, String> mQueries)
     {
         // load data depending on the list currently in activity
         switch(type)
         {
-            case MovieApiHelper.API_POPULAR:
+            case MovieApiPopular.ID:
                 // run callback and rest request in background as an initial start
-                mMovieApi.getPopular(mApiHelper.getPop_queries()).enqueue(mResponseCallback);
+                mMovieApiPaths.getPopular(mQueries).enqueue(mResponseCallback);
                 break;
-            case MovieApiHelper.API_TOP:
+            case MovieApiTopRated.ID:
                 // run callback and rest request in background as an initial start
-                mMovieApi.getTop(mApiHelper.getTop_queries()).enqueue(mResponseCallback);
+                mMovieApiPaths.getTop(mQueries).enqueue(mResponseCallback);
                 break;
         }
     }
@@ -288,5 +220,75 @@ public class MovieFragment extends Fragment {
     protected void loadResources(View view)
     {
         mProgressBar = view.findViewById(R.id.loading_progressbar);
+    }
+
+    /**
+     * Set up recyclerview
+     */
+//    protected void setUpRecycler(ArrayList<MovieResult> mMovieResults)
+    protected void setUpRecycler(MovieApiList mMovieApiList)
+    {
+        // call for data here
+        mMovieRecyclerView = view.findViewById(R.id.fragment_gridview);
+        /*
+            Credit for loading gridview
+            https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+         */
+        mGridLayoutManager = new GridLayoutManager(mContext, mColumns);
+        // smooth scrolling to help with endless scrolling
+        mGridLayoutManager.setSmoothScrollbarEnabled(true);
+        // set up with layout manager
+        mMovieRecyclerView.setLayoutManager(mGridLayoutManager);
+        // create adapter
+        mMovieAdapter = new MovieAdapter(
+                mContext,
+//                    mMovieResults,
+                    /*
+                        This does not have to be done via a callback but, I like to have
+                        the activity calling the adapter as the main point
+                        to enter configuration for the adapter.
+
+                        In this case, it is easier option then passing in "context" into the class
+                        and hard coding the callback for onclick. I feel this is a good option so that,
+                        giving the user more control over configuring the way it acts
+                        without editing the adapter, a user should be able to change the callback
+                        if needed
+                     */
+                new MovieAdapter.IImageOnClickListener() {
+                    @Override
+                    public void onClick(MovieResult mMovieResult) {
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            // convert object to json
+                            String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
+                            Intent intent = new Intent(mContext, MovieActivity.class);
+                            intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResultJson);
+                            startActivity(intent);
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        // depending on the version of the OS, add listener to the recycler view
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+            // set listener
+            mMovieRecyclerView.addOnScrollListener(getListener(mMovieApiList));
+        } else {
+            // set listener
+            mMovieRecyclerView.setOnScrollListener(getListener(mMovieApiList));
+        }
+        // set adapter
+        mMovieRecyclerView.setAdapter(mMovieAdapter);
+
+
+        // TODO double check if needed
+        loading = false;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }

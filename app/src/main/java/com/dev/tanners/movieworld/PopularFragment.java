@@ -1,19 +1,22 @@
 package com.dev.tanners.movieworld;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.dev.tanners.movieworld.api.MovieApiHelper;
+import com.dev.tanners.movieworld.api.MovieApiPopular;
 
 /**
  * Contains popular movies data
  */
 public class PopularFragment extends MovieFragment {
+
     public PopularFragment() {
-        // let fragment know which state it is
-        mState = State.POP;
+//        // let fragment know which state it is
+//        mState = State.POP;
+//        // set up object
+//        mMovieApiList = new MovieApiPopular(mContext);
     }
 
     /**
@@ -36,9 +39,25 @@ public class PopularFragment extends MovieFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+
+        // let fragment know which state it is
+        mState = State.POP;
+        // set up object
+        mMovieApiList = new MovieApiPopular(mContext);
+
+
+        // set up recycler view
+        setUpRecycler(mMovieApiList);
         // load initial view
-        loadList(MovieApiHelper.API_POPULAR);
+        loadList(MovieApiPopular.ID, mMovieApiList.getQueries());
         // return view
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }

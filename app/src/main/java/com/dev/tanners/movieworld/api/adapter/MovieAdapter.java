@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.MovieApiHelper;
+import com.dev.tanners.movieworld.api.MovieApiList;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     /**
      * @param mContext
-     * @param mMovieResults
      * @param mImageOnClickListener
      */
-    public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageOnClickListener mImageOnClickListener ) {
+//    public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageOnClickListener mImageOnClickListener ) {
+    public MovieAdapter(Context mContext, IImageOnClickListener mImageOnClickListener ) {
         this.mContext = mContext;
-        this.mMovieResults = mMovieResults;
+//        this.mMovieResults = mMovieResults;
         this.mImageOnClickListener = mImageOnClickListener;
     }
 
@@ -37,12 +37,29 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * @param mItems
      */
     public void updateAdapter(ArrayList<MovieResult> mItems) {
-        // want to get pos of last item in list
-        int startPos = this.mMovieResults.size() + 1;
-        // add new items to current adapter items
-        this.mMovieResults.addAll(mItems);
-        // update recyclerview at position 'startPos'
-        notifyItemRangeInserted(startPos, mItems.size());
+
+        if(mItems == null)
+            return;
+
+        if(mMovieResults == null)
+        {
+            // create object
+            mMovieResults = new ArrayList<MovieResult>();
+            // want to get pos of last item in list
+            int startPos = 0;
+            // add new items to current adapter items
+            this.mMovieResults.addAll(mItems);
+            // update recyclerview at position 'startPos'
+            notifyItemRangeInserted(startPos, mItems.size());
+        }
+        else {
+            // want to get pos of last item in list
+            int startPos = this.mMovieResults.size() + 1;
+            // add new items to current adapter items
+            this.mMovieResults.addAll(mItems);
+            // update recyclerview at position 'startPos'
+            notifyItemRangeInserted(startPos, mItems.size());
+        }
     }
 
     /**
@@ -64,7 +81,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieResult mItem = mMovieResults.get(position);
-        holder.loadImage(MovieApiHelper.formatPathToRestPath(mItem.getPoster_path(), MovieApiHelper.MEDIUM));
+        holder.loadImage(MovieApiList.formatPathToRestPath(mItem.getPoster_path(), MovieApiList.MEDIUM));
     }
 
     /**

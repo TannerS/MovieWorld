@@ -10,7 +10,7 @@ import retrofit2.http.QueryMap;
  * http://square.github.io/retrofit/
  * http://www.vogella.com/tutorials/Retrofit/article.html
  */
-public interface MovieApi {
+public interface MovieApiPaths {
 
     /**
      * Path to popular movie rest call
@@ -18,7 +18,7 @@ public interface MovieApi {
      * @param options
      * @return
      */
-    @GET(MovieApiHelper.API_POPULAR_PATH)
+    @GET(MovieApiPopular.METHOD)
     Call<MovieRoot> getPopular(@QueryMap Map<String, String> options);
 
     /**
@@ -27,6 +27,6 @@ public interface MovieApi {
      * @param options
      * @return
      */
-    @GET(MovieApiHelper.API_TOP_PATH)
+    @GET(MovieApiTopRated.METHOD)
     Call<MovieRoot> getTop(@QueryMap Map<String, String> options);
 }

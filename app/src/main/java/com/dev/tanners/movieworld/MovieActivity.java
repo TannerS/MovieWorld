@@ -3,11 +3,11 @@ package com.dev.tanners.movieworld;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dev.tanners.movieworld.api.MovieApiHelper;
+import com.dev.tanners.movieworld.api.MovieApiBase;
+import com.dev.tanners.movieworld.api.MovieApiList;
 import com.dev.tanners.movieworld.api.model.results.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,24 +45,24 @@ public class MovieActivity extends AppCompatActivity {
         // and not absolute
         ImageDisplay.loadImage(
                 this,
-                MovieApiHelper.formatPathToRestPath(
+                MovieApiList.formatPathToRestPath(
                         mMovieResult.getPoster_path(),
-                        MovieApiHelper.MEDIUM
+                        MovieApiList.MEDIUM
                 ),
                 R.drawable.ic_error,
                 (ImageView) findViewById(R.id.poster_image)
         );
         ImageDisplay.loadImage(
                 this,
-                MovieApiHelper.formatPathToRestPath(
+                MovieApiList.formatPathToRestPath(
                         mMovieResult.getBackdrop_path(),
-                        MovieApiHelper.MEDIUM
+                        MovieApiList.MEDIUM
                 ),
                 R.drawable.ic_error,
                 (ImageView) findViewById(R.id.backsplah_image));
         // load views
         ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovieResult.getOverview());
-        ((TextView) findViewById(R.id.rating)).setText(String.valueOf(this.mMovieResult.getVote_average()));
+        ((TextView) findViewById(R.id.rating)).setText((String.valueOf(this.mMovieResult.getVote_average()) + "/10"));
         ((TextView) findViewById(R.id.release_date)).setText(this.mMovieResult.getRelease_date());
 
         // set title of toolbar for activity

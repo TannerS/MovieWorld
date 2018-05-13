@@ -1,19 +1,18 @@
 package com.dev.tanners.movieworld;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.dev.tanners.movieworld.api.MovieApiHelper;
+import com.dev.tanners.movieworld.api.MovieApiTopRated;
 
 /**
  * Contains top rated movies data
  */
 public class TopRatedFragment extends MovieFragment {
     public TopRatedFragment() {
-        // let fragment know which state it is
-        mState = State.TOP;
+
     }
 
     /**
@@ -37,9 +36,23 @@ public class TopRatedFragment extends MovieFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        // let fragment know which state it is
+        mState = State.TOP;
+        // set up object
+        mMovieApiList = new MovieApiTopRated(mContext);
+
+        // set up recycler view
+        setUpRecycler(mMovieApiList);
         // load initial view
-        loadList(MovieApiHelper.API_TOP);
+        loadList(MovieApiTopRated.ID, mMovieApiList.getQueries());
         // return view
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }

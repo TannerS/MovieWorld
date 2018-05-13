@@ -14,4 +14,21 @@
     <string name="large_rest_image_size">w780</string>
     <string name="original_rest_image_size">original</string>
     <string name="credits">Credits</string>
+    <string name="tiny_image_size">w92</string>
+    <string name="xsmall_image_size">w154</string>
+    <string name="small_image_size">w185</string>
+    <string name="sm_med_image_size">w342</string>
+    <string name="med_image_size">w500</string>
+    <string name="large_image_size">w780</string>
+    <string name="org_image_size">original</string>
+    <string name="api_key_query_partial">api_key</string>
+    <string name="api_base_url">https://api.themoviedb.org/3/</string>
+    <string name="api_image_base_url">https://image.tmdb.org/t/p/</string>
+    <string name="api_pop_method">movie/popular</string>
+    <string name="api_top_method">movie/top_rated</string>
+    <string name="api_lang_query_partial">language</string>
+    <string name="api_default_lang">en-US</string>
+    <string name="api_page_query_partial">page</string>
+    <string name="api_pop_id">POPULAR</string>
+    <string name="api_top_id">TOP</string>
 </resources>
