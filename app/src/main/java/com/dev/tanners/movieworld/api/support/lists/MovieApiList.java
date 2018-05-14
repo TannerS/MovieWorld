@@ -1,6 +1,9 @@
-package com.dev.tanners.movieworld.api;
+package com.dev.tanners.movieworld.api.support.lists;
 
 import android.content.Context;
+
+import com.dev.tanners.movieworld.api.MovieApiBase;
+
 import java.util.HashMap;
 
 public class MovieApiList extends MovieApiBase {
@@ -10,8 +13,6 @@ public class MovieApiList extends MovieApiBase {
         return queries;
     }
 
-    // holds common rest queries
-    protected HashMap<String, String> queries;
     public final static String API_IMAGE_BASE = "https://image.tmdb.org/t/p/";
     public final static String API_QUERY_OPTIONS_PAGE = "page";
     public final static String TINY = "w92";
@@ -27,11 +28,9 @@ public class MovieApiList extends MovieApiBase {
         // default page number
         mCurrentPage = 1;
         // set up default query parameters
-        queries = new HashMap<String, String>() {{
-            put(API_KEY, getmApiKey());
-            put(API_QUERY_OPTIONS_LANG, API_QUERY_OPTIONS_LANG_ENG);
-            put(API_QUERY_OPTIONS_PAGE, Integer.toString(mCurrentPage));
-        }};
+        queries.put(API_KEY, getmApiKey());
+        queries.put(API_QUERY_OPTIONS_LANG, API_QUERY_OPTIONS_LANG_ENG);
+        queries.put(API_QUERY_OPTIONS_PAGE, Integer.toString(mCurrentPage));
     }
 
     /**

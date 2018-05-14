@@ -13,7 +13,8 @@ import java.util.HashMap;
 public class MovieApiBase {
     // used to get application resources
     protected Context mContext;
-
+    // holds common rest queries
+    public HashMap<String, String> queries;
     protected final static String API_KEY = "api_key";
     public final static String API_BASE = "https://api.themoviedb.org/3/";
     protected final static String API_QUERY_OPTIONS_LANG = "language";
@@ -21,6 +22,7 @@ public class MovieApiBase {
 
     public MovieApiBase(Context mContext) {
         this.mContext = mContext;
+        queries = new HashMap<String, String>();
     }
 
     protected String getmApiKey() {

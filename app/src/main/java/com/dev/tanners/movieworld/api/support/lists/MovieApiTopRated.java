@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api;
+package com.dev.tanners.movieworld.api.support.lists;
 
 import android.content.Context;
 

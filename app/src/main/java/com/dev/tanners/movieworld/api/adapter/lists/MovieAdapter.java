@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter;
+package com.dev.tanners.movieworld.api.adapter.lists;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.MovieApiList;
-import com.dev.tanners.movieworld.api.model.results.MovieResult;
+import com.dev.tanners.movieworld.api.support.lists.MovieApiList;
+import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import java.util.ArrayList;
 
@@ -24,10 +24,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * @param mContext
      * @param mImageOnClickListener
      */
-//    public MovieAdapter(Context mContext, ArrayList<MovieResult> mMovieResults, IImageOnClickListener mImageOnClickListener ) {
     public MovieAdapter(Context mContext, IImageOnClickListener mImageOnClickListener ) {
         this.mContext = mContext;
-//        this.mMovieResults = mMovieResults;
         this.mImageOnClickListener = mImageOnClickListener;
     }
 
@@ -112,6 +110,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
          */
         public MovieViewHolder(View view) {
             super(view);
+
+
             // set gri item with a on click
             view.setOnClickListener(this);
             image = view.findViewById(R.id.grid_item_imageview);

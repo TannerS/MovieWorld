@@ -11,18 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import com.dev.tanners.movieworld.api.MovieApiList;
-import com.dev.tanners.movieworld.api.MovieApiPaths;
+import com.dev.tanners.movieworld.api.support.lists.MovieApiList;
+import com.dev.tanners.movieworld.api.support.lists.paths.MovieApiListPaths;
 import com.dev.tanners.movieworld.api.MovieApiBase;
-import com.dev.tanners.movieworld.api.MovieApiPopular;
-import com.dev.tanners.movieworld.api.MovieApiTopRated;
-import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
-import com.dev.tanners.movieworld.api.model.MovieRoot;
-import com.dev.tanners.movieworld.api.model.results.MovieResult;
+import com.dev.tanners.movieworld.api.support.lists.MovieApiPopular;
+import com.dev.tanners.movieworld.api.support.lists.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.adapter.lists.MovieAdapter;
+import com.dev.tanners.movieworld.api.model.list.MovieRoot;
+import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +39,7 @@ public abstract class MovieFragment extends Fragment {
     // retrofit interface object
     protected Callback<MovieRoot> mResponseCallback;
     // interface for rest calls using retrofit
-    protected MovieApiPaths mMovieApiPaths;
+    protected MovieApiListPaths mMovieApiListPaths;
     // layout manager for endless scrolling
     protected GridLayoutManager mGridLayoutManager;
     // recyclerview
@@ -55,7 +55,7 @@ public abstract class MovieFragment extends Fragment {
     // state to show which list is loaded
     protected enum State {TOP, POP}
     protected State mState;
-    // movie object for extra functionality
+    // interface for rest calls
     protected MovieApiList mMovieApiList;
     // current activity context
     protected Context mContext;
@@ -74,7 +74,7 @@ public abstract class MovieFragment extends Fragment {
         // set up callbacks for rest calls for recyclerview
         setUpRestCallback();
         // set up rest calls connection to json parser and callbacks per rest api endpoint
-        createApi();
+        createApiCall();
         // return view
         return view;
     }
@@ -128,7 +128,7 @@ public abstract class MovieFragment extends Fragment {
     /**
      https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
      */
-    protected void createApi() {
+    protected void createApiCall() {
         // set up json parser for rest call
         ObjectMapper mMapper = new ObjectMapper();
         // build rest api call
@@ -137,15 +137,13 @@ public abstract class MovieFragment extends Fragment {
                 .addConverterFactory(JacksonConverterFactory.create(mMapper))
                 .build();
         // align object with api interface that says how to make calls
-        mMovieApiPaths = mRetrofit.create(MovieApiPaths.class);
-        // set up helper
-//        mApiHelper = new MovieApiBase(getActivity());
+        mMovieApiListPaths = mRetrofit.create(MovieApiListPaths.class);
     }
 
     /**
      * Callback for each rest url (top/popular)
      */
-    protected void setUpRestCallback()
+    public void setUpRestCallback()
     {
         mResponseCallback = new Callback<MovieRoot>() {
             /**
@@ -195,11 +193,11 @@ public abstract class MovieFragment extends Fragment {
         {
             case MovieApiPopular.ID:
                 // run callback and rest request in background as an initial start
-                mMovieApiPaths.getPopular(mQueries).enqueue(mResponseCallback);
+                mMovieApiListPaths.getPopular(mQueries).enqueue(mResponseCallback);
                 break;
             case MovieApiTopRated.ID:
                 // run callback and rest request in background as an initial start
-                mMovieApiPaths.getTop(mQueries).enqueue(mResponseCallback);
+                mMovieApiListPaths.getTop(mQueries).enqueue(mResponseCallback);
                 break;
         }
     }

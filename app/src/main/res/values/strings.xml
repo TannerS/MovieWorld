@@ -5,6 +5,7 @@
     <string name="popular_title">Popular</string>
     <string name="top_rated_title">Top Rated</string>
     <string name="loading_image_error">Error loading data</string>
+    <string name="loading_reviews_error">Error loading reviews</string>
     <string name="loading_image_error_dismiss">CLOSE</string>
     <string name="tiny_rest_image_size">w92</string>
     <string name="xsmall_rest_image_size">w154</string>
