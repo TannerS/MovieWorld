@@ -12,13 +12,6 @@ import com.dev.tanners.movieworld.api.support.lists.MovieApiPopular;
  */
 public class PopularFragment extends MovieFragment {
 
-    public PopularFragment() {
-//        // let fragment know which state it is
-//        mState = State.POP;
-//        // set up object
-//        mMovieApiList = new MovieApiPopular(mContext);
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

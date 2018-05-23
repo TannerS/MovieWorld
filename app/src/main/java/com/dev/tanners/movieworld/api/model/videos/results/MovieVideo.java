@@ -1,13 +1,14 @@
 package com.dev.tanners.movieworld.api.model.videos.results;
 
+import com.dev.tanners.movieworld.api.model.MovieBase;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *  Model for videos for each movie root's result
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieVideo {
-    private int id;
+public class MovieVideo extends MovieBase {
+    private String id;
     private String iso_639_1;
     private String iso_3166_1;
     private String key;
@@ -19,11 +20,11 @@ public class MovieVideo {
     public MovieVideo() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,174 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_gray"
-    tools:context=".MovieActivity"
-    android:id="@+id/main_root_container">
-
-    <include
-        android:id="@+id/toolbar_container"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/backsplah_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
-
-    <ImageView
-        android:id="@+id/poster_image"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="125dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backsplah_image" />
-
-    <!--TODO separate file???-->
-
+    android:layout_height="match_parent">
 
     <ScrollView
-        android:id="@+id/plot_synopsis_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poster_image">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!--TODO put common styles below into a style, like code review 1 -->
-
-            <TextView
-                android:id="@+id/plot_synopsis_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="start"
-                android:textAllCaps="true"
-                android:text="Plot Synopsis"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorBlack" />
+            android:layout_height="match_parent"
+            android:background="@color/light_gray"
+            tools:context=".MovieActivity"
+            android:id="@+id/main_root_container">
 
             <include
-                layout="@layout/divider"
+                android:id="@+id/toolbar_container"
+                layout="@layout/toolbar"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/plot_synopsis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="PLACE HOLDER FOR EDITOR"
-                android:textAlignment="center"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:layout_marginTop="25dp"
-                android:id="@+id/reviews_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="start"
-                android:textAllCaps="true"
-                android:text="Reviews"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorBlack" />
 
             <include
-                layout="@layout/divider"
+                android:id="@+id/header_container"
+                layout="@layout/movie_detail_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
 
-            <!--TODO reviews list here, put reviews layout into separate file-->
+            <include
+                android:id="@+id/plot_container"
+                layout="@layout/movie_detail_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/header_container" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mixed_linear_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/colorAccent"
+                android:padding="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/plot_container" />
 
 
 
-        </LinearLayout>
-
-
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
-
-    <!--TODO separate file-->
-
-
-    <LinearLayout
-        android:id="@+id/rating_container"
-        android:layout_width="244dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/poster_image"
-        app:layout_constraintTop_toBottomOf="@+id/backsplah_image">
-
-        <ImageView
-            android:id="@+id/star"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <TextView
-            android:id="@+id/rating"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:text="PLACE HOLDER FOR EDITOR"
-            android:textAlignment="center"
-            android:textColor="@color/colorBlack" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/release_date"
-        android:layout_width="75dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="PLACE HOLDER FOR EDITOR"
-        android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/poster_image"
-        app:layout_constraintTop_toBottomOf="@+id/rating_container" />
-
 
     <View
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
+        android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

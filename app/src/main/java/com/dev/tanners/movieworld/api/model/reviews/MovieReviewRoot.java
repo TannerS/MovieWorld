@@ -1,5 +1,6 @@
 package com.dev.tanners.movieworld.api.model.reviews;
 
+import com.dev.tanners.movieworld.api.model.MovieBase;
 import com.dev.tanners.movieworld.api.model.reviews.results.MovieReview;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -51,7 +52,6 @@ public class MovieReviewRoot {
     public ArrayList<MovieReview> getResults() {
         return results;
     }
-
     public void setResults(ArrayList<MovieReview> results) {
         this.results = results;
     }

@@ -3,23 +3,27 @@ package com.dev.tanners.movieworld;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.api.MovieApiBase;
+import com.dev.tanners.movieworld.api.adapter.lists.MixedAdapter;
+import com.dev.tanners.movieworld.api.model.MovieBase;
 import com.dev.tanners.movieworld.api.model.reviews.MovieReviewRoot;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideoRoot;
+import com.dev.tanners.movieworld.api.support.MovieApiMixed;
+import com.dev.tanners.movieworld.api.support.MovieApiMixedPaths;
 import com.dev.tanners.movieworld.api.support.lists.MovieApiList;
 import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
-import com.dev.tanners.movieworld.api.support.lists.paths.MovieApiListPaths;
-import com.dev.tanners.movieworld.api.support.reviews.MovieApiReviews;
-import com.dev.tanners.movieworld.api.support.reviews.paths.MovieApiReviewsPaths;
-import com.dev.tanners.movieworld.api.support.videos.MovieApiVideos;
-import com.dev.tanners.movieworld.api.support.videos.paths.MovieApiVideosPaths;
+
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,14 +39,12 @@ public class MovieActivity extends AppCompatActivity {
     public static String MOVIE_ACTIVITY_BUNDLE_KEY = "ADDITIONAL_MOVIE_INFO";
     // data for current movie
     private MovieResult mMovieResult;
-    // retrofit interface object
-    private Callback<MovieReviewRoot> mReviewResponseCallback;
-    // retrofit interface object
-    private Callback<MovieVideoRoot> mVideoResponseCallback;
     // interface for rest calls
-    private MovieApiReviewsPaths mMovieApiReviewsPaths;
-    // interface for rest calls
-    private MovieApiVideosPaths mMovieApiVideosPaths;
+    private MovieApiMixedPaths mMovieApiMixedPaths;
+    // list that will hold reviews and trailers
+    private MixedAdapter mMixedAdapter;
+    // recyclerview to hold items
+    private RecyclerView mMixedRecyclerView;
 
     /**
      * Entry point to load methods needed for activity
@@ -100,24 +102,21 @@ public class MovieActivity extends AppCompatActivity {
                         MovieApiList.MEDIUM
                 ),
                 R.drawable.ic_error,
-                (ImageView) findViewById(R.id.backsplah_image));
+                (ImageView) findViewById(R.id.backsplash_image));
     }
 
 
     private void loadRestResources()
     {
-        // set up callbacks for rest calls for recyclerview
-        setUpReviewRestCallback();
+        // get UI ready for list
+        setUpRecycler();
         // set up rest calls connection to json parser and callbacks per rest api endpoint
-        createApiReviewCall();
-        // load reviews
-        loadReviewList((new MovieApiReviews(this)).queries);
-        // set up callbacks for rest calls for recyclerview
-        setUpVideoRestCallback();
-        // set up rest calls connection to json parser and callbacks per rest api endpoint
-        createApiVideoCall();
-        // load videos
-        loadVideoList((new MovieApiVideos(this)).queries);
+        createRestCallByType();
+//        createRestCallByType(MixedAdapter.REVIEW);
+//        createRestCallByType(MixedAdapter.VIDEO);
+        // load rest data
+        loadRestCallData((new MovieApiMixed(this)).queries);
+//        loadRestCallData(MixedAdapter.VIDEO, (new MovieApiMixed(this)).queries);
     }
 
     /**
@@ -137,9 +136,9 @@ public class MovieActivity extends AppCompatActivity {
     /**
      * Callback for movie review
      */
-    private void setUpReviewRestCallback()
+    private Callback<MovieReviewRoot> setUpReviewRestCallback()
     {
-        mReviewResponseCallback = new Callback<MovieReviewRoot>() {
+        return new Callback<MovieReviewRoot>() {
             /**
              * Invoked for a received HTTP response.
              * <p>
@@ -154,8 +153,14 @@ public class MovieActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // set up recyclerview
 //                    setUpRecycler(response.body().getResults());
-//                    mMovieAdapter.updateAdapter(response.body().getResults());
+
+
+
+
+
+                    mMixedAdapter.updateAdapter(response.body().getResults());
                 } else {
+                    Log.e("REST CALL", String.valueOf(call.request().url()));
                     displayError(R.string.loading_reviews_error);
                 }
             }
@@ -185,10 +190,14 @@ public class MovieActivity extends AppCompatActivity {
                 getString(R.string.loading_image_error_dismiss));
     }
 
+
     /**
-        https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+     * load rest api (retrofit) with object mapper and method call based on type
+     *
+     * https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
      */
-    protected void createApiReviewCall() {
+//    private void createRestCallByType(int mType) {
+    private void createRestCallByType() {
         // set up json parser for rest call
         ObjectMapper mMapper = new ObjectMapper();
         // build rest api call
@@ -196,25 +205,60 @@ public class MovieActivity extends AppCompatActivity {
                 .baseUrl(MovieApiBase.API_BASE)
                 .addConverterFactory(JacksonConverterFactory.create(mMapper))
                 .build();
-        // align object with api interface that says how to make calls
-        mMovieApiReviewsPaths = mRetrofit.create(MovieApiReviewsPaths.class);
+
+        Log.i("REST CALL", String.valueOf(mRetrofit.baseUrl()));
+
+//        switch(mType)
+//        {
+//            case MixedAdapter.REVIEW:
+                // align object with api interface that says how to make calls
+                mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
+//                break;
+//            case MixedAdapter.VIDEO:
+                // align object with api interface that says how to make calls
+                mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
+//                break;
+//        }
+
     }
 
     /**
-     * Choose which list to load
+     * load rest data based on type
+     *
+     * @param mQueries
      */
-    protected void loadReviewList(HashMap<String, String> mQueries)
+    private void loadRestCallData(HashMap<String, String> mQueries)
     {
         // run callback and rest request in background as an initial start
-        mMovieApiReviewsPaths.getReviews(mQueries).enqueue(mReviewResponseCallback);
+        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
+        // run callback and rest request in background as an initial start
+        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Callback for movie review
      */
-    private void setUpVideoRestCallback()
+//    private void setUpVideoRestCallback()
+    private Callback<MovieVideoRoot> setUpVideoRestCallback()
     {
-        mVideoResponseCallback = new Callback<MovieVideoRoot>() {
+//        mVideoResponseCallback = new Callback<MovieVideoRoot>() {
+        return new Callback<MovieVideoRoot>() {
             /**
              * Invoked for a received HTTP response.
              * <p>
@@ -229,8 +273,9 @@ public class MovieActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // set up recyclerview
 //                    setUpRecycler(response.body().getResults());
-//                    mMovieAdapter.updateAdapter(response.body().getResults());
+                    mMixedAdapter.updateAdapter(response.body().getResults());
                 } else {
+                    Log.e("REST CALL", String.valueOf(call.request().url()));
                     displayError(R.string.loading_reviews_error);
                 }
             }
@@ -251,26 +296,35 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     /**
-     https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+     * Set up recyclerview
      */
-    protected void createApiVideoCall() {
-        // set up json parser for rest call
-        ObjectMapper mMapper = new ObjectMapper();
-        // build rest api call
-        Retrofit mRetrofit = new Retrofit.Builder()
-                .baseUrl(MovieApiBase.API_BASE)
-                .addConverterFactory(JacksonConverterFactory.create(mMapper))
-                .build();
-        // align object with api interface that says how to make calls
-        mMovieApiVideosPaths = mRetrofit.create(MovieApiVideosPaths.class);
+    private void setUpRecycler()
+    {
+        // call for data here
+        mMixedRecyclerView = findViewById(R.id.mixed_linear_list);
+        // load list layout
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager.setSmoothScrollbarEnabled(true);
+        // set up with layout manager
+        mMixedRecyclerView.setLayoutManager(mLinearLayoutManager);
+        // create adapter
+        mMixedAdapter = new MixedAdapter(this);
+        // set adapter
+        mMixedRecyclerView.setAdapter(mMixedAdapter);
     }
 
-    /**
-     * Choose which list to load
-     */
-    protected void loadVideoList(HashMap<String, String> mQueries)
-    {
-        // run callback and rest request in background as an initial start
-        mMovieApiVideosPaths.getReviews(mQueries).enqueue(mVideoResponseCallback);
-    }
+//
+//
+//
+//
+//
+//
+//
+//
+//    private ArrayList<MovieBase> convertObjectTypeInArray(ArrayList<? extends MovieBase> mList)
+//    {
+//
+//
+//
+//    }
 }

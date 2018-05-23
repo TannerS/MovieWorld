@@ -1,5 +1,6 @@
 package com.dev.tanners.movieworld.api.model.videos;
 
+import com.dev.tanners.movieworld.api.model.MovieBase;
 import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

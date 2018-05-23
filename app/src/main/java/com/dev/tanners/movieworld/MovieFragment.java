@@ -223,7 +223,6 @@ public abstract class MovieFragment extends Fragment {
     /**
      * Set up recyclerview
      */
-//    protected void setUpRecycler(ArrayList<MovieResult> mMovieResults)
     protected void setUpRecycler(MovieApiList mMovieApiList)
     {
         // call for data here

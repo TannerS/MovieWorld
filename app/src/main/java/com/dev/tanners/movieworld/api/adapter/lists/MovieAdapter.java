@@ -98,7 +98,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     /**
      *  Holds the view elements
      *
-     * VIew holder to hold UI elements to be recycled
+     * View holder to hold UI elements to be recycled
      */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image;
@@ -112,7 +112,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             super(view);
 
 
-            // set gri item with a on click
+            // set grid item with a on click
             view.setOnClickListener(this);
             image = view.findViewById(R.id.grid_item_imageview);
             image.setClipToOutline(true);

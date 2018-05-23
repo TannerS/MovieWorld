@@ -11,9 +11,6 @@ import com.dev.tanners.movieworld.api.support.lists.MovieApiTopRated;
  * Contains top rated movies data
  */
 public class TopRatedFragment extends MovieFragment {
-    public TopRatedFragment() {
-
-    }
 
     /**
      * Use this factory method to create a new instance of
