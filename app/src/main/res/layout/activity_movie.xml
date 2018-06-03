@@ -7,57 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mixed_linear_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/light_gray"
-            tools:context=".MovieActivity"
-            android:id="@+id/main_root_container">
-
-            <include
-                android:id="@+id/toolbar_container"
-                layout="@layout/toolbar"
-                android:visibility="visible"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <include
-                android:id="@+id/header_container"
-                layout="@layout/movie_detail_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
-
-            <include
-                android:id="@+id/plot_container"
-                layout="@layout/movie_detail_plot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/header_container" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/mixed_linear_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:background="@color/colorAccent"
-                android:padding="3dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plot_container" />
-
-
-
-        </android.support.constraint.ConstraintLayout>
-
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:padding="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <View
         android:id="@+id/bottom_bar"
@@ -65,9 +24,9 @@
         android:layout_height="@dimen/nav_header_height"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintBottom_toBottomOf="mixed_linear_list"
+        app:layout_constraintEnd_toEndOf="mixed_linear_list"
+        app:layout_constraintStart_toStartOf="mixed_linear_list"
+        app:layout_constraintTop_toTopOf="mixed_linear_list" />
 
 </android.support.constraint.ConstraintLayout>

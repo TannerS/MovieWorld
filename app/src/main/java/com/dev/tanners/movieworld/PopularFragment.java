@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.dev.tanners.movieworld.api.support.lists.MovieApiPopular;
+import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiPopular;
 
 /**
  * Contains popular movies data

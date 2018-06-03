@@ -1,13 +1,13 @@
 package com.dev.tanners.movieworld.api.model.reviews.results;
 
-import com.dev.tanners.movieworld.api.model.MovieBase;
+import com.dev.tanners.movieworld.ListItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Model for review result
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieReview extends MovieBase {
+public class MovieReview extends ListItem {
     private String author;
     private String content;
     private String id;

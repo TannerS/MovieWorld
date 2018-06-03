@@ -8,13 +8,13 @@
 
     <TextView
         android:id="@+id/plot_synopsis_title"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
-        android:text="Plot Synopsis"
+        android:text="Synopsis"
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textColor="@color/colorBlack"
@@ -22,30 +22,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/divider"
-        android:layout_width="384dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plot_synopsis_title" />
-
     <TextView
         android:id="@+id/plot_synopsis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="PLACE HOLDER FOR EDITOR"
+        android:text="PLOT"
         android:textAlignment="center"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/plot_synopsis_title" />
 
 </android.support.constraint.ConstraintLayout>

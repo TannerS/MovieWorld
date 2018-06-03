@@ -11,7 +11,7 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/toolbar"
+        layout="@layout/activity_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -1,13 +1,13 @@
 package com.dev.tanners.movieworld.api.model.videos.results;
 
-import com.dev.tanners.movieworld.api.model.MovieBase;
+import com.dev.tanners.movieworld.ListItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *  Model for videos for each movie root's result
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieVideo extends MovieBase {
+public class MovieVideo extends ListItem {
     private String id;
     private String iso_639_1;
     private String iso_3166_1;

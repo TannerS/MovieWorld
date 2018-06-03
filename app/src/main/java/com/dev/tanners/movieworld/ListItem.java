@@ -1,14 +1,14 @@
-package com.dev.tanners.movieworld.api.model;
+package com.dev.tanners.movieworld;
 
 /**
  * This is a parent class for all api models to give a common
  * type to be able to use common functions by passing any object
  * that is a child of this object without writing separate classes
  */
-public class MovieBase {
+public class ListItem {
     // empty body
 
 
-    public MovieBase() {
+    public ListItem() {
     }
 }

@@ -32,4 +32,15 @@
     <string name="api_page_query_partial">page</string>
     <string name="api_pop_id">POPULAR</string>
     <string name="api_top_id">TOP</string>
+
+
+
+
+    <string name="item_div_title_plot">Synopsis</string>
+    <string name="item_div_title_reviews">Reviews</string>
+    <string name="item_div_title_videos">Videos</string>
+
+
+
+
 </resources>

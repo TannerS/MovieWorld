@@ -1,7 +1,7 @@
-package com.dev.tanners.movieworld.api.support.lists.paths;
+package com.dev.tanners.movieworld.api.support.rest.lists.paths;
 
-import com.dev.tanners.movieworld.api.support.lists.MovieApiPopular;
-import com.dev.tanners.movieworld.api.support.lists.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiPopular;
+import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiTopRated;
 import com.dev.tanners.movieworld.api.model.list.MovieRoot;
 import java.util.Map;
 import retrofit2.Call;

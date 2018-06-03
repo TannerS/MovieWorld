@@ -1,8 +1,8 @@
-package com.dev.tanners.movieworld.api.support.lists;
+package com.dev.tanners.movieworld.api.support.rest.lists;
 
 import android.content.Context;
 
-import com.dev.tanners.movieworld.api.MovieApiBase;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
 
 import java.util.HashMap;
 

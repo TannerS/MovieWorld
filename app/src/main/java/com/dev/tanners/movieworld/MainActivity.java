@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpFragments();
-        // load toolbar
+        // load activity_toolbar
         setSupportActionBar( (Toolbar) findViewById(R.id.main_toolbar));
     }
 

@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.support;
+package com.dev.tanners.movieworld.api.support.rest;
 
 import com.dev.tanners.movieworld.api.model.reviews.MovieReviewRoot;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideoRoot;

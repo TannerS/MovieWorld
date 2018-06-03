@@ -9,14 +9,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.dev.tanners.movieworld.api.MovieApiBase;
+
+import com.dev.tanners.movieworld.api.model.list_items.Divider;
+import com.dev.tanners.movieworld.api.model.list_items.Header;
+import com.dev.tanners.movieworld.api.model.list_items.Plot;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
 import com.dev.tanners.movieworld.api.adapter.lists.MixedAdapter;
-import com.dev.tanners.movieworld.api.model.MovieBase;
 import com.dev.tanners.movieworld.api.model.reviews.MovieReviewRoot;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideoRoot;
-import com.dev.tanners.movieworld.api.support.MovieApiMixed;
-import com.dev.tanners.movieworld.api.support.MovieApiMixedPaths;
-import com.dev.tanners.movieworld.api.support.lists.MovieApiList;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiMixed;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiMixedPaths;
+import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiList;
 import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 
 import com.dev.tanners.movieworld.util.ImageDisplay;
@@ -45,6 +48,9 @@ public class MovieActivity extends AppCompatActivity {
     private MixedAdapter mMixedAdapter;
     // recyclerview to hold items
     private RecyclerView mMixedRecyclerView;
+    // entire contents of this activity inside an array for the recyclerlist
+    private ArrayList<ListItem> mItems;
+
 
     /**
      * Entry point to load methods needed for activity
@@ -55,7 +61,7 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-        // load toolbar
+        // load activity_toolbar
         setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
         // extract json of Movie object for UI from previous activity
         try {
@@ -63,61 +69,22 @@ public class MovieActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // load images
-        loadImages();
-        // load ui elements
-        loadUI();
-        // set title of toolbar for activity
+        // set item_title of activity_toolbar for activity
         getSupportActionBar().setTitle(this.mMovieResult.getTitle());
-        // load rest calls
-        loadRestResources();
-    }
-
-    private void loadUI()
-    {
-        // load views
-        ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovieResult.getOverview());
-        ((TextView) findViewById(R.id.rating)).setText((String.valueOf(this.mMovieResult.getVote_average()) + " / 10"));
-        ((TextView) findViewById(R.id.release_date)).setText(this.mMovieResult.getRelease_date());
-    }
-
-    private void loadImages()
-    {
-        // call helper method to load images
-        // since image is passed in as realtive path
-        // and not absolute
-        ImageDisplay.loadImage(
-                this,
-                MovieApiList.formatPathToRestPath(
-                        mMovieResult.getPoster_path(),
-                        MovieApiList.MEDIUM
-                ),
-                R.drawable.ic_error,
-                (ImageView) findViewById(R.id.poster_image)
-        );
-        ImageDisplay.loadImage(
-                this,
-                MovieApiList.formatPathToRestPath(
-                        mMovieResult.getBackdrop_path(),
-                        MovieApiList.MEDIUM
-                ),
-                R.drawable.ic_error,
-                (ImageView) findViewById(R.id.backsplash_image));
-    }
-
-
-    private void loadRestResources()
-    {
         // get UI ready for list
         setUpRecycler();
         // set up rest calls connection to json parser and callbacks per rest api endpoint
         createRestCallByType();
-//        createRestCallByType(MixedAdapter.REVIEW);
-//        createRestCallByType(MixedAdapter.VIDEO);
+
+
+
+
+
+
         // load rest data
-        loadRestCallData((new MovieApiMixed(this)).queries);
-//        loadRestCallData(MixedAdapter.VIDEO, (new MovieApiMixed(this)).queries);
+//        loadRestCallData((new MovieApiMixed(this)).queries);
     }
+
 
     /**
      * Get json bundle to object to load UI elements
@@ -152,15 +119,8 @@ public class MovieActivity extends AppCompatActivity {
             public void onResponse(Call<MovieReviewRoot> call, Response<MovieReviewRoot> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-//                    setUpRecycler(response.body().getResults());
-
-
-
-
-
-                    mMixedAdapter.updateAdapter(response.body().getResults());
+                    mItems.addAll(response.body().getResults());
                 } else {
-                    Log.e("REST CALL", String.valueOf(call.request().url()));
                     displayError(R.string.loading_reviews_error);
                 }
             }
@@ -193,10 +153,9 @@ public class MovieActivity extends AppCompatActivity {
 
     /**
      * load rest api (retrofit) with object mapper and method call based on type
-     *
      * https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+     *
      */
-//    private void createRestCallByType(int mType) {
     private void createRestCallByType() {
         // set up json parser for rest call
         ObjectMapper mMapper = new ObjectMapper();
@@ -206,58 +165,28 @@ public class MovieActivity extends AppCompatActivity {
                 .addConverterFactory(JacksonConverterFactory.create(mMapper))
                 .build();
 
-        Log.i("REST CALL", String.valueOf(mRetrofit.baseUrl()));
-
-//        switch(mType)
-//        {
-//            case MixedAdapter.REVIEW:
-                // align object with api interface that says how to make calls
-                mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
-//                break;
-//            case MixedAdapter.VIDEO:
-                // align object with api interface that says how to make calls
-                mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
-//                break;
-//        }
-
+        // align object with api interface that says how to make calls
+        mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
     }
 
-    /**
-     * load rest data based on type
-     *
-     * @param mQueries
-     */
-    private void loadRestCallData(HashMap<String, String> mQueries)
-    {
-        // run callback and rest request in background as an initial start
-        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
-        // run callback and rest request in background as an initial start
-        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    /**
+//     * load rest data based on type
+//     *
+//     * @param mQueries
+//     */
+//    private void loadRestCallData(HashMap<String, String> mQueries)
+//    {
+//        // run callback and rest request in background as an initial start
+////        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
+//        // run callback and rest request in background as an initial start
+//        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
+//    }
 
     /**
      * Callback for movie review
      */
-//    private void setUpVideoRestCallback()
     private Callback<MovieVideoRoot> setUpVideoRestCallback()
     {
-//        mVideoResponseCallback = new Callback<MovieVideoRoot>() {
         return new Callback<MovieVideoRoot>() {
             /**
              * Invoked for a received HTTP response.
@@ -272,10 +201,8 @@ public class MovieActivity extends AppCompatActivity {
             public void onResponse(Call<MovieVideoRoot> call, Response<MovieVideoRoot> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-//                    setUpRecycler(response.body().getResults());
                     mMixedAdapter.updateAdapter(response.body().getResults());
                 } else {
-                    Log.e("REST CALL", String.valueOf(call.request().url()));
                     displayError(R.string.loading_reviews_error);
                 }
             }
@@ -311,20 +238,57 @@ public class MovieActivity extends AppCompatActivity {
         mMixedAdapter = new MixedAdapter(this);
         // set adapter
         mMixedRecyclerView.setAdapter(mMixedAdapter);
+        // init list
+        mItems = new ArrayList<ListItem>();
     }
 
+
+
+
+
+
+
+
+    private void loadPageItems()
+    {
+        mItems.add(new Header() {{
+            this.setmBannerUrl(mMovieResult.getBackdrop_path());
+            this.setmRating((String.valueOf(mMovieResult.getVote_average()) + " / 10"));
+            this.setmReleaseDate(mMovieResult.getRelease_date());
+        }});
+
+        mItems.add(new Divider() {{
+            this.setmTitle(getString(R.string.item_div_title_plot));
+        }});
+
+        mItems.add(new Plot() {{
+            this.setmPlotSynopsis(mMovieResult.getOverview());
+        }});
+
+        mItems.add(new Divider() {{
+            this.setmTitle(getString(R.string.item_div_title_reviews));
+        }});
+
+        // TODO test, may run async
+        // run callback and rest request in background as an initial start
+        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), (new MovieApiMixed(this)).queries).enqueue(setUpReviewRestCallback());
+
+
+//
+//        loadRestCallData((new MovieApiMixed(this)).queries);
 //
 //
+//        loadRestCallData((new MovieApiMixed(this)).queries);
 //
+//        // run callback and rest request in background as an initial start
+////        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
+//        // run callback and rest request in background as an initial start
+//        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
 //
-//
-//
-//
-//
-//    private ArrayList<MovieBase> convertObjectTypeInArray(ArrayList<? extends MovieBase> mList)
-//    {
-//
-//
-//
-//    }
+
+    }
+
+
+
+
 }

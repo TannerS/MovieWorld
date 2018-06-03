@@ -1,8 +1,6 @@
-package com.dev.tanners.movieworld.api.support;
+package com.dev.tanners.movieworld.api.support.rest;
 
 import android.content.Context;
-
-import com.dev.tanners.movieworld.api.MovieApiBase;
 
 public class MovieApiMixed extends MovieApiBase
 {

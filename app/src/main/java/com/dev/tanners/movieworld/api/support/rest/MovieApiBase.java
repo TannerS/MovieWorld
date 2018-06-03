@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api;
+package com.dev.tanners.movieworld.api.support.rest;
 
 import android.content.Context;
 import android.content.res.Resources;
