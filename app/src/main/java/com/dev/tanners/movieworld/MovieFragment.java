@@ -22,7 +22,6 @@ import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;

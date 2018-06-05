@@ -7,7 +7,6 @@ public class Header extends ListItem {
     private String mRating;
     private String mReleaseDate;
 
-
     public Header() {
     }
 
