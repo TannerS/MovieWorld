@@ -1,12 +1,11 @@
 package com.dev.tanners.movieworld.api.model.list_items;
 
-import com.dev.tanners.movieworld.ListItem;
+import com.dev.tanners.movieworld.api.model.ListItem;
 
 public class Header extends ListItem {
     private String mBannerUrl;
     private String mRating;
     private String mReleaseDate;
-
 
     public Header() {
     }

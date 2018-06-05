@@ -1,6 +1,6 @@
 package com.dev.tanners.movieworld.api.model.reviews.results;
 
-import com.dev.tanners.movieworld.ListItem;
+import com.dev.tanners.movieworld.api.model.ListItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**

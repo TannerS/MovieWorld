@@ -1,7 +1,11 @@
 package com.dev.tanners.movieworld.api.model.videos.results;
 
-import com.dev.tanners.movieworld.ListItem;
+import android.support.annotation.NonNull;
+
+import com.dev.tanners.movieworld.api.model.ListItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.security.InvalidParameterException;
 
 /**
  *  Model for videos for each movie root's result
@@ -83,4 +87,5 @@ public class MovieVideo extends ListItem {
     public void setType(String type) {
         this.type = type;
     }
+
 }

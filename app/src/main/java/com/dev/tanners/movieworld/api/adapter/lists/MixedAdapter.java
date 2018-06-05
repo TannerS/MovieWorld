@@ -1,13 +1,9 @@
 package com.dev.tanners.movieworld.api.adapter.lists;
 
-/*
-    TODO eventually, instead of item_divider, maybe use https://www.bignerdranch.com/blog/a-view-divided-adding-dividers-to-your-recyclerview-with-itemdecoration/
- */
-
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.ListItem;
+import com.dev.tanners.movieworld.api.model.ListItem;
+import com.dev.tanners.movieworld.api.model.list_items.Divider;
 import com.dev.tanners.movieworld.api.model.list_items.Header;
 import com.dev.tanners.movieworld.api.model.list_items.Plot;
 import com.dev.tanners.movieworld.api.model.reviews.results.MovieReview;
 import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
+import com.dev.tanners.movieworld.api.support.ThumbnailBuilder;
 import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiList;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 
@@ -65,27 +63,50 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
      */
     public void updateAdapter(ArrayList<? extends ListItem> mItems) {
 
-        if(mItems == null)
-            return;
-
-        if(mDetailsItems.size() <= 0)
+        if(mItems != null)
         {
-            // create object
-//            mDetailsItems = new ArrayList<ListItem>();
-            // want to get pos of last item in list
-            int startPos = 0;
-            // add new items to current adapter items
-            this.mDetailsItems.addAll(mItems);
-            // update recyclerview at position 'startPos'
-            notifyItemRangeInserted(startPos, mItems.size());
+            if(mDetailsItems.size() == 0)
+            {
+                Log.i("ADAPTER 1", String.valueOf(mItems.size()));
+                // create object
+    //            mDetailsItems = new ArrayList<ListItem>();
+                // want to get pos of last item in list
+                int startPos = 0;
+                // add new items to current adapter items
+                this.mDetailsItems.addAll(mItems);
+                // update recyclerview at position 'startPos'
+                notifyItemRangeInserted(startPos, mDetailsItems.size());
+            }
+            else {
+                Log.i("ADAPTER 2", String.valueOf(mItems.size()));
+
+
+                // want to get pos of last item in list
+                int startPos = this.mDetailsItems.size() + 1;
+                // add new items to current adapter items
+                this.mDetailsItems.addAll(mItems);
+                // update recyclerview at position 'startPos'
+                notifyItemRangeInserted(startPos, mDetailsItems.size());
+            }
         }
-        else {
-            // want to get pos of last item in list
-            int startPos = this.mDetailsItems.size() + 1;
-            // add new items to current adapter items
-            this.mDetailsItems.addAll(mItems);
-            // update recyclerview at position 'startPos'
-            notifyItemRangeInserted(startPos, mItems.size());
+    }
+
+
+    /**
+     * Update adapter with new data, or start data
+     *
+     * @param mItem
+     */
+    public void updateAdapter(ListItem mItem) {
+
+        if(mItem != null)
+        {
+                // want to get pos of last item in list
+                int startPos = this.mDetailsItems.size() + 1;
+                // add new items to current adapter items
+                this.mDetailsItems.add(mItem);
+                // update recyclerview at position 'startPos'
+                notifyItemRangeInserted(startPos, mDetailsItems.size());
         }
     }
 
@@ -111,7 +132,25 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
         {
             MovieVideo mItem = (MovieVideo) mDetailsItems.get(position);
             VideoViewHolder mHolder = ((VideoViewHolder) holder);
-            // TODO setup view contents
+
+            Log.i("URL",  ThumbnailBuilder.buildThumbnail(
+                    ThumbnailBuilder.Scheme.HTTPS,
+                    mItem.getKey(),
+                    ThumbnailBuilder.Thumbnail.HQ_FILENAME
+            ));
+
+//            mHolder.getmVideoType().setText(mItem.getType());
+
+            mHolder.getmVideoThumbnailTitle().setText(mItem.getName());
+
+
+            mHolder.loadThumbnail(
+                    ThumbnailBuilder.buildThumbnail(
+                            ThumbnailBuilder.Scheme.HTTPS,
+                            mItem.getKey(),
+                            ThumbnailBuilder.Thumbnail.HQ_FILENAME
+                    )
+            );
         }
         else if(holder instanceof MixedAdapter.ReviewViewHolder)
         {
@@ -134,13 +173,12 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
             Plot mItem = (Plot) mDetailsItems.get(position);
             SynopsisViewHolder mHolder = ((SynopsisViewHolder) holder);
             mHolder.mPlotSynopsis.setText(mItem.getmPlotSynopsis());
-//            mHolder.mPlotTitle.setText(mItem.getmPlotTitle());
         }
         else if(holder instanceof MixedAdapter.DividerViewHolder)
         {
-//            Divider mItem = (Divider) mDetailsItems.get(position);
-            // no data to bind, just need layout
-
+            Divider mItem = (Divider) mDetailsItems.get(position);
+            DividerViewHolder mHolder = ((DividerViewHolder) holder);
+            mHolder.getmTitle().setText(mItem.getmTitle());
         }
         else
             throw new IllegalArgumentException();
@@ -165,10 +203,10 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
                 mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video, parent, false);
                 return new VideoViewHolder(mItemLayout);
             case DIVIDER:
-                mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
+                mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_section, parent, false);
                 return new DividerViewHolder(mItemLayout);
             case HEADER:
-                mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_header, parent, false);
+                mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
                 return new HeaderViewHolder(mItemLayout);
             case PLOT:
                 mItemLayout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plot, parent, false);
@@ -185,11 +223,20 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
             return REVIEW;
         else if(mDetailsItems.get(position) instanceof MovieVideo)
             return VIDEO;
+        else if(mDetailsItems.get(position) instanceof Divider)
+            return DIVIDER;
+        else if(mDetailsItems.get(position) instanceof Header)
+            return HEADER;
+        else if(mDetailsItems.get(position) instanceof Plot)
+            return PLOT;
         else
-            return 404;
+            return -1;
     }
 
     public class VideoViewHolder extends RecyclerView.ViewHolder {
+        private ImageView mVideoThumbnail;
+        private TextView mVideoThumbnailTitle;
+        private TextView mVideoType;
 
         /**
          * Constructor
@@ -198,6 +245,45 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
          */
         public VideoViewHolder(View view) {
             super(view);
+
+            mVideoThumbnail = view.findViewById(R.id.video_thumbnail);
+            mVideoThumbnailTitle = view.findViewById(R.id.video_thumbnail_sub_title);
+//            mVideoType = view.findViewById(R.id.video_thumbnail_type);
+        }
+
+        public void loadThumbnail(String mUrl)
+        {
+            ImageDisplay
+                    .loadImage(mContext,
+                            mUrl,
+                            R.drawable.ic_error,
+                            this.mVideoThumbnail,
+                            R.drawable.ic_baseline_play_arrow_48px
+                    );
+        }
+
+        public ImageView getmVideoThumbnail() {
+            return mVideoThumbnail;
+        }
+
+        public void setmVideoThumbnail(ImageView mVideoThumbnail) {
+            this.mVideoThumbnail = mVideoThumbnail;
+        }
+
+        public TextView getmVideoThumbnailTitle() {
+            return mVideoThumbnailTitle;
+        }
+
+        public void setmVideoThumbnailTitle(TextView mVideoThumbnailTitle) {
+            this.mVideoThumbnailTitle = mVideoThumbnailTitle;
+        }
+
+        public TextView getmVideoType() {
+            return mVideoType;
+        }
+
+        public void setmVideoType(TextView mVideoType) {
+            this.mVideoType = mVideoType;
         }
     }
 
@@ -292,12 +378,21 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder >
     }
 
     public class DividerViewHolder extends RecyclerView.ViewHolder {
+        public TextView getmTitle() {
+            return mTitle;
+        }
+
+        public void setmTitle(TextView mTitle) {
+            this.mTitle = mTitle;
+        }
+
         private TextView mTitle;
 
         public DividerViewHolder(View view) {
             super(view);
 
             mTitle = view.findViewById(R.id.section_title);
+
         }
     }
 }

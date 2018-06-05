@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/main_toolbar_container"
+        layout="@layout/activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mixed_linear_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:layout_height="0dp"
+        android:background="#00000000"
         android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar_container" />
 
     <View
         android:id="@+id/bottom_bar"
@@ -24,9 +32,9 @@
         android:layout_height="@dimen/nav_header_height"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="mixed_linear_list"
-        app:layout_constraintEnd_toEndOf="mixed_linear_list"
-        app:layout_constraintStart_toStartOf="mixed_linear_list"
-        app:layout_constraintTop_toTopOf="mixed_linear_list" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mixed_linear_list" />
 
 </android.support.constraint.ConstraintLayout>

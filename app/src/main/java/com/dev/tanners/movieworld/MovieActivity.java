@@ -6,28 +6,27 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.dev.tanners.movieworld.api.model.ListItem;
 import com.dev.tanners.movieworld.api.model.list_items.Divider;
 import com.dev.tanners.movieworld.api.model.list_items.Header;
 import com.dev.tanners.movieworld.api.model.list_items.Plot;
+import com.dev.tanners.movieworld.api.support.VideoTypeAsc;
+import com.dev.tanners.movieworld.api.support.callbacks.IRestDataStorageCallBack;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
 import com.dev.tanners.movieworld.api.adapter.lists.MixedAdapter;
 import com.dev.tanners.movieworld.api.model.reviews.MovieReviewRoot;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideoRoot;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiMixed;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiMixedPaths;
-import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiList;
 import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 
-import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +49,6 @@ public class MovieActivity extends AppCompatActivity {
     private RecyclerView mMixedRecyclerView;
     // entire contents of this activity inside an array for the recyclerlist
     private ArrayList<ListItem> mItems;
-
 
     /**
      * Entry point to load methods needed for activity
@@ -77,14 +75,12 @@ public class MovieActivity extends AppCompatActivity {
         createRestCallByType();
 
 
-
-
+        loadPageItems();
 
 
         // load rest data
 //        loadRestCallData((new MovieApiMixed(this)).queries);
     }
-
 
     /**
      * Get json bundle to object to load UI elements
@@ -103,7 +99,7 @@ public class MovieActivity extends AppCompatActivity {
     /**
      * Callback for movie review
      */
-    private Callback<MovieReviewRoot> setUpReviewRestCallback()
+    private Callback<MovieReviewRoot> setUpReviewRestCallback(final IRestDataStorageCallBack mCallBack)
     {
         return new Callback<MovieReviewRoot>() {
             /**
@@ -118,8 +114,10 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieReviewRoot> call, Response<MovieReviewRoot> response) {
                 if (response.isSuccessful()) {
-                    // set up recyclerview
-                    mItems.addAll(response.body().getResults());
+                    mCallBack.processData(
+                            response.body()
+                                    .getResults()
+                    );
                 } else {
                     displayError(R.string.loading_reviews_error);
                 }
@@ -150,7 +148,6 @@ public class MovieActivity extends AppCompatActivity {
                 getString(R.string.loading_image_error_dismiss));
     }
 
-
     /**
      * load rest api (retrofit) with object mapper and method call based on type
      * https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
@@ -169,23 +166,11 @@ public class MovieActivity extends AppCompatActivity {
         mMovieApiMixedPaths = mRetrofit.create(MovieApiMixedPaths.class);
     }
 
-//    /**
-//     * load rest data based on type
-//     *
-//     * @param mQueries
-//     */
-//    private void loadRestCallData(HashMap<String, String> mQueries)
-//    {
-//        // run callback and rest request in background as an initial start
-////        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
-//        // run callback and rest request in background as an initial start
-//        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
-//    }
 
     /**
      * Callback for movie review
      */
-    private Callback<MovieVideoRoot> setUpVideoRestCallback()
+    private Callback<MovieVideoRoot> setUpVideoRestCallback(final IRestDataStorageCallBack mCallBack)
     {
         return new Callback<MovieVideoRoot>() {
             /**
@@ -200,8 +185,10 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieVideoRoot> call, Response<MovieVideoRoot> response) {
                 if (response.isSuccessful()) {
-                    // set up recyclerview
-                    mMixedAdapter.updateAdapter(response.body().getResults());
+                    mCallBack.processData(
+                            response.body()
+                                    .getResults()
+                    );
                 } else {
                     displayError(R.string.loading_reviews_error);
                 }
@@ -242,53 +229,115 @@ public class MovieActivity extends AppCompatActivity {
         mItems = new ArrayList<ListItem>();
     }
 
-
-
-
-
-
-
-
     private void loadPageItems()
     {
-        mItems.add(new Header() {{
-            this.setmBannerUrl(mMovieResult.getBackdrop_path());
-            this.setmRating((String.valueOf(mMovieResult.getVote_average()) + " / 10"));
-            this.setmReleaseDate(mMovieResult.getRelease_date());
-        }});
+        mMixedAdapter.updateAdapter(
+                new Header() {{
+                    this.setmBannerUrl(mMovieResult.getBackdrop_path());
+                    this.setmRating((String.valueOf(mMovieResult.getVote_average()) + " / 10"));
+                    this.setmReleaseDate(mMovieResult.getRelease_date());
+                }}
+        );
 
-        mItems.add(new Divider() {{
-            this.setmTitle(getString(R.string.item_div_title_plot));
-        }});
+        mMixedAdapter.updateAdapter(
+            new Divider() {{
+                this.setmTitle(getString(R.string.item_div_title_plot));
+            }}
+        );
 
-        mItems.add(new Plot() {{
-            this.setmPlotSynopsis(mMovieResult.getOverview());
-        }});
+        mMixedAdapter.updateAdapter(
+            new Plot() {{
+                this.setmPlotSynopsis(mMovieResult.getOverview());
+            }}
+        );
 
-        mItems.add(new Divider() {{
-            this.setmTitle(getString(R.string.item_div_title_reviews));
-        }});
+//        mMixedAdapter.updateAdapter(
+//            new Divider() {{
+//                this.setmTitle(getString(R.string.item_div_title_reviews));
+//            }}
+//        );
 
-        // TODO test, may run async
-        // run callback and rest request in background as an initial start
-        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), (new MovieApiMixed(this)).queries).enqueue(setUpReviewRestCallback());
+        getReviews();
 
 
-//
-//        loadRestCallData((new MovieApiMixed(this)).queries);
-//
-//
-//        loadRestCallData((new MovieApiMixed(this)).queries);
-//
-//        // run callback and rest request in background as an initial start
-////        mMovieApiMixedPaths.getVideos(mMovieResult.getId(), mQueries).enqueue(setUpVideoRestCallback());
-//        // run callback and rest request in background as an initial start
-//        mMovieApiMixedPaths.getReviews(mMovieResult.getId(), mQueries).enqueue(setUpReviewRestCallback());
-//
+//        mMixedAdapter.updateAdapter(
+//                new Divider() {{
+//                    this.setmTitle(getString(R.string.item_div_title_videos));
+//                }}
+//        );
+
+
+//        getVideos();
 
     }
 
+    private void getReviews()
+    {
+        // run callback and rest request in background as an initial start
+        mMovieApiMixedPaths.getReviews(
+                mMovieResult.getId(), (
+                        new MovieApiMixed(this)
+                ).queries
+        ).enqueue (
+                setUpReviewRestCallback(
+                                /* the adapter needs to be updated, I thought
+                                since the adapter is not tightly coupled with the
+                                enqueue callback that it is best to pass the logic
+                                into a second callback to ensure the function does
+                                its sole purpose and nothing more
+                                 */
+                        new IRestDataStorageCallBack() {
+                            @Override
+                            public void processData(ArrayList<? extends ListItem> mData) {
+                                mMixedAdapter.updateAdapter(
+                                        new Divider() {{
+                                            this.setmTitle(getString(R.string.item_div_title_reviews));
+                                        }}
+                                );
 
+                                mMixedAdapter.updateAdapter(mData);
+
+                                // NOTE: temp solution for chaining retrofit async calls
+                                getVideos();
+                            }
+                        }
+                )
+        );
+    }
+
+    private void getVideos()
+    {
+// run callback and rest request in background as an initial start
+        mMovieApiMixedPaths.getVideos(
+                mMovieResult.getId(), (
+                        new MovieApiMixed(this)
+                ).queries
+        ).enqueue (
+                setUpVideoRestCallback(
+                        /* the adapter needs to be updated, I thought
+                        since the adapter is not tightly coupled with the
+                        enqueue callback that it is best to pass the logic
+                        into a second callback to ensure the function does
+                        its sole purpose and nothing more
+                         */
+                        new IRestDataStorageCallBack() {
+                            @Override
+//                            public void processData(ArrayList<ListItem> mData) {
+                            public void processData(ArrayList<? extends ListItem> mData) {
+                                mMixedAdapter.updateAdapter(
+                                        new Divider() {{
+                                            this.setmTitle(getString(R.string.item_div_title_videos));
+                                        }}
+                                );
+
+                                Collections.sort(mData, new VideoTypeAsc());
+                                mMixedAdapter.updateAdapter(mData);
+                            }
+                        }
+                )
+        );
+    }
 
 
 }
+

@@ -1,6 +1,6 @@
 package com.dev.tanners.movieworld.api.model.list_items;
 
-import com.dev.tanners.movieworld.ListItem;
+import com.dev.tanners.movieworld.api.model.ListItem;
 
 public class Divider extends ListItem {
     private String mTitle;

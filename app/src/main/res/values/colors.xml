@@ -14,4 +14,8 @@
     <color name="light_gray">#e4e9f0</color>
     <!--https://stackoverflow.com/questions/1492554/set-transparent-background-of-an-imageview-on-android-->
     <color name="transparent">@android:color/transparent</color>
+
+    <!-- https://stackoverflow.com/questions/11285961/how-to-make-a-background-20-transparent-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa-->
+    <color name="transparent_black_75">#80000000</color>
+    <color name="transparent_black_50">#C0000000</color>
 </resources>
