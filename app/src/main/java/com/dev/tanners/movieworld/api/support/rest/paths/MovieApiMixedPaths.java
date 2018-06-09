@@ -1,7 +1,10 @@
-package com.dev.tanners.movieworld.api.support.rest;
+package com.dev.tanners.movieworld.api.support.rest.paths;
 
+import com.dev.tanners.movieworld.api.model.movie.Movie;
 import com.dev.tanners.movieworld.api.model.reviews.MovieReviewRoot;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideoRoot;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiMixed;
+
 import java.util.Map;
 
 //import io.reactivex.Observable;
@@ -16,21 +19,6 @@ import retrofit2.http.QueryMap;
  * https://medium.com/@adinugroho/chaining-multiple-retrofit-call-using-rxjava-177b64c8103e
  */
 public interface MovieApiMixedPaths {
-
-    /**
-     * Path to reviews for movies
-     *
-     * @param options
-     * @return
-     */
-    @GET(MovieApiMixed.REVIEW_PATH)
-    Call<MovieReviewRoot> getReviews(@Path("id") int reviewId, @QueryMap Map<String, String> options);
-     /**
-     * Path to reviews for movies
-     *
-     * @param options
-     * @return
-     */
-    @GET(MovieApiMixed.VIDEO_PATH)
-    Call<MovieVideoRoot> getVideos(@Path("id") int videoId, @QueryMap Map<String, String> options);
+    @GET(MovieApiMixed.MOVIE)
+    Call<Movie> getReviewsVideos(@Path("id") int reviewId, @QueryMap Map<String, String> options);
 }

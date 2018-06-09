@@ -1,6 +1,5 @@
-package com.dev.tanners.movieworld.api.model.list;
+package com.dev.tanners.movieworld.api.model.movie;
 
-import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 

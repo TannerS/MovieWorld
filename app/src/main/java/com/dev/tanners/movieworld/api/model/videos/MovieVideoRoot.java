@@ -10,19 +10,19 @@ import java.util.ArrayList;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieVideoRoot {
-    private int id;
+//    private int id;
     private ArrayList<MovieVideo> results;
 
     public MovieVideoRoot() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public ArrayList<MovieVideo> getResults() {
         return results;

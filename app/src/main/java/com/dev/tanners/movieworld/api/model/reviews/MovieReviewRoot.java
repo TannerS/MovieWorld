@@ -10,19 +10,19 @@ import java.util.ArrayList;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieReviewRoot {
-    private int id;
+//    private int id;
     private int page;
     private int total_pages;
     private int total_results;
     private ArrayList<MovieReview> results;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public int getPage() {
         return page;
@@ -58,5 +58,7 @@ public class MovieReviewRoot {
     public MovieReviewRoot() {
 
     }
+
+
 }
 

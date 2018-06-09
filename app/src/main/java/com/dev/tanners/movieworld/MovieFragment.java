@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiList;
-import com.dev.tanners.movieworld.api.support.rest.lists.paths.MovieApiListPaths;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiList;
+import com.dev.tanners.movieworld.api.support.rest.paths.MovieApiListPaths;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiPopular;
-import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiTopRated;
-import com.dev.tanners.movieworld.api.adapter.lists.MovieAdapter;
-import com.dev.tanners.movieworld.api.model.list.MovieRoot;
-import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiPopular;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
+import com.dev.tanners.movieworld.api.model.movie.MovieRoot;
+import com.dev.tanners.movieworld.api.model.movie.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -253,16 +253,9 @@ public abstract class MovieFragment extends Fragment {
                 new MovieAdapter.IImageOnClickListener() {
                     @Override
                     public void onClick(MovieResult mMovieResult) {
-                        try {
-                            ObjectMapper mapper = new ObjectMapper();
-                            // convert object to json
-                            String mMovieResultJson = mapper.writeValueAsString(mMovieResult);
-                            Intent intent = new Intent(mContext, MovieActivity.class);
-                            intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResultJson);
-                            startActivity(intent);
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
+                        Intent intent = new Intent(mContext, MovieActivity.class);
+                        intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
+                        startActivity(intent);
                     }
                 }
         );
@@ -277,8 +270,6 @@ public abstract class MovieFragment extends Fragment {
         // set adapter
         mMovieRecyclerView.setAdapter(mMovieAdapter);
 
-
-        // TODO double check if needed
         loading = false;
     }
 

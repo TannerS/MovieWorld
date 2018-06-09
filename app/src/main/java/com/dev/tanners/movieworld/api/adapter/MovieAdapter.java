@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter.lists;
+package com.dev.tanners.movieworld.api.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.support.rest.lists.MovieApiList;
-import com.dev.tanners.movieworld.api.model.list.results.MovieResult;
+import com.dev.tanners.movieworld.api.support.rest.MovieApiList;
+import com.dev.tanners.movieworld.api.model.movie.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import java.util.ArrayList;
 
