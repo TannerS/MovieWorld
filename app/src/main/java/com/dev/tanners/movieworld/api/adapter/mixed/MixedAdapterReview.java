@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter;
+package com.dev.tanners.movieworld.api.adapter.mixed;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -64,15 +64,24 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
         return new ReviewViewHolder(mItemLayout);
     }
 
+    /**
+     * View holder for the review items
+     */
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
         private TextView mAuthor;
         private TextView mContent;
         private TextView mReadMore;
 
+        /**
+         * @return
+         */
         public TextView getmAuthor() {
             return mAuthor;
         }
 
+        /**
+         * @param mAuthor
+         */
         public void setmAuthor(TextView mAuthor) {
             this.mAuthor = mAuthor;
         }
@@ -81,6 +90,9 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
             return mContent;
         }
 
+        /**
+         * @param mContent
+         */
         public void setmContent(TextView mContent) {
             this.mContent = mContent;
         }
@@ -89,6 +101,9 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
             return mReadMore;
         }
 
+        /**
+         * @param mReadMore
+         */
         public void setmReadMore(TextView mReadMore) {
             this.mReadMore = mReadMore;
         }

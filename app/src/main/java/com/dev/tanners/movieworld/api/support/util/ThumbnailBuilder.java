@@ -1,9 +1,14 @@
-package com.dev.tanners.movieworld.api.support;
+package com.dev.tanners.movieworld.api.support.util;
 
 import android.net.Uri;
 
 public class ThumbnailBuilder {
+    private static String BASE = "img.youtube.com";
+    private static String BASE_PARTIAL = "vi";
 
+    /**
+     * Protocol scheme
+     */
     public enum Scheme {
         HTTPS("https"),
         HTTP("http");
@@ -19,9 +24,9 @@ public class ThumbnailBuilder {
         }
     }
 
-    private static String BASE = "img.youtube.com";
-    private static String BASE_PARTIAL = "vi";
-
+    /**
+     * https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+     */
     public enum Thumbnail {
         STANDARD_FILENAME("0.jpg"),
         THUMB1_FILENAME("1.jpg"),
@@ -44,6 +49,13 @@ public class ThumbnailBuilder {
         }
     }
 
+    /**
+     * Build image thumbnail from youtube api
+     * @param mScheme
+     * @param mVideoId
+     * @param mThumbnail
+     * @return
+     */
     public static String buildThumbnail(Scheme mScheme, String mVideoId, Thumbnail mThumbnail)
     {
         return (new Uri.Builder())

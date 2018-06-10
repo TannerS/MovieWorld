@@ -6,13 +6,11 @@ import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
 
 import java.util.HashMap;
 
-public class MovieApiList extends MovieApiBase {
+public class MovieApi extends MovieApiBase {
     private int mCurrentPage;
-
     public HashMap<String, String> getQueries() {
         return queries;
     }
-
     public final static String API_IMAGE_BASE = "https://image.tmdb.org/t/p/";
     public final static String API_QUERY_OPTIONS_PAGE = "page";
     public final static String TINY = "w92";
@@ -23,7 +21,10 @@ public class MovieApiList extends MovieApiBase {
     public final static String LARGE = "w780";
     public final static String ORIGINAL = "original";
 
-    public MovieApiList(Context mContext) {
+    /**
+     * @param mContext
+     */
+    public MovieApi(Context mContext) {
         super(mContext);
         // default page number
         mCurrentPage = 1;

@@ -1,6 +1,5 @@
 package com.dev.tanners.movieworld;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,23 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import com.dev.tanners.movieworld.api.adapter.MixedAdapterBase;
-import com.dev.tanners.movieworld.api.adapter.MixedAdapterReview;
-import com.dev.tanners.movieworld.api.adapter.MixedAdapterVideo;
+import com.dev.tanners.movieworld.api.adapter.mixed.MixedAdapterBase;
+import com.dev.tanners.movieworld.api.adapter.mixed.MixedAdapterReview;
+import com.dev.tanners.movieworld.api.adapter.mixed.MixedAdapterVideo;
 import com.dev.tanners.movieworld.api.model.movie.Movie;
 import com.dev.tanners.movieworld.api.model.reviews.results.MovieReview;
 import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiList;
-import com.dev.tanners.movieworld.api.support.rest.paths.MovieApiMixedPaths;
+import com.dev.tanners.movieworld.api.support.rest.MovieApi;
+import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiMixed;
+import com.dev.tanners.movieworld.api.support.rest.methods.paths.MovieApiMixedPaths;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,8 +62,12 @@ public class MovieActivity extends AppCompatActivity {
         setUpRecyclerViews();
         createRestCall();
         getReviewsVideos();
+        finalSetUp();
     }
 
+    /**
+     * Load reviews and videos recyclerviews
+     */
     private void setUpRecyclerViews()
     {
         mMixedAdapterReview = new MixedAdapterReview(this);
@@ -177,40 +180,48 @@ public class MovieActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    /**
+     * Get videos and reviews for current selected movie
+     */
     private void getReviewsVideos()
     {
         // run callback and rest request in background as an initial start
         mMovieApiMixed.getReviewsVideos(
                 mMovieId, (
-                        new com.dev.tanners.movieworld.api.support.rest.MovieApiMixed(this)
+                        new MovieApiMixed(this)
                 ).queries
         ).enqueue (
                 setUpMovieCallback()
         );
     }
 
+    /**
+     * Set up toolbar to display movie title
+     */
     private void setUpToolbar()
     {
         // set item_title of activity_toolbar for activity
         getSupportActionBar().setTitle(this.mMovie.getTitle());
-        getSupportActionBar().setSubtitle("What is this for?");
+        getSupportActionBar().setSubtitle(this.mMovie.getRelease_date());
     }
 
+    /**
+     * Set page UI with data
+     */
     private void setUpPageDetails()
     {
         // load views
         ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovie.getOverview());
         ((TextView) findViewById(R.id.rating)).setText((String.valueOf(this.mMovie.getVote_average()) + " / 10"));
-        ((TextView) findViewById(R.id.release_date)).setText(this.mMovie.getRelease_date());
 
         // call helper method to load images
         // since image is passed in as relative path
         // and not absolute
         ImageDisplay.loadImage(
                 this,
-                MovieApiList.formatPathToRestPath(
+                MovieApi.formatPathToRestPath(
                         mMovie.getBackdrop_path(),
-                        MovieApiList.MEDIUM
+                        MovieApi.MEDIUM
                 ),
                 R.drawable.ic_error,
                 (ImageView) findViewById(R.id.backsplash_image)
@@ -251,6 +262,9 @@ public class MovieActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Set up UI with actual reviews and videos adapters
+     */
     private void setUpAdapterData()
     {
         ArrayList<MovieReview> mReviews = mMovie.getReviews().getResults();
@@ -270,6 +284,22 @@ public class MovieActivity extends AppCompatActivity {
         }
         else
             mMixedAdapterVideo.updateAdapter(mVideos);
+    }
+
+    /**
+     * Fix for page loaded reviews and videos last causing the page to scroll to mid/bottom
+     */
+    private void finalSetUp()
+    {
+        // TODO do loading window for page
+        // fix for late loading elements scrolling bar to bottom instead of on top
+        ((ScrollView) findViewById(R.id.movie_detail_root)).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((ScrollView) findViewById(R.id.movie_detail_root)).fullScroll(ScrollView.FOCUS_UP);
+            }
+        },
+        1000);
     }
 }
 

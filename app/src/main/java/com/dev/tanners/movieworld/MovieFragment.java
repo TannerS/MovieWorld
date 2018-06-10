@@ -11,16 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiList;
-import com.dev.tanners.movieworld.api.support.rest.paths.MovieApiListPaths;
+import com.dev.tanners.movieworld.api.support.rest.MovieApi;
+import com.dev.tanners.movieworld.api.support.rest.methods.paths.MovieApiListPaths;
 import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiPopular;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiPopular;
+import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiTopRated;
 import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movie.MovieRoot;
 import com.dev.tanners.movieworld.api.model.movie.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import retrofit2.Call;
@@ -55,7 +54,7 @@ public abstract class MovieFragment extends Fragment {
     protected enum State {TOP, POP}
     protected State mState;
     // interface for rest calls
-    protected MovieApiList mMovieApiList;
+    protected MovieApi mMovieApi;
     // current activity context
     protected Context mContext;
 
@@ -85,7 +84,7 @@ public abstract class MovieFragment extends Fragment {
      *
      * @return
      */
-    protected RecyclerView.OnScrollListener getListener(final MovieApiList mMovieApiList) {
+    protected RecyclerView.OnScrollListener getListener(final MovieApi mMovieApi) {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -109,15 +108,15 @@ public abstract class MovieFragment extends Fragment {
                     {
                         // increase page number so this will set age number
                         // in rest call to get more movies
-                        mMovieApiList.increasePage();
-                        loadList(MovieApiPopular.ID, mMovieApiList.getQueries());
+                        mMovieApi.increasePage();
+                        loadList(MovieApiPopular.ID, mMovieApi.getQueries());
                     }
                     else if(mState == State.TOP)
                     {
                         // increase page number so this will set age number
                         // in rest call to get more movies
-                        mMovieApiList.increasePage();
-                        loadList(MovieApiTopRated.ID, mMovieApiList.getQueries());
+                        mMovieApi.increasePage();
+                        loadList(MovieApiTopRated.ID, mMovieApi.getQueries());
                     }
                 }
             }
@@ -158,7 +157,6 @@ public abstract class MovieFragment extends Fragment {
             public void onResponse(Call<MovieRoot> call, Response<MovieRoot> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-//                    setUpRecycler(response.body().getResults());
                     mMovieAdapter.updateAdapter(response.body().getResults());
                 } else {
                     displayError();
@@ -222,7 +220,7 @@ public abstract class MovieFragment extends Fragment {
     /**
      * Set up recyclerview
      */
-    protected void setUpRecycler(MovieApiList mMovieApiList)
+    protected void setUpRecycler(MovieApi mMovieApi)
     {
         // call for data here
         mMovieRecyclerView = view.findViewById(R.id.fragment_gridview);
@@ -238,18 +236,17 @@ public abstract class MovieFragment extends Fragment {
         // create adapter
         mMovieAdapter = new MovieAdapter(
                 mContext,
-//                    mMovieResults,
-                    /*
-                        This does not have to be done via a callback but, I like to have
-                        the activity calling the adapter as the main point
-                        to enter configuration for the adapter.
+                /*
+                    This does not have to be done via a callback but, I like to have
+                    the activity calling the adapter as the main point
+                    to enter configuration for the adapter.
 
-                        In this case, it is easier option then passing in "context" into the class
-                        and hard coding the callback for onclick. I feel this is a good option so that,
-                        giving the user more control over configuring the way it acts
-                        without editing the adapter, a user should be able to change the callback
-                        if needed
-                     */
+                    In this case, it is easier option then passing in "context" into the class
+                    and hard coding the callback for onclick. I feel this is a good option so that,
+                    giving the user more control over configuring the way it acts
+                    without editing the adapter, a user should be able to change the callback
+                    if needed
+                 */
                 new MovieAdapter.IImageOnClickListener() {
                     @Override
                     public void onClick(MovieResult mMovieResult) {
@@ -262,10 +259,10 @@ public abstract class MovieFragment extends Fragment {
         // depending on the version of the OS, add listener to the recycler view
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
             // set listener
-            mMovieRecyclerView.addOnScrollListener(getListener(mMovieApiList));
+            mMovieRecyclerView.addOnScrollListener(getListener(mMovieApi));
         } else {
             // set listener
-            mMovieRecyclerView.setOnScrollListener(getListener(mMovieApiList));
+            mMovieRecyclerView.setOnScrollListener(getListener(mMovieApi));
         }
         // set adapter
         mMovieRecyclerView.setAdapter(mMovieAdapter);
@@ -273,6 +270,9 @@ public abstract class MovieFragment extends Fragment {
         loading = false;
     }
 
+    /**
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

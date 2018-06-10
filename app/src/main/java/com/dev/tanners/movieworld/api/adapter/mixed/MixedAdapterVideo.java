@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter;
+package com.dev.tanners.movieworld.api.adapter.mixed;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
-import com.dev.tanners.movieworld.api.support.ThumbnailBuilder;
+import com.dev.tanners.movieworld.api.support.util.ThumbnailBuilder;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 
 import java.util.ArrayList;
@@ -58,10 +58,7 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
                 ThumbnailBuilder.Thumbnail.HQ_FILENAME
         ));
 
-//            mHolder.getmVideoType().setText(mItem.getType());
-
         mHolder.getmVideoThumbnailTitle().setText(mItem.getName());
-
 
         mHolder.loadThumbnail(
                 ThumbnailBuilder.buildThumbnail(
@@ -85,6 +82,9 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
         return new VideoViewHolder(mItemLayout);
     }
 
+    /**
+     * View holder for the video items
+     */
     public class VideoViewHolder extends RecyclerView.ViewHolder {
         private ImageView mVideoThumbnail;
         private TextView mVideoThumbnailTitle;
@@ -100,9 +100,12 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
 
             mVideoThumbnail = view.findViewById(R.id.video_thumbnail);
             mVideoThumbnailTitle = view.findViewById(R.id.video_thumbnail_sub_title);
-//            mVideoType = view.findViewById(R.id.video_thumbnail_type);
         }
 
+        /**
+         * Load image url into view
+         * @param mUrl
+         */
         public void loadThumbnail(String mUrl)
         {
             ImageDisplay
@@ -114,26 +117,44 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
                     );
         }
 
+        /**
+         * @return
+         */
         public ImageView getmVideoThumbnail() {
             return mVideoThumbnail;
         }
 
+        /**
+         * @param mVideoThumbnail
+         */
         public void setmVideoThumbnail(ImageView mVideoThumbnail) {
             this.mVideoThumbnail = mVideoThumbnail;
         }
 
+        /**
+         * @return
+         */
         public TextView getmVideoThumbnailTitle() {
             return mVideoThumbnailTitle;
         }
 
+        /**
+         * @param mVideoThumbnailTitle
+         */
         public void setmVideoThumbnailTitle(TextView mVideoThumbnailTitle) {
             this.mVideoThumbnailTitle = mVideoThumbnailTitle;
         }
 
+        /**
+         * @return
+         */
         public TextView getmVideoType() {
             return mVideoType;
         }
 
+        /**
+         * @param mVideoType
+         */
         public void setmVideoType(TextView mVideoType) {
             this.mVideoType = mVideoType;
         }

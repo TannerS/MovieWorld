@@ -1,237 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_detail_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <!--TODO break into sub layouts-->
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/main_toolbar_container"
             layout="@layout/activity_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/movie_header"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <include
             android:id="@+id/movie_header"
             layout="@layout/movie_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/section_title_plot"
+            app:layout_constraintBottom_toTopOf="@+id/movie_plot_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-
-
-
-
-
-        <TextView
-            android:id="@+id/section_title_plot"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="start"
-            android:text="Synopsis"
-            android:textAlignment="textStart"
-            android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@+id/plot_divder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <View
-            android:id="@+id/plot_divder"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/section_plot"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/section_plot"
+        <include
+            android:id="@+id/movie_plot_layout"
+            layout="@layout/movie_plot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/section_title_reviews"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <include
-                android:id="@+id/movie_plot"
-                layout="@layout/movie_plot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/no_plot"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="start"
-                android:text="No Reviews"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/colorBlack"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-        <TextView
-            android:id="@+id/section_title_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="start"
-            android:text="Reviews"
-            android:textAlignment="textStart"
-            android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@+id/reviews_divider"
+            app:layout_constraintBottom_toTopOf="@+id/movie_reviews_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <View
-            android:id="@+id/reviews_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/section_reviews"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/section_reviews"
+        <include
+            android:id="@+id/movie_reviews_layout"
+            layout="@layout/movie_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/section_title_videos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/movie_reviews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="#00000000"
-                android:padding="3dp" />
-
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/no_reviews"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="start"
-                android:text="No Reviews"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/colorBlack"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-        <TextView
-            android:id="@+id/section_title_videos"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="start"
-            android:text="Videos"
-            android:textAlignment="textStart"
-            android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@+id/title_divider"
+            app:layout_constraintBottom_toTopOf="@+id/movie_videos_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <View
-            android:id="@+id/title_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@+id/section_videos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/section_videos"
+        <include
+            android:id="@+id/movie_videos_layout"
+            layout="@layout/movie_videos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/movie_videos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:padding="3dp" />
-
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/no_videos"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="start"
-                android:text="No Videos"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/colorBlack"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
+            app:layout_constraintStart_toStartOf="parent" />
 
         <View
             android:id="@+id/bottom_bar"

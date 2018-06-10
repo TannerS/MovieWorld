@@ -30,30 +30,15 @@
         app:layout_constraintTop_toTopOf="@+id/backsplash_image"
         android:padding="5dp"/>
 
-    <!--<ImageView-->
-        <!--android:id="@+id/favorite_star_background"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:adjustViewBounds="true"-->
-        <!--android:cropToPadding="false"-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:src="@drawable/circle"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/backsplash_image"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/backsplash_image" />-->
-
-
     <LinearLayout
         android:id="@+id/rating_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backsplash_image">
 
         <ImageView
@@ -75,21 +60,6 @@
             android:textColor="@color/colorBlack" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/release_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="PLACE HOLDER FOR EDITOR"
-        android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backsplash_image" />
 
 
 </android.support.constraint.ConstraintLayout>

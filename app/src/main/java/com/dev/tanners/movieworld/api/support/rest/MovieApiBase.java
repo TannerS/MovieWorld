@@ -20,11 +20,18 @@ public class MovieApiBase {
     protected final static String API_QUERY_OPTIONS_LANG = "language";
     protected final static String API_QUERY_OPTIONS_LANG_ENG = "en-US";
 
+    /**
+     * @param mContext
+     */
     public MovieApiBase(Context mContext) {
         this.mContext = mContext;
         queries = new HashMap<String, String>();
     }
 
+    /**
+     * Get api key
+     * @return
+     */
     protected String getmApiKey() {
         return this.mContext.getResources().getString(R.string.restKey);
     }

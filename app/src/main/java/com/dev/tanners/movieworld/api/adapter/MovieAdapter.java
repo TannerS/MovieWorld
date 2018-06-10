@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiList;
+import com.dev.tanners.movieworld.api.support.rest.MovieApi;
 import com.dev.tanners.movieworld.api.model.movie.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieResult mItem = mMovieResults.get(position);
-        holder.loadImage(MovieApiList.formatPathToRestPath(mItem.getPoster_path(), MovieApiList.MEDIUM));
+        holder.loadImage(MovieApi.formatPathToRestPath(mItem.getPoster_path(), MovieApi.MEDIUM));
     }
 
     /**

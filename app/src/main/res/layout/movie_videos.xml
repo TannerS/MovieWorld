@@ -1,67 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/section_title_plot"
+        android:id="@+id/section_title_videos"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="start"
-        android:text="Synopsis"
+        android:text="Videos"
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toTopOf="@+id/plot_divder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/plot_divder"
+        android:id="@+id/title_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/section_plot"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/section_title_videos" />
 
     <LinearLayout
-        android:id="@+id/section_plot"
+        android:id="@+id/section_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_divider">
 
-        <TextView
-            android:id="@+id/plot_synopsis"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_videos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="PLOT"
-            android:textAlignment="center"
-            android:textColor="@color/colorBlack"
-            android:layout_marginBottom="8dp"/>
+            android:background="#00000000"
+            android:padding="3dp" />
 
         <TextView
-            android:layout_gravity="center"
-            android:id="@+id/no_plot"
+            android:id="@+id/no_videos"
             android:layout_width="match_parent"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:gravity="start"
-            android:text="No Reviews"
+            android:text="No Videos"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/colorBlack"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 

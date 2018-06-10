@@ -1,15 +1,14 @@
-package com.dev.tanners.movieworld.api.adapter;
+package com.dev.tanners.movieworld.api.adapter.mixed;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import com.dev.tanners.movieworld.api.model.ListItem;
 
 import java.util.ArrayList;
 
 /**
  * Adapter for the movie objects
  */
-public abstract class MixedAdapterBase<I extends ListItem> extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
+public abstract class MixedAdapterBase<I> extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
     protected Context mContext;
     protected ArrayList<I> mItems;
 
