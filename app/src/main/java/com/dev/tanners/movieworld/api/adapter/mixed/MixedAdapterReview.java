@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.model.reviews.results.MovieReview;
+import com.dev.tanners.movieworld.util.TabCreator;
 
 import java.util.ArrayList;
 
@@ -45,10 +46,21 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MovieReview mItem = mItems.get(position);
+        final MovieReview mItem = mItems.get(position);
         ReviewViewHolder mHolder = ((ReviewViewHolder) holder);
+
         mHolder.mAuthor.setText(mItem.getAuthor());
         mHolder.mContent.setText(mItem.getContent());
+        mHolder.mReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TabCreator.buildAndLaunchCustomTab(
+                        mContext,
+                        mItem.getUrl(),
+                        R.color.colorAccent
+                );
+            }
+        });
     }
 
     /**
@@ -119,12 +131,6 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
             mAuthor = view.findViewById(R.id.review_author);
             mContent = view.findViewById(R.id.review_content);
             mReadMore = view.findViewById(R.id.review_readmore);
-            mReadMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO intent to open browser here
-                }
-            });
         }
     }
 }

@@ -7,25 +7,46 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:gravity="center"
-        android:textAlignment="center"
         android:id="@+id/video_thumbnail_sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="VIDEO TITLE"
+        android:textAlignment="center"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_thumbnail_sub_title">
+
         <ImageView
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/video_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_thumbnail_sub_title"/>
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="25dp"
+            android:id="@+id/video_thumbnail_play"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_play_arrow_48px" />
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

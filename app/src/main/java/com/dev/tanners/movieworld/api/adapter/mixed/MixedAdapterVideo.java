@@ -1,6 +1,8 @@
 package com.dev.tanners.movieworld.api.adapter.mixed;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +14,9 @@ import android.widget.TextView;
 import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
 import com.dev.tanners.movieworld.api.support.util.ThumbnailBuilder;
+import com.dev.tanners.movieworld.api.support.util.VideoLinkBuilder;
 import com.dev.tanners.movieworld.util.ImageDisplay;
+import com.dev.tanners.movieworld.util.TabCreator;
 
 import java.util.ArrayList;
 
@@ -49,14 +53,8 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MovieVideo mItem = mItems.get(position);
+        final MovieVideo mItem = mItems.get(position);
         VideoViewHolder mHolder = ((VideoViewHolder) holder);
-
-        Log.i("URL",  ThumbnailBuilder.buildThumbnail(
-                ThumbnailBuilder.Scheme.HTTPS,
-                mItem.getKey(),
-                ThumbnailBuilder.Thumbnail.HQ_FILENAME
-        ));
 
         mHolder.getmVideoThumbnailTitle().setText(mItem.getName());
 
@@ -67,6 +65,26 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
                         ThumbnailBuilder.Thumbnail.HQ_FILENAME
                 )
         );
+
+        View.OnClickListener mVideoClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(
+                        new Intent(
+                                Intent.ACTION_VIEW,
+                                VideoLinkBuilder.buildVideoUrl(
+                                        mItem.getKey()
+                                )
+                        )
+                );
+            }
+        };
+
+        // the image thumbnail may not be needed since play button overlaps it
+        // but just in case
+        mHolder.mVideoThumbnail.setOnClickListener(mVideoClickListener);
+        mHolder.mVideoThumbnailPlay.setOnClickListener(mVideoClickListener);
+        mHolder.mVideoThumbnailTitle.setOnClickListener(mVideoClickListener);
     }
 
     /**
@@ -87,8 +105,9 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
      */
     public class VideoViewHolder extends RecyclerView.ViewHolder {
         private ImageView mVideoThumbnail;
+        // only needed for onclick since it sits on top of the image
+        private ImageView mVideoThumbnailPlay;
         private TextView mVideoThumbnailTitle;
-        private TextView mVideoType;
 
         /**
          * Constructor
@@ -100,6 +119,7 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
 
             mVideoThumbnail = view.findViewById(R.id.video_thumbnail);
             mVideoThumbnailTitle = view.findViewById(R.id.video_thumbnail_sub_title);
+            mVideoThumbnailPlay = view.findViewById(R.id.video_thumbnail_play);
         }
 
         /**
@@ -115,6 +135,14 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
                             this.mVideoThumbnail,
                             R.drawable.ic_baseline_play_arrow_48px
                     );
+        }
+
+        public ImageView getmVideoThumbnailPlay() {
+            return mVideoThumbnailPlay;
+        }
+
+        public void setmVideoThumbnailPlay(ImageView mVideoThumbnailPlay) {
+            this.mVideoThumbnailPlay = mVideoThumbnailPlay;
         }
 
         /**
@@ -145,19 +173,19 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
             this.mVideoThumbnailTitle = mVideoThumbnailTitle;
         }
 
-        /**
-         * @return
-         */
-        public TextView getmVideoType() {
-            return mVideoType;
-        }
-
-        /**
-         * @param mVideoType
-         */
-        public void setmVideoType(TextView mVideoType) {
-            this.mVideoType = mVideoType;
-        }
+//        /**
+//         * @return
+//         */
+//        public TextView getmVideoType() {
+//            return mVideoType;
+//        }
+//
+//        /**
+//         * @param mVideoType
+//         */
+//        public void setmVideoType(TextView mVideoType) {
+//            this.mVideoType = mVideoType;
+//        }
     }
 }
 

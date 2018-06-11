@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity{
     {
         mViewPager = findViewById(R.id.main_viewpager);
         TabbedFragmentPagerAdapter mViewPagerAdapter = new TabbedFragmentPagerAdapter(getSupportFragmentManager());
-
         // Add Fragments to adapter one by one
         mViewPagerAdapter.addItem(PopularFragment.newInstance(), "Popular");
         mViewPagerAdapter.addItem(TopRatedFragment.newInstance(), "Top Rated");

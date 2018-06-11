@@ -291,7 +291,6 @@ public class MovieActivity extends AppCompatActivity {
      */
     private void finalSetUp()
     {
-        // TODO do loading window for page
         // fix for late loading elements scrolling bar to bottom instead of on top
         ((ScrollView) findViewById(R.id.movie_detail_root)).postDelayed(new Runnable() {
             @Override

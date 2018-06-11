@@ -43,13 +43,4 @@ public class PopularFragment extends MovieFragment {
         // return view
         return view;
     }
-
-    /**
-     * @param context
-     */
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        mContext = context;
-//    }
 }
