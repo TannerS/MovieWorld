@@ -31,9 +31,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Base fragment class for common functionality for sub classes
  * */
-public abstract class MovieFragment extends Fragment {
-    // number of grid columns
-    protected final int mColumns = 2;
+public class MovieFragment extends MovieFragmentRoot {
     // retrofit interface object
     protected Callback<MovieRoot> mResponseCallback;
     // interface for rest calls using retrofit
@@ -48,15 +46,11 @@ public abstract class MovieFragment extends Fragment {
     protected MovieAdapter mMovieAdapter;
     // progressbar for endless scrolling
     protected ProgressBar mProgressBar;
-    // view for current fragment layout view
-    protected View view;
     // state to show which list is loaded
     protected enum State {TOP, POP}
     protected State mState;
     // interface for rest calls
     protected MovieApi mMovieApi;
-    // current activity context
-    protected Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +59,7 @@ public abstract class MovieFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_movie, container, false);
+        view = super.onCreateView(inflater, container, savedInstanceState);
         // load resources
         loadResources(view);
         // set up callbacks for rest calls for recyclerview
@@ -270,12 +263,12 @@ public abstract class MovieFragment extends Fragment {
         loading = false;
     }
 
-    /**
-     * @param context
-     */
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
+//    /**
+//     * @param context
+//     */
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        mContext = context;
+//    }
 }
