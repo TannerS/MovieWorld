@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter.mixed;
+package com.dev.tanners.movieworld.api.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,20 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.model.reviews.results.MovieReview;
+import com.dev.tanners.movieworld.api.model.reviews.MovieReview;
 import com.dev.tanners.movieworld.util.TabCreator;
 
 import java.util.ArrayList;
 
 /**
- * Adapter for the movie objects
+ * Adapter for the movie reviews
  */
-public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
+public class MovieAdapterReview extends MovieAdapterBase<MovieReview> {
 
     /**
      * @param mContext
      */
-    public MixedAdapterReview(@NonNull Context mContext) {
+    public MovieAdapterReview(@NonNull Context mContext) {
         this.mContext = mContext;
         this.mItems = new ArrayList<MovieReview>();
     }
@@ -30,7 +30,7 @@ public class MixedAdapterReview extends MixedAdapterBase<MovieReview> {
      * @param mContext
      * @param mItems
      */
-    public MixedAdapterReview(@NonNull Context mContext, @NonNull ArrayList<MovieReview> mItems) {
+    public MovieAdapterReview(@NonNull Context mContext, @NonNull ArrayList<MovieReview> mItems) {
         this(mContext);
         this.mContext = mContext;
         // add items and create list

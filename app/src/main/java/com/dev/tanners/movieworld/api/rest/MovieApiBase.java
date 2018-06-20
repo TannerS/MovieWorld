@@ -1,14 +1,12 @@
-package com.dev.tanners.movieworld.api.support.rest;
+package com.dev.tanners.movieworld.api.rest;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
 
 import com.dev.tanners.movieworld.R;
 import java.util.HashMap;
 
 /**
- * Base class for common functionality upon the api
+ * Base class for common functionality upon the rest api
  */
 public class MovieApiBase {
     // used to get application resources
@@ -35,5 +33,4 @@ public class MovieApiBase {
     protected String getmApiKey() {
         return this.mContext.getResources().getString(R.string.restKey);
     }
-
 }

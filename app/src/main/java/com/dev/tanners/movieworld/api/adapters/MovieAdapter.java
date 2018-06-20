@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.adapter;
+package com.dev.tanners.movieworld.api.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,17 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.support.rest.MovieApi;
-import com.dev.tanners.movieworld.api.model.movie.MovieResult;
+import com.dev.tanners.movieworld.api.rest.MovieApi;
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.util.ImageDisplay;
-import java.util.ArrayList;
 
 /**
  * Adapter for the movie objects
  */
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends MovieAdapterBase<MovieResult>{
     private Context mContext;
-    private ArrayList<MovieResult> mMovieResults;
     private IImageOnClickListener mImageOnClickListener;
 
     /**
@@ -28,59 +26,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public MovieAdapter(@NonNull Context mContext, IImageOnClickListener mImageOnClickListener ) {
         this.mContext = mContext;
         this.mImageOnClickListener = mImageOnClickListener;
-    }
-
-    /**
-     * Update adapter with new data
-     *
-     * @param mItems
-     */
-    public void updateAdapter(ArrayList<MovieResult> mItems) {
-
-        if(mItems == null)
-            return;
-
-        if(mMovieResults == null)
-        {
-            // create object
-            mMovieResults = new ArrayList<MovieResult>();
-            // want to get pos of last item in list
-            int startPos = 0;
-            // add new items to current adapter items
-            this.mMovieResults.addAll(mItems);
-            // update recyclerview at position 'startPos'
-            notifyItemRangeInserted(startPos, mItems.size());
-        }
-        else {
-            // want to get pos of last item in list
-            int startPos = this.mMovieResults.size() + 1;
-            // add new items to current adapter items
-            this.mMovieResults.addAll(mItems);
-            // update recyclerview at position 'startPos'
-            notifyItemRangeInserted(startPos, mItems.size());
-        }
-    }
-
-    /**
-     * Returns number of items in list
-     *
-     * @return
-     */
-    @Override
-    public int getItemCount() {
-        return mMovieResults == null ? 0 : mMovieResults.size();
-    }
-
-    /**
-     * Bind views
-     *
-     * @param holder
-     * @param position
-     */
-    @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
-        MovieResult mItem = mMovieResults.get(position);
-        holder.loadImage(MovieApi.formatPathToRestPath(mItem.getPoster_path(), MovieApi.MEDIUM));
     }
 
     /**
@@ -94,6 +39,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public MovieAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
         return new MovieViewHolder(view);
+    }
+
+    /**
+     * Bind views
+     *
+     * @param holder
+     * @param position
+     */
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        MovieViewHolder mHolder = (MovieViewHolder) holder;
+        MovieResult mItem = mItems.get(position);
+        mHolder.loadImage(MovieApi.formatPathToRestPath(mItem.getPoster_path(), MovieApi.MEDIUM));
     }
 
     /**
@@ -127,7 +85,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int mAdapterPos = getAdapterPosition();
-            MovieResult mMovieObject = mMovieResults.get(mAdapterPos);
+            MovieResult mMovieObject = mItems.get(mAdapterPos);
             mImageOnClickListener.onClick(mMovieObject);
         }
 

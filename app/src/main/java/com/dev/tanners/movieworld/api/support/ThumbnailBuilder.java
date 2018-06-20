@@ -1,7 +1,10 @@
-package com.dev.tanners.movieworld.api.support.util;
+package com.dev.tanners.movieworld.api.support;
 
 import android.net.Uri;
 
+/**
+ * Support class to build the url for youtube thumbnails
+ */
 public class ThumbnailBuilder {
     private static String BASE = "img.youtube.com";
     private static String BASE_PARTIAL = "vi";

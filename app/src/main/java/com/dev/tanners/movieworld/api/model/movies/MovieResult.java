@@ -1,7 +1,10 @@
-package com.dev.tanners.movieworld.api.model.movie;
+package com.dev.tanners.movieworld.api.model.movies;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Movie model
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieResult
 {

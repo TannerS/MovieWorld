@@ -1,24 +1,22 @@
 package com.dev.tanners.movieworld;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import com.dev.tanners.movieworld.api.support.rest.MovieApi;
-import com.dev.tanners.movieworld.api.support.rest.methods.paths.MovieApiListPaths;
-import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiPopular;
-import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiTopRated;
-import com.dev.tanners.movieworld.api.adapter.MovieAdapter;
-import com.dev.tanners.movieworld.api.model.movie.MovieRoot;
-import com.dev.tanners.movieworld.api.model.movie.MovieResult;
+import com.dev.tanners.movieworld.api.rest.MovieApi;
+import com.dev.tanners.movieworld.api.rest.MovieApiListPaths;
+import com.dev.tanners.movieworld.api.rest.MovieApiBase;
+import com.dev.tanners.movieworld.api.rest.MovieApiPopular;
+import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
+import com.dev.tanners.movieworld.api.model.movies.MovieResultBase;
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
@@ -33,7 +31,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * */
 public class MovieFragment extends MovieFragmentRoot {
     // retrofit interface object
-    protected Callback<MovieRoot> mResponseCallback;
+    protected Callback<MovieResultBase> mResponseCallback;
     // interface for rest calls using retrofit
     protected MovieApiListPaths mMovieApiListPaths;
     // layout manager for endless scrolling
@@ -136,7 +134,7 @@ public class MovieFragment extends MovieFragmentRoot {
      */
     public void setUpRestCallback()
     {
-        mResponseCallback = new Callback<MovieRoot>() {
+        mResponseCallback = new Callback<MovieResultBase>() {
             /**
              * Invoked for a received HTTP response.
              * <p>
@@ -147,7 +145,7 @@ public class MovieFragment extends MovieFragmentRoot {
              * @param response
              */
             @Override
-            public void onResponse(Call<MovieRoot> call, Response<MovieRoot> response) {
+            public void onResponse(Call<MovieResultBase> call, Response<MovieResultBase> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
                     mMovieAdapter.updateAdapter(response.body().getResults());
@@ -164,7 +162,7 @@ public class MovieFragment extends MovieFragmentRoot {
              * @param t
              */
             @Override
-            public void onFailure(Call<MovieRoot> call, Throwable t) {
+            public void onFailure(Call<MovieResultBase> call, Throwable t) {
                 t.printStackTrace();
                 displayError();
             }
@@ -262,13 +260,4 @@ public class MovieFragment extends MovieFragmentRoot {
 
         loading = false;
     }
-
-//    /**
-//     * @param context
-//     */
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        mContext = context;
-//    }
 }

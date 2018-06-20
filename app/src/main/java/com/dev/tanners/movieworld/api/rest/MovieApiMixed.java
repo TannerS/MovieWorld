@@ -1,14 +1,17 @@
-package com.dev.tanners.movieworld.api.support.rest.methods;
+package com.dev.tanners.movieworld.api.rest;
 
 import android.content.Context;
 
-import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-
+/**
+ * This will handle the rest call to get reviews and videos at once
+ */
 public class MovieApiMixed extends MovieApiBase
 {
     public static final String METHOD = "movie/{id}";
+    // this will be used to make the rest call for reviews and videos into one call
     public final static String API_QUERY_OPTIONS_APPEND = "append_to_response";
     // this is the same as using  /movie/{id}/videos endpoint &&  /movie/{id}/reviews into one CALL
+    // this is more efficient, easier to handle, and works better on my design flow
     public final static String API_QUERY_OPTIONS_APPEND_OPTIONS = "reviews,videos";
 
     /**

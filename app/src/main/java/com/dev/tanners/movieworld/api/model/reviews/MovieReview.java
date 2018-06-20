@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.api.model.reviews.results;
+package com.dev.tanners.movieworld.api.model.reviews;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,7 +13,7 @@ public class MovieReview {
     private String url;
 
     /**
-     *
+     * constructor
      */
     public MovieReview() {
 

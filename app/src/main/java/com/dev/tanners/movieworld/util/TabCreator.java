@@ -6,10 +6,13 @@ import android.os.Build;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 
+/**
+ * Tab builder util
+ */
 public class TabCreator {
 
     /**
-     * Simple custom tab builder, nothing to advance
+     * Simple custom tab builder
      *
      * @param mContext
      * @param mUrl

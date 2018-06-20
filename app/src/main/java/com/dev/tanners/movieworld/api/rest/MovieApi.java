@@ -1,11 +1,12 @@
-package com.dev.tanners.movieworld.api.support.rest;
+package com.dev.tanners.movieworld.api.rest;
 
 import android.content.Context;
 
-import com.dev.tanners.movieworld.api.support.rest.MovieApiBase;
-
 import java.util.HashMap;
 
+/**
+ * This serves as the class to bring the parts of t he movie rest calls together to be used
+ */
 public class MovieApi extends MovieApiBase {
     private int mCurrentPage;
     public HashMap<String, String> getQueries() {

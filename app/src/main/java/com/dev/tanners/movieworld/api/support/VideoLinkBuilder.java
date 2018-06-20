@@ -1,7 +1,10 @@
-package com.dev.tanners.movieworld.api.support.util;
+package com.dev.tanners.movieworld.api.support;
 
 import android.net.Uri;
 
+/**
+ * Support class to build the url for youtube videos
+ */
 public class VideoLinkBuilder {
     public static final String BASE = "www.youtube.com";
     public static final String BASE_SCHEME = "https";

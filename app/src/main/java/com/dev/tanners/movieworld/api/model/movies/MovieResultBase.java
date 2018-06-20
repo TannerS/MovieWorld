@@ -1,14 +1,14 @@
-package com.dev.tanners.movieworld.api.model.movie;
+package com.dev.tanners.movieworld.api.model.movies;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 
 /**
- * Movie model for popular and top rated movies
+ * Base model for movie search (popular and top rated movies)
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class MovieRoot {
+public class MovieResultBase {
     private int page;
     private int total_results;
     private int total_pages;
@@ -17,7 +17,7 @@ public class MovieRoot {
     /**
      *
      */
-    public MovieRoot() {
+    public MovieResultBase() {
     }
 
     /**

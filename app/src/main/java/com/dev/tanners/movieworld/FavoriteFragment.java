@@ -1,11 +1,9 @@
 package com.dev.tanners.movieworld;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.dev.tanners.movieworld.api.support.rest.methods.MovieApiPopular;
 
 /**
  * Contains popular movies data
@@ -36,14 +34,3 @@ public class FavoriteFragment extends MovieFragmentRoot {
         return view;
     }
 }
-//
-//
-//  mDb.query(
-//          MovieEntry.TABLE_NAME,
-//          null,
-//          null,
-//          null,
-//          null,
-//          null,
-//          MovieEntry.COLUMN_NAME_TIMESTAMP
-//          );

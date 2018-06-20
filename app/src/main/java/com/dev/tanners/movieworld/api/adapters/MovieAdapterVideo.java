@@ -1,34 +1,31 @@
-package com.dev.tanners.movieworld.api.adapter.mixed;
+package com.dev.tanners.movieworld.api.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
-import com.dev.tanners.movieworld.api.support.util.ThumbnailBuilder;
-import com.dev.tanners.movieworld.api.support.util.VideoLinkBuilder;
+import com.dev.tanners.movieworld.api.model.videos.MovieVideo;
+import com.dev.tanners.movieworld.api.support.ThumbnailBuilder;
+import com.dev.tanners.movieworld.api.support.VideoLinkBuilder;
 import com.dev.tanners.movieworld.util.ImageDisplay;
-import com.dev.tanners.movieworld.util.TabCreator;
 
 import java.util.ArrayList;
 
 /**
- * Adapter for the movie objects
+ * Adapter for the movie videos
  */
-public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
+public class MovieAdapterVideo extends MovieAdapterBase<MovieVideo> {
 
     /**
      * @param mContext
      */
-    public MixedAdapterVideo(@NonNull Context mContext) {
+    public MovieAdapterVideo(@NonNull Context mContext) {
         this.mContext = mContext;
         this.mItems = new ArrayList<MovieVideo>();
     }
@@ -37,7 +34,7 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
      * @param mContext
      * @param mItems
      */
-    public MixedAdapterVideo(@NonNull Context mContext, @NonNull ArrayList<MovieVideo> mItems) {
+    public MovieAdapterVideo(@NonNull Context mContext, @NonNull ArrayList<MovieVideo> mItems) {
         this(mContext);
         this.mContext = mContext;
         // add items and create list
@@ -172,20 +169,6 @@ public class MixedAdapterVideo extends MixedAdapterBase<MovieVideo> {
         public void setmVideoThumbnailTitle(TextView mVideoThumbnailTitle) {
             this.mVideoThumbnailTitle = mVideoThumbnailTitle;
         }
-
-//        /**
-//         * @return
-//         */
-//        public TextView getmVideoType() {
-//            return mVideoType;
-//        }
-//
-//        /**
-//         * @param mVideoType
-//         */
-//        public void setmVideoType(TextView mVideoType) {
-//            this.mVideoType = mVideoType;
-//        }
     }
 }
 

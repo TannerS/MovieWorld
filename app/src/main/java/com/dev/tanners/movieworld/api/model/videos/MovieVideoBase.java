@@ -1,21 +1,20 @@
 package com.dev.tanners.movieworld.api.model.videos;
 
-import com.dev.tanners.movieworld.api.model.videos.results.MovieVideo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 
 /**
- * Model for videos for each movie root
+ * Base model for videos
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieVideoRoot {
+public class MovieVideoBase {
     private ArrayList<MovieVideo> results;
 
     /**
      *
      */
-    public MovieVideoRoot() {
+    public MovieVideoBase() {
     }
 
     /**
