@@ -25,6 +25,8 @@ public abstract class MovieDatabase extends RoomDatabase {
                 // create database instance using Room
                 mInstance = Room.databaseBuilder(context.getApplicationContext(),
                         MovieDatabase.class, DBConfig.DATABASE_NAME)
+                        // TODO remove
+                        .allowMainThreadQueries()
                         .build();
             }
         }

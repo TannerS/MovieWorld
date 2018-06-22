@@ -20,12 +20,13 @@ import java.util.ArrayList;
 /**
  * Adapter for the movie videos
  */
-public class MovieAdapterVideo extends MovieAdapterBase<MovieVideo> {
+public class MovieAdapterVideo extends MovieAdapterGeneric<MovieVideo> {
 
     /**
      * @param mContext
      */
     public MovieAdapterVideo(@NonNull Context mContext) {
+        super(mContext);
         this.mContext = mContext;
         this.mItems = new ArrayList<MovieVideo>();
     }

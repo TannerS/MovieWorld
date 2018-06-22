@@ -16,12 +16,13 @@ import java.util.ArrayList;
 /**
  * Adapter for the movie reviews
  */
-public class MovieAdapterReview extends MovieAdapterBase<MovieReview> {
+public class MovieAdapterReview extends MovieAdapterGeneric<MovieReview> {
 
     /**
      * @param mContext
      */
     public MovieAdapterReview(@NonNull Context mContext) {
+        super(mContext);
         this.mContext = mContext;
         this.mItems = new ArrayList<MovieReview>();
     }

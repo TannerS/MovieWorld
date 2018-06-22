@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 /**
  * Contains popular movies data
  */
-public class FavoriteFragment extends MovieFragmentRoot {
+public class FavoriteFragment extends MovieFragmentList {
 
     /**
      * Use this factory method to create a new instance of

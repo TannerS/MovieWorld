@@ -13,8 +13,6 @@ import com.dev.tanners.movieworld.R;
  * Base fragment class for common functionality for sub classes
  * */
 public class MovieFragmentRoot extends Fragment {
-    // number of grid columns
-    protected int mColumns = 2;
     // view for current fragment layout view
     protected View view;
     // current activity context
@@ -29,8 +27,6 @@ public class MovieFragmentRoot extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_movie, container, false);
-        // load resources
-//        loadResources(view);
         // return view
         return view;
     }

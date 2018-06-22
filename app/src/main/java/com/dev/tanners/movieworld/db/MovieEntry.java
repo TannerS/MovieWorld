@@ -4,10 +4,9 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
 import com.dev.tanners.movieworld.db.config.DBConfig;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity(tableName = DBConfig.TABLE_NAME)
 public class MovieEntry {
@@ -16,25 +15,26 @@ public class MovieEntry {
     private int id;
     // id for movie to look up onClick
     @ColumnInfo(name = "movie_id")
-    private String mMovieId;
+    private int movieId;
     // to show the image in list
     @ColumnInfo(name = "poster_url")
-    private String poster_url;
+    private String posterUrl;
     // timestamp used for ordering
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    @Ignore
-    public MovieEntry(String mMovieId, String poster_url, Date timestamp) {
-        this.mMovieId = mMovieId;
-        this.poster_url = poster_url;
+    public MovieEntry(int id, int movieId, String posterUrl, Date timestamp) {
+        this.id = id;
+        this.movieId = movieId;
+        this.posterUrl = posterUrl;
         this.timestamp = timestamp;
     }
 
-    public MovieEntry(int id, String mMovieId, String poster_url, Date timestamp) {
+    @Ignore
+    public MovieEntry(int movieId, String posterUrl, Date timestamp) {
         this.id = id;
-        this.mMovieId = mMovieId;
-        this.poster_url = poster_url;
+        this.movieId = movieId;
+        this.posterUrl = posterUrl;
         this.timestamp = timestamp;
     }
 
@@ -46,20 +46,20 @@ public class MovieEntry {
         this.id = id;
     }
 
-    public String getmMovieId() {
-        return mMovieId;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setmMovieId(String mMovieId) {
-        this.mMovieId = mMovieId;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public String getPoster_url() {
-        return poster_url;
+    public String getPosterUrl() {
+        return posterUrl;
     }
 
-    public void setPoster_url(String poster_url) {
-        this.poster_url = poster_url;
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public Date getTimestamp() {

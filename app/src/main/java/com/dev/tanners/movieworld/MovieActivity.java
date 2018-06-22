@@ -20,11 +20,15 @@ import com.dev.tanners.movieworld.api.rest.MovieApiBase;
 import com.dev.tanners.movieworld.api.rest.MovieApi;
 import com.dev.tanners.movieworld.api.rest.MovieApiMixed;
 import com.dev.tanners.movieworld.api.rest.MovieApiMixedPaths;
+import com.dev.tanners.movieworld.db.MovieDatabase;
+import com.dev.tanners.movieworld.db.MovieEntry;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,15 +41,17 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class MovieActivity extends AppCompatActivity {
     // key to pass data between activities
     public static String MOVIE_ACTIVITY_BUNDLE_KEY = "ADDITIONAL_MOVIE_INFO";
-    // data for current movie
+    // data for current movie (and for db)
     private MovieResultAppend mMovieResultAppend;
     // interface for rest calls
     private MovieApiMixedPaths mMovieApiMixed;
     // list that will hold reviews and trailers
     private MovieAdapterReview mMixedAdapterReview;
     private MovieAdapterVideo mMixedAdapterVideo;
-    private int mMovieId;
+    // TODO need to read database to set this later
     private boolean mFavSelection;
+    // instance to database
+    private MovieDatabase mDb;
 
     /**
      * Entry point to load methods needed for activity
@@ -58,7 +64,7 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
         // load activity_toolbar
         setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
-        getActivityExtra();
+//        getMovieId();
         setUpRecyclerViews();
         createRestCall();
         getReviewsVideos();
@@ -89,9 +95,9 @@ public class MovieActivity extends AppCompatActivity {
      *
      * @throws IOException
      */
-    private void getActivityExtra() {
+    private int getMovieId() {
         // get movie object json string
-        mMovieId = getIntent().getIntExtra(MOVIE_ACTIVITY_BUNDLE_KEY, -1);
+        return getIntent().getIntExtra(MOVIE_ACTIVITY_BUNDLE_KEY, -1);
     }
 
     /**
@@ -117,7 +123,7 @@ public class MovieActivity extends AppCompatActivity {
                     setUpPageDetails();
                     setUpAdapterData();
                 } else {
-                    displayError(R.string.loading_reviews_error);
+                    displayMessage(R.string.loading_reviews_error);
                 }
             }
 
@@ -131,7 +137,7 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MovieResultAppend> call, Throwable t) {
                 t.printStackTrace();
-                displayError(R.string.loading_reviews_error);
+                displayMessage(R.string.loading_reviews_error);
             }
         };
     }
@@ -139,7 +145,7 @@ public class MovieActivity extends AppCompatActivity {
     /**
      * Error snackbar
      */
-    private void displayError(int mStringId) {
+    private void displayMessage(int mStringId) {
         SimpleSnackBarBuilder.createAndDisplaySnackBar(findViewById(R.id.main_root_container),
                 getString(mStringId),
                 Snackbar.LENGTH_INDEFINITE,
@@ -187,7 +193,7 @@ public class MovieActivity extends AppCompatActivity {
     {
         // run callback and rest request in background as an initial start
         mMovieApiMixed.getReviewsVideos(
-                mMovieId, (
+                getMovieId(), (
                         new MovieApiMixed(this)
                 ).queries
         ).enqueue (
@@ -227,15 +233,6 @@ public class MovieActivity extends AppCompatActivity {
                 (ImageView) findViewById(R.id.backsplash_image)
         );
 
-        ((ImageView) findViewById(R.id.favorite_star)).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                     // TODO open intent, save info
-                    }
-                }
-        );
-
         //TODO if already fav, change start below icon, based on what is in db
 
         final ImageView mFavStar = (ImageView) findViewById(R.id.favorite_star);
@@ -247,10 +244,16 @@ public class MovieActivity extends AppCompatActivity {
                         if(!mFavSelection)
                         {
                             mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_outline));
+                            saveCurrentMovie();
+                            displayMessage(R.string.movie_saved_message);
                         }
                         else
                         {
                             mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
+
+
+
+
                         }
 
                         mFavSelection = !mFavSelection;
@@ -289,6 +292,7 @@ public class MovieActivity extends AppCompatActivity {
      */
     private void finalSetUp()
     {
+        // TODO change / fix later
         // fix for late loading elements scrolling bar to bottom instead of on top
         ((ScrollView) findViewById(R.id.movie_detail_root)).postDelayed(new Runnable() {
             @Override
@@ -296,7 +300,13 @@ public class MovieActivity extends AppCompatActivity {
                 ((ScrollView) findViewById(R.id.movie_detail_root)).fullScroll(ScrollView.FOCUS_UP);
             }
         },
-        1000);
+        2000);
+    }
+
+    private void saveCurrentMovie()
+    {
+        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getId(), mMovieResultAppend.getPoster_path(), new Date());
+        mDb.getMovieDao().insertMovie(mMovieEntry);
     }
 }
 

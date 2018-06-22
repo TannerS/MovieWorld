@@ -15,30 +15,12 @@ import com.dev.tanners.movieworld.util.ImageDisplay;
 /**
  * Adapter for the movie objects
  */
-public class MovieAdapter extends MovieAdapterBase<MovieResult>{
-    private Context mContext;
-    private IImageOnClickListener mImageOnClickListener;
+public class MovieAdapterDefault extends MovieAdapterGeneric<MovieResult>{
+    private OnClickListener mImageOnClickListener;
 
-    /**
-     * @param mContext
-     * @param mImageOnClickListener
-     */
-    public MovieAdapter(@NonNull Context mContext, IImageOnClickListener mImageOnClickListener ) {
-        this.mContext = mContext;
+    public MovieAdapterDefault(@NonNull Context mContext, OnClickListener mImageOnClickListener) {
+        super(mContext);
         this.mImageOnClickListener = mImageOnClickListener;
-    }
-
-    /**
-     * Creates the views
-     *
-     * @param parent
-     * @param viewType
-     * @return
-     */
-    @Override
-    public MovieAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
-        return new MovieViewHolder(view);
     }
 
     /**
@@ -103,12 +85,26 @@ public class MovieAdapter extends MovieAdapterBase<MovieResult>{
     /**
      * OnClick callback for images for movie adapter
      */
-    public interface IImageOnClickListener {
+    public interface OnClickListener {
         /**
          * Onclick listener for movie object data
          * @param mMovieResult
          */
         public void onClick(MovieResult mMovieResult);
+    }
+
+    /**
+     * Creates the views
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
+    @NonNull
+    @Override
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item, parent, false);
+        return new MovieViewHolder(view);
     }
 }
 

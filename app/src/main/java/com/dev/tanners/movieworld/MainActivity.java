@@ -8,10 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import com.dev.tanners.movieworld.fragments.PopularFragment;
-import com.dev.tanners.movieworld.fragments.TopRatedFragment;
-
+import com.dev.tanners.movieworld.fragments.MovieFragmentApi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +39,8 @@ public class MainActivity extends AppCompatActivity{
         mViewPager = findViewById(R.id.main_viewpager);
         TabbedFragmentPagerAdapter mViewPagerAdapter = new TabbedFragmentPagerAdapter(getSupportFragmentManager());
         // Add Fragments to adapter one by one
-        mViewPagerAdapter.addItem(PopularFragment.newInstance(), "Popular");
-        mViewPagerAdapter.addItem(TopRatedFragment.newInstance(), "Top Rated");
+        mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.POP), "Popular");
+        mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.TOP), "Top Rated");
         // set adapter
         mViewPager.setAdapter(mViewPagerAdapter);
         // set tabs for fragments
@@ -53,8 +50,6 @@ public class MainActivity extends AppCompatActivity{
 
     /**
      * http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4
-
-     *
      * Adapter to handle fragments for the viewpager UI
      */
     private class TabbedFragmentPagerAdapter extends FragmentPagerAdapter {

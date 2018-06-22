@@ -1,7 +1,7 @@
 package com.dev.tanners.movieworld.db;
 
 import android.arch.persistence.room.TypeConverter;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Used to convert the date object to a format for the sqlite db

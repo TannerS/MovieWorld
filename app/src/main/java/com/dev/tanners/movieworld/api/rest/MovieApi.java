@@ -1,6 +1,7 @@
 package com.dev.tanners.movieworld.api.rest;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -40,7 +41,7 @@ public class MovieApi extends MovieApiBase {
      *
      * @return
      */
-    protected int getmCurrentPage() {
+    public int getmCurrentPage() {
         return mCurrentPage;
     }
 
@@ -49,7 +50,7 @@ public class MovieApi extends MovieApiBase {
      *
      * @param mCurrentPage
      */
-    protected void setmCurrentPage(int mCurrentPage) {
+    public void setmCurrentPage(int mCurrentPage) {
         this.mCurrentPage = mCurrentPage;
     }
 
@@ -57,8 +58,8 @@ public class MovieApi extends MovieApiBase {
      * Increase page
      */
     public void increasePage() {
-        int tempValue = Integer.parseInt(queries.get(API_QUERY_OPTIONS_PAGE));
-        queries.put(queries.get(API_QUERY_OPTIONS_PAGE), String.valueOf(++tempValue));
+        mCurrentPage++;
+        queries.put(API_QUERY_OPTIONS_PAGE, Integer.toString(mCurrentPage));
     }
 
     /**
