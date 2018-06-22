@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld;
+package com.dev.tanners.movieworld.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

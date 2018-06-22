@@ -1,24 +1,24 @@
-package com.dev.tanners.movieworld;
+package com.dev.tanners.movieworld.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
+import com.dev.tanners.movieworld.api.rest.MovieApiPopular;
 
 /**
- * Contains top rated movies data
+ * Contains popular movies data
  */
-public class TopRatedFragment extends MovieFragment {
+public class PopularFragment extends MovieFragment {
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment TopRatedFragment.
+     * @return A new instance of fragment PopularFragment.
      */
-    public static TopRatedFragment newInstance() {
-        return new TopRatedFragment();
+    public static PopularFragment newInstance() {
+        return new PopularFragment();
     }
 
     /**
@@ -33,13 +33,13 @@ public class TopRatedFragment extends MovieFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         // let fragment know which state it is
-        mState = State.TOP;
+        mState = State.POP;
         // set up object
-        mMovieApi = new MovieApiTopRated(mContext);
+        mMovieApi = new MovieApiPopular(mContext);
         // set up recycler view
         setUpRecycler(mMovieApi);
         // load initial view
-        loadList(MovieApiTopRated.ID, mMovieApi.getQueries());
+        loadList(MovieApiPopular.ID, mMovieApi.getQueries());
         // return view
         return view;
     }

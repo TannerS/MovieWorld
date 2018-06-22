@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld;
+package com.dev.tanners.movieworld.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.dev.tanners.movieworld.R;
 
 /**
  * Base fragment class for common functionality for sub classes
