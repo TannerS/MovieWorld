@@ -1,14 +1,25 @@
 package com.dev.tanners.movieworld.api.model.movies;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
+import com.dev.tanners.movieworld.db.config.DBConfig;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 /**
  * Movie model
  */
+@Entity(tableName = DBConfig.TABLE_NAME)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieResult
 {
-    protected int id;
+    @ColumnInfo(name = "movie_id")
+    protected int movieId;
     protected float vote_average;
     protected String title;
     protected String poster_path;
@@ -25,15 +36,16 @@ public class MovieResult
     /**
      * @return
      */
-    public int getId() {
-        return id;
+    @JsonProperty("id")
+    public int getMovieId() {
+        return movieId;
     }
 
     /**
-     * @param id
+     * @param movieId
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     /**

@@ -84,6 +84,16 @@ public class MovieFragmentList extends MovieFragmentRoot {
                 mContext,
                 mOnClickListener
         );
+
+        if(mCallback != null)
+            setUpRecyclerCallback(mCallback);
+
+        // set adapter
+        mMovieRecyclerView.setAdapter(mMovieAdapterDefault);
+    }
+
+    private void setUpRecyclerCallback(final ListScrollListenerCallback mCallback)
+    {
         // depending on the version of the OS, add listener to the recycler view
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
             // set listener
@@ -92,8 +102,6 @@ public class MovieFragmentList extends MovieFragmentRoot {
             // set listener
             mMovieRecyclerView.setOnScrollListener(getListener(mCallback));
         }
-        // set adapter
-        mMovieRecyclerView.setAdapter(mMovieAdapterDefault);
     }
 
     /**

@@ -127,7 +127,7 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
                 @Override
                 public void onClick(MovieResult mMovieResult) {
                     Intent intent = new Intent(mContext, MovieActivity.class);
-                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
+                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getMovieId());
                     startActivity(intent);
                 }
             }

@@ -4,37 +4,44 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.db.config.DBConfig;
 
 import java.util.Date;
 
 @Entity(tableName = DBConfig.TABLE_NAME)
-public class MovieEntry {
+public class MovieEntry extends MovieResult {
     @PrimaryKey(autoGenerate = true)
     // primary key
     private int id;
-    // id for movie to look up onClick
-    @ColumnInfo(name = "movie_id")
-    private int movieId;
-    // to show the image in list
-    @ColumnInfo(name = "poster_url")
-    private String posterUrl;
-    // timestamp used for ordering
     @ColumnInfo(name = "timestamp")
     private Date timestamp;
 
-    public MovieEntry(int id, int movieId, String posterUrl, Date timestamp) {
-        this.id = id;
+    @Ignore
+    public MovieEntry()
+    { }
+
+    public MovieEntry(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
         this.movieId = movieId;
-        this.posterUrl = posterUrl;
+        this.vote_average = vote_average;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.backdrop_path = backdrop_path;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.id = id;
         this.timestamp = timestamp;
     }
 
     @Ignore
-    public MovieEntry(int movieId, String posterUrl, Date timestamp) {
-        this.id = id;
+    public MovieEntry(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
         this.movieId = movieId;
-        this.posterUrl = posterUrl;
+        this.vote_average = vote_average;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.backdrop_path = backdrop_path;
+        this.overview = overview;
+        this.release_date = release_date;
         this.timestamp = timestamp;
     }
 
@@ -44,22 +51,6 @@ public class MovieEntry {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
-    public String getPosterUrl() {
-        return posterUrl;
-    }
-
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
     }
 
     public Date getTimestamp() {

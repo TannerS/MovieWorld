@@ -64,11 +64,12 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
         // load activity_toolbar
         setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
-//        getMovieId();
         setUpRecyclerViews();
         createRestCall();
         getReviewsVideos();
         finalSetUp();
+
+        mDb = MovieDatabase.getInstance(getApplicationContext());
     }
 
     /**
@@ -250,17 +251,14 @@ public class MovieActivity extends AppCompatActivity {
                         else
                         {
                             mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
-
-
-
-
+                            delCurrentMovie();
+                            displayMessage(R.string.movie_removed_db);
                         }
 
                         mFavSelection = !mFavSelection;
                     }
                 }
         );
-
     }
 
     /**
@@ -274,7 +272,6 @@ public class MovieActivity extends AppCompatActivity {
         if(mReviews == null || mReviews.size() == 0) {
             ((TextView) findViewById(R.id.no_reviews)).setVisibility(View.VISIBLE);
             ((RecyclerView) findViewById(R.id.movie_reviews)).setVisibility(View.GONE);
-
         }
         else
             mMixedAdapterReview.updateAdapter(mReviews);
@@ -305,8 +302,16 @@ public class MovieActivity extends AppCompatActivity {
 
     private void saveCurrentMovie()
     {
-        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getId(), mMovieResultAppend.getPoster_path(), new Date());
-        mDb.getMovieDao().insertMovie(mMovieEntry);
+//        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
+//        mDb.getMovieDao().insertMovie(mMovieEntry);
+        mDb.getMovieDao().insertMovie(mMovieResultAppend);
+    }
+
+    private void delCurrentMovie()
+    {
+//        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
+//        mDb.getMovieDao().deleteMovie(mMovieEntry);
+        mDb.getMovieDao().deleteMovie(mMovieResultAppend);
     }
 }
 
