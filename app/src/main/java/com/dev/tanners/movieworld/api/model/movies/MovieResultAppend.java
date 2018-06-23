@@ -13,27 +13,14 @@ import java.util.Date;
  * This model acts as a wrapper for the append_to_response
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieResultAppend extends MovieResult{
+public class MovieResultAppend extends MovieResultFull{
+    @Ignore
     private MovieReviewBase reviews;
+    @Ignore
     private MovieVideoBase videos;
-
     @Ignore
     public MovieResultAppend()
-    {
-
-    }
-
-//
-//    // used for database. excludes reviews and videos
-//    public MovieResultAppend(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
-//        super(id, movieId, vote_average, title, poster_path, backdrop_path, overview, release_date, timestamp);
-//    }
-//
-//    @Ignore
-//    // used for database. excludes reviews and videos
-//    public MovieResultAppend(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
-//        super(movieId, vote_average, title, poster_path, backdrop_path, overview, release_date, timestamp);
-//    }
+    { }
 
     /**
      * @return

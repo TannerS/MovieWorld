@@ -65,21 +65,11 @@ public class MovieFragmentFavorite extends MovieFragmentList {
 
         List<MovieResult> temp = fetchMovies();
 
-//        if(temp != null) {
-//
-//            for (MovieResult movie : temp) {
-//                Log.i("MOVIE", movie.getTitle());
-//            }
-//        }
-
         mMovieAdapter.updateAdapter(temp);
-        }
+    }
 
     private List<MovieResult> fetchMovies()
     {
-//        return mDb.getMovieDao().loadAllFavoriteMovies().getValue();
-
-        Log.i("MSQL", DBConfig.GET_ALL_MOVIES_QUERY);
         return mDb.getMovieDao().loadAllFavoriteMovies();
     }
 

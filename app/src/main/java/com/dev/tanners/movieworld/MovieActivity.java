@@ -70,8 +70,7 @@ public class MovieActivity extends AppCompatActivity {
         createRestCall();
         getReviewsVideos();
         finalSetUp();
-
-        mDb = MovieDatabase.getInstance(getApplicationContext());
+        dbInit();
 
 
         //TODO must checking for existing movie in db if this page is loaded from a non db list, and must change onclick below
@@ -310,6 +309,11 @@ public class MovieActivity extends AppCompatActivity {
             }
         },
         2000);
+    }
+
+    private void dbInit()
+    {
+        mDb = MovieDatabase.getInstance(getApplicationContext());
     }
 
     private void saveCurrentMovie()

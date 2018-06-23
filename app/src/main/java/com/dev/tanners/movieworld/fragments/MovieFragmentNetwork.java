@@ -34,7 +34,7 @@ public class MovieFragmentNetwork extends MovieFragmentList {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
-//        // set up rest helper
+        // set up rest helper
         mMovieApi = new MovieApi(getContext());
         // return view
         return view;

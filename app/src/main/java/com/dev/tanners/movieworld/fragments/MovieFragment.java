@@ -14,7 +14,7 @@ import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
 /**
  * Contains top/opular movies data
  */
-public class MovieFragmentOther extends MovieFragmentNetwork {
+public class MovieFragment extends MovieFragmentNetwork {
     public enum State {POP, TOP};
     private String mState;
     private static final String ARG = "STATE";
@@ -38,7 +38,7 @@ public class MovieFragmentOther extends MovieFragmentNetwork {
 
     }
 
-    public MovieFragmentOther() {
+    public MovieFragment() {
     }
 
     /**
@@ -47,8 +47,8 @@ public class MovieFragmentOther extends MovieFragmentNetwork {
      *
      * @return A new instance of fragment MovieFragmentPopular.
      */
-    public static MovieFragmentOther newInstance(State mState) {
-        MovieFragmentOther fragment = new MovieFragmentOther();
+    public static MovieFragment newInstance(State mState) {
+        MovieFragment fragment = new MovieFragment();
         Bundle args = new Bundle();
         args.putString(ARG, mState.name());
         fragment.setArguments(args);
@@ -124,6 +124,8 @@ public class MovieFragmentOther extends MovieFragmentNetwork {
                 @Override
                 public void onClick(MovieResult mMovieResult) {
                     Intent intent = new Intent(mContext, MovieActivity.class);
+                    // here since data online can change, the only info sent to other activity
+                    // is the movie id to load that data
                     intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
                     startActivity(intent);
                 }

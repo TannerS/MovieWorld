@@ -15,21 +15,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 /**
- * Movie model
+ * Movie model, this is used to get only list related data.
+ * Basically, this will show only what is needed in the list
+ * the rest of the info will be fecthed via rest call on the page due to
+ * the fact that the information can change, so we will update the fields
+ * each time we load the page, while this data is only used in the list
+ * to show the movie photo with its id, so we dont request the same data twice
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(tableName = DBConfig.TABLE_NAME)
 @TypeConverters(TimestampConverter.class)
 public class MovieResult extends MovieEntry
 {
+    /**
+     * The reason some fields are ignored is the possibility that the information can be changed or updated (stale data)
+     * So in this case, only the fields needed to display in the favorites list will be kept and rest will be loaded
+     * in the second activity via its id
+     */
     @PrimaryKey
     protected int id;
-    protected float vote_average;
-    protected String title;
     protected String poster_path;
-    protected String backdrop_path;
-    protected String overview;
-    protected String release_date;
     // used for UI to keep track of favorite movies and non favorite movies
     // this will always be true in db, but other movies that use this class use it
     protected boolean is_favorite;
@@ -49,23 +54,13 @@ public class MovieResult extends MovieEntry
      * Used for db entity
      *
      * @param id
-     * @param vote_average
-     * @param title
      * @param poster_path
-     * @param backdrop_path
-     * @param overview
-     * @param release_date
      * @param timestamp
      * @param is_favorite
      */
-    public MovieResult(int id, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
+    public MovieResult(int id, String poster_path, Date timestamp, boolean is_favorite) {
         this.id = id;
-        this.vote_average = vote_average;
-        this.title = title;
         this.poster_path = poster_path;
-        this.backdrop_path = backdrop_path;
-        this.overview = overview;
-        this.release_date = release_date;
         this.timestamp = timestamp;
         this.is_favorite = is_favorite;
     }
@@ -75,23 +70,14 @@ public class MovieResult extends MovieEntry
      *
      * Used for internal
      *
-     * @param vote_average
      * @param title
      * @param poster_path
-     * @param backdrop_path
-     * @param overview
-     * @param release_date
      * @param timestamp
      * @param is_favorite
      */
     @Ignore
-    public MovieResult(float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
-        this.vote_average = vote_average;
-        this.title = title;
+    public MovieResult(String poster_path, Date timestamp, boolean is_favorite) {
         this.poster_path = poster_path;
-        this.backdrop_path = backdrop_path;
-        this.overview = overview;
-        this.release_date = release_date;
         this.timestamp = timestamp;
         this.is_favorite = is_favorite;
     }
@@ -125,35 +111,6 @@ public class MovieResult extends MovieEntry
     }
 
 
-
-    /**
-     * @return
-     */
-    public float getVote_average() {
-        return vote_average;
-    }
-
-    /**
-     * @param vote_average
-     */
-    public void setVote_average(float vote_average) {
-        this.vote_average = vote_average;
-    }
-
-    /**
-     * @return
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * @param title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     /**
      * @return
      */
@@ -166,47 +123,5 @@ public class MovieResult extends MovieEntry
      */
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
-    }
-
-    /**
-     * @return
-     */
-    public String getBackdrop_path() {
-        return backdrop_path;
-    }
-
-    /**
-     * @param backdrop_path
-     */
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
-    }
-
-    /**
-     * @return
-     */
-    public String getOverview() {
-        return overview;
-    }
-
-    /**
-     * @param overview
-     */
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    /**
-     * @return
-     */
-    public String getRelease_date() {
-        return release_date;
-    }
-
-    /**
-     * @param release_date
-     */
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
     }
 }
