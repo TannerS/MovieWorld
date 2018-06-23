@@ -10,40 +10,40 @@ import com.dev.tanners.movieworld.db.config.DBConfig;
 import java.util.Date;
 
 @Entity(tableName = DBConfig.TABLE_NAME)
-public class MovieEntry extends MovieResult {
+public class MovieEntry {
     @PrimaryKey(autoGenerate = true)
     // primary key
-    private int id;
+    protected int id;
     @ColumnInfo(name = "timestamp")
-    private Date timestamp;
+    protected Date timestamp;
 
-    @Ignore
-    public MovieEntry()
-    { }
+//    @Ignore
+//    public MovieEntry()
+//    { }
 
-    public MovieEntry(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
-        this.movieId = movieId;
-        this.vote_average = vote_average;
-        this.title = title;
-        this.poster_path = poster_path;
-        this.backdrop_path = backdrop_path;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.id = id;
-        this.timestamp = timestamp;
-    }
+//    public MovieEntry(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
+//        this.movieId = movieId;
+//        this.vote_average = vote_average;
+//        this.title = title;
+//        this.poster_path = poster_path;
+//        this.backdrop_path = backdrop_path;
+//        this.overview = overview;
+//        this.release_date = release_date;
+//        this.id = id;
+//        this.timestamp = timestamp;
+//    }
 
-    @Ignore
-    public MovieEntry(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
-        this.movieId = movieId;
-        this.vote_average = vote_average;
-        this.title = title;
-        this.poster_path = poster_path;
-        this.backdrop_path = backdrop_path;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.timestamp = timestamp;
-    }
+//    @Ignore
+//    public MovieEntry(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
+//        this.movieId = movieId;
+//        this.vote_average = vote_average;
+//        this.title = title;
+//        this.poster_path = poster_path;
+//        this.backdrop_path = backdrop_path;
+//        this.overview = overview;
+//        this.release_date = release_date;
+//        this.timestamp = timestamp;
+//    }
 
     public int getId() {
         return id;

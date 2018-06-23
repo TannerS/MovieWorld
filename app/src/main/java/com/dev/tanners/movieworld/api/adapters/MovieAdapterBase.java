@@ -4,13 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base adapter for common functionality
  */
 public abstract class MovieAdapterBase<I> extends RecyclerView.Adapter<RecyclerView.ViewHolder > {
     protected Context mContext;
-    protected ArrayList<I> mItems;
+    protected List<I> mItems;
 
     /**
      * Constructor

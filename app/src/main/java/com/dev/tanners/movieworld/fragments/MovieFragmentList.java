@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.dev.tanners.movieworld.R;
-import com.dev.tanners.movieworld.api.adapters.MovieAdapterDefault;
-import com.dev.tanners.movieworld.api.adapters.MovieAdapterGeneric;
+import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 
 /**
@@ -25,7 +24,7 @@ public class MovieFragmentList extends MovieFragmentRoot {
     // used to check for loading new movies before loading more
     protected boolean loading;
     // adapter
-    protected MovieAdapterDefault mMovieAdapterDefault;
+    protected MovieAdapter mMovieAdapter;
     // progressbar for endless scrolling
     protected ProgressBar mProgressBar;
     // number of grid columns
@@ -68,7 +67,7 @@ public class MovieFragmentList extends MovieFragmentRoot {
     /**
      * Set up recyclerview
      */
-    protected void setUpRecycler(final ListScrollListenerCallback mCallback, MovieAdapterDefault.OnClickListener mOnClickListener)
+    protected void setUpRecycler(final ListScrollListenerCallback mCallback, MovieAdapter.OnClickListener mOnClickListener)
     {
         /*
             Credit for loading gridview
@@ -80,7 +79,7 @@ public class MovieFragmentList extends MovieFragmentRoot {
         // set up with layout manager
         mMovieRecyclerView.setLayoutManager(mGridLayoutManager);
         // create adapter
-        mMovieAdapterDefault = new MovieAdapterDefault(
+        mMovieAdapter = new MovieAdapter(
                 mContext,
                 mOnClickListener
         );
@@ -89,7 +88,7 @@ public class MovieFragmentList extends MovieFragmentRoot {
             setUpRecyclerCallback(mCallback);
 
         // set adapter
-        mMovieRecyclerView.setAdapter(mMovieAdapterDefault);
+        mMovieRecyclerView.setAdapter(mMovieAdapter);
     }
 
     private void setUpRecyclerCallback(final ListScrollListenerCallback mCallback)

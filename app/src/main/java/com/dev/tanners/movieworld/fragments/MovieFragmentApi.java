@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dev.tanners.movieworld.MovieActivity;
-import com.dev.tanners.movieworld.api.adapters.MovieAdapterDefault;
-import com.dev.tanners.movieworld.api.adapters.MovieAdapterGeneric;
+import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
 
@@ -123,7 +122,7 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
                 without editing the adapter, a user should be able to change the callback
                 if needed
              */
-            new MovieAdapterDefault.OnClickListener() {
+            new MovieAdapter.OnClickListener() {
                 @Override
                 public void onClick(MovieResult mMovieResult) {
                     Intent intent = new Intent(mContext, MovieActivity.class);

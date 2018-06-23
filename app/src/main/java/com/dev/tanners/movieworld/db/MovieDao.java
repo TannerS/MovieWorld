@@ -8,6 +8,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.db.config.DBConfig;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface MovieDao {
      * @return
      */
     @Query(DBConfig.GET_ALL_MOVIES_QUERY)
-    LiveData<List<MovieEntry>> loadAllFavoriteMovies();
+    LiveData<List<MovieResult>> loadAllFavoriteMovies();
 
     /**
      * Insert new favorite movie
@@ -28,7 +29,7 @@ public interface MovieDao {
      * @param mMovieEntry
      */
     @Insert
-    void insertMovie(MovieEntry mMovieEntry);
+    void insertMovie(MovieResult mMovieEntry);
 
     /**
      * Update movie object in db by replacing it
@@ -36,7 +37,7 @@ public interface MovieDao {
      * @param mMovieEntry
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(MovieEntry mMovieEntry);
+    void updateMovie(MovieResult mMovieEntry);
 
     /**
      * Delete a favorite movie
@@ -44,7 +45,7 @@ public interface MovieDao {
      * @param mMovieEntry
      */
     @Delete
-    void deleteMovie(MovieEntry mMovieEntry);
+    void deleteMovie(MovieResult mMovieEntry);
 
     /**
      * Get favorite movie by id
@@ -53,7 +54,7 @@ public interface MovieDao {
      * @return
      */
     @Query(DBConfig.GET_MOVIE_BY_ID_QUERY)
-    LiveData<MovieEntry> loadMovieById(int id);
+    LiveData<MovieResult> loadMovieById(int id);
 }
 
 

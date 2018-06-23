@@ -14,6 +14,7 @@ import com.dev.tanners.movieworld.api.rest.MovieApi;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for the movie objects
@@ -32,7 +33,7 @@ public class MovieAdapterGeneric<I> extends MovieAdapterBase<I>{
      *
      * @param mItems
      */
-    public void updateAdapter(ArrayList<I> mItems) {
+    public void updateAdapter(List<I> mItems) {
 
         if(mItems != null && this.mItems != null)
         {

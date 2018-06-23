@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.dev.tanners.movieworld.db.MovieEntry;
 import com.dev.tanners.movieworld.db.config.DBConfig;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +17,7 @@ import java.util.Date;
  */
 @Entity(tableName = DBConfig.TABLE_NAME)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovieResult
+public class MovieResult extends MovieEntry
 {
     @ColumnInfo(name = "movie_id")
     protected int movieId;
@@ -30,7 +31,32 @@ public class MovieResult
     /**
      *
      */
+    @Ignore
     public MovieResult() {
+    }
+
+    public MovieResult(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
+        this.id = id;
+        this.movieId = movieId;
+        this.vote_average = vote_average;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.backdrop_path = backdrop_path;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.timestamp = timestamp;
+    }
+
+    @Ignore
+    public MovieResult(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
+        this.movieId = movieId;
+        this.vote_average = vote_average;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.backdrop_path = backdrop_path;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.timestamp = timestamp;
     }
 
     /**

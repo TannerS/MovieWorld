@@ -10,15 +10,16 @@ import android.widget.ImageView;
 import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.rest.MovieApi;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
+import com.dev.tanners.movieworld.db.MovieEntry;
 import com.dev.tanners.movieworld.util.ImageDisplay;
 
 /**
  * Adapter for the movie objects
  */
-public class MovieAdapterDefault extends MovieAdapterGeneric<MovieResult>{
+public class MovieAdapter extends MovieAdapterGeneric<MovieResult>{
     private OnClickListener mImageOnClickListener;
 
-    public MovieAdapterDefault(@NonNull Context mContext, OnClickListener mImageOnClickListener) {
+    public MovieAdapter(@NonNull Context mContext, OnClickListener mImageOnClickListener) {
         super(mContext);
         this.mImageOnClickListener = mImageOnClickListener;
     }

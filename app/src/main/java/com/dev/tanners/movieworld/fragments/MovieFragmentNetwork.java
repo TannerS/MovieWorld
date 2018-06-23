@@ -83,7 +83,7 @@ public class MovieFragmentNetwork extends MovieFragmentList {
             public void onResponse(Call<MovieResultBase> call, Response<MovieResultBase> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-                    mMovieAdapterDefault.updateAdapter(response.body().getResults());
+                    mMovieAdapter.updateAdapter(response.body().getResults());
                     mOnResultCallback.onPostResults();
                 } else {
                     displayError();
