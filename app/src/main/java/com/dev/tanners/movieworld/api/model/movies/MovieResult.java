@@ -4,8 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
 import com.dev.tanners.movieworld.db.MovieEntry;
+import com.dev.tanners.movieworld.db.TimestampConverter;
 import com.dev.tanners.movieworld.db.config.DBConfig;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,8 +17,9 @@ import java.util.Date;
 /**
  * Movie model
  */
-@Entity(tableName = DBConfig.TABLE_NAME)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity(tableName = DBConfig.TABLE_NAME)
+@TypeConverters(TimestampConverter.class)
 public class MovieResult extends MovieEntry
 {
     @ColumnInfo(name = "movie_id")

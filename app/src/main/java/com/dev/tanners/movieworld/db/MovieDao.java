@@ -21,14 +21,15 @@ public interface MovieDao {
      * @return
      */
     @Query(DBConfig.GET_ALL_MOVIES_QUERY)
-    LiveData<List<MovieResult>> loadAllFavoriteMovies();
+//    LiveData<List<MovieResult>> loadAllFavoriteMovies();
+    List<MovieResult> loadAllFavoriteMovies();
 
     /**
      * Insert new favorite movie
      *
      * @param mMovieEntry
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertMovie(MovieResult mMovieEntry);
 
     /**

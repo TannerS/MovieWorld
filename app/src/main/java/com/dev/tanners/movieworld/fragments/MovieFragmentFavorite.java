@@ -2,6 +2,7 @@ package com.dev.tanners.movieworld.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,24 +11,24 @@ import com.dev.tanners.movieworld.MovieActivity;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.db.MovieDatabase;
-import com.dev.tanners.movieworld.db.MovieEntry;
+import com.dev.tanners.movieworld.db.config.DBConfig;
 
 import java.util.List;
 
 /**
  * Contains popular movies data
  */
-public class FavoriteFragment extends MovieFragmentList {
+public class MovieFragmentFavorite extends MovieFragmentList {
     // instance to database
     private MovieDatabase mDb;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment FavoriteFragment.
+     * @return A new instance of fragment MovieFragmentFavorite.
      */
-    public static FavoriteFragment newInstance() {
-        return new FavoriteFragment();
+    public static MovieFragmentFavorite newInstance() {
+        return new MovieFragmentFavorite();
     }
 
     /**
@@ -62,11 +63,23 @@ public class FavoriteFragment extends MovieFragmentList {
             }
         );
 
-        mMovieAdapter.updateAdapter(fetchMovies());
+        List<MovieResult> temp = fetchMovies();
+
+        if(temp != null) {
+
+            for (MovieResult movie : temp) {
+                Log.i("MOVIE", movie.getTitle());
+            }
+        }
+
+        mMovieAdapter.updateAdapter(temp);
     }
 
     private List<MovieResult> fetchMovies()
     {
-        return mDb.getMovieDao().loadAllFavoriteMovies().getValue();
+//        return mDb.getMovieDao().loadAllFavoriteMovies().getValue();
+
+        Log.i("MSQL", DBConfig.GET_ALL_MOVIES_QUERY);
+        return mDb.getMovieDao().loadAllFavoriteMovies();
     }
 }

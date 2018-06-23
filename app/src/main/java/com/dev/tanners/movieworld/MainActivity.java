@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.dev.tanners.movieworld.fragments.MovieFragmentApi;
+import com.dev.tanners.movieworld.fragments.MovieFragmentFavorite;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
         // Add Fragments to adapter one by one
         mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.POP), "Popular");
         mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.TOP), "Top Rated");
+        mViewPagerAdapter.addItem(MovieFragmentFavorite.newInstance(), "Favorites");
         // set adapter
         mViewPager.setAdapter(mViewPagerAdapter);
         // set tabs for fragments

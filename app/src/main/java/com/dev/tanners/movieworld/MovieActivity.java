@@ -6,13 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterBase;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterReview;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterVideo;
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.api.model.movies.MovieResultAppend;
 import com.dev.tanners.movieworld.api.model.reviews.MovieReview;
 import com.dev.tanners.movieworld.api.model.videos.MovieVideo;
@@ -147,7 +151,7 @@ public class MovieActivity extends AppCompatActivity {
      * Error snackbar
      */
     private void displayMessage(int mStringId) {
-        SimpleSnackBarBuilder.createAndDisplaySnackBar(findViewById(R.id.main_root_container),
+        SimpleSnackBarBuilder.createAndDisplaySnackBar(findViewById(R.id.movie_detail_root),
                 getString(mStringId),
                 Snackbar.LENGTH_INDEFINITE,
                 getString(R.string.loading_image_error_dismiss));
@@ -302,16 +306,26 @@ public class MovieActivity extends AppCompatActivity {
 
     private void saveCurrentMovie()
     {
+        try {
+            Date date = new Date();
+            mMovieResultAppend.setTimestamp(date);
+            mDb.getMovieDao().insertMovie((MovieResult) mMovieResultAppend);
+        }
+        catch (Exception e)
+        {
+            e.fillInStackTrace();
+            Log.i("MOVIES", "errrorororor");
+        }
 //        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
 //        mDb.getMovieDao().insertMovie(mMovieEntry);
-        mDb.getMovieDao().insertMovie(mMovieResultAppend);
+       ;
     }
 
     private void delCurrentMovie()
     {
 //        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
 //        mDb.getMovieDao().deleteMovie(mMovieEntry);
-        mDb.getMovieDao().deleteMovie(mMovieResultAppend);
+        mDb.getMovieDao().deleteMovie((MovieResult)mMovieResultAppend);
     }
 }
 
