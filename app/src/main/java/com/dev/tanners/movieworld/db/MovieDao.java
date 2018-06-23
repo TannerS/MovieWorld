@@ -29,7 +29,7 @@ public interface MovieDao {
      *
      * @param mMovieEntry
      */
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMovie(MovieResult mMovieEntry);
 
     /**
@@ -51,7 +51,7 @@ public interface MovieDao {
     /**
      * Get favorite movie by id
      *
-     * @param id
+     * @param movie_id
      * @return
      */
     @Query(DBConfig.GET_MOVIE_BY_ID_QUERY)

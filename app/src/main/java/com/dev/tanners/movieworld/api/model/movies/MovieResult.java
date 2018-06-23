@@ -22,25 +22,44 @@ import java.util.Date;
 @TypeConverters(TimestampConverter.class)
 public class MovieResult extends MovieEntry
 {
-    @ColumnInfo(name = "movie_id")
-    protected int movieId;
+    @PrimaryKey
+    protected int id;
     protected float vote_average;
     protected String title;
     protected String poster_path;
     protected String backdrop_path;
     protected String overview;
     protected String release_date;
+    // used for UI to keep track of favorite movies and non favorite movies
+    // this will always be true in db, but other movies that use this class use it
+    protected boolean is_favorite;
 
     /**
-     *
+     * Constructor
+     * used for json serialization/de-serialization
      */
     @Ignore
     public MovieResult() {
+        // for json de-serialization
     }
 
-    public MovieResult(int id, int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
+    /**
+     * Constructor
+     *
+     * Used for db entity
+     *
+     * @param id
+     * @param vote_average
+     * @param title
+     * @param poster_path
+     * @param backdrop_path
+     * @param overview
+     * @param release_date
+     * @param timestamp
+     * @param is_favorite
+     */
+    public MovieResult(int id, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
         this.id = id;
-        this.movieId = movieId;
         this.vote_average = vote_average;
         this.title = title;
         this.poster_path = poster_path;
@@ -48,11 +67,25 @@ public class MovieResult extends MovieEntry
         this.overview = overview;
         this.release_date = release_date;
         this.timestamp = timestamp;
+        this.is_favorite = is_favorite;
     }
 
+    /**
+     * Constructor
+     *
+     * Used for internal
+     *
+     * @param vote_average
+     * @param title
+     * @param poster_path
+     * @param backdrop_path
+     * @param overview
+     * @param release_date
+     * @param timestamp
+     * @param is_favorite
+     */
     @Ignore
-    public MovieResult(int movieId, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
-        this.movieId = movieId;
+    public MovieResult(float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
         this.vote_average = vote_average;
         this.title = title;
         this.poster_path = poster_path;
@@ -60,22 +93,38 @@ public class MovieResult extends MovieEntry
         this.overview = overview;
         this.release_date = release_date;
         this.timestamp = timestamp;
+        this.is_favorite = is_favorite;
     }
 
     /**
      * @return
      */
-    @JsonProperty("id")
-    public int getMovieId() {
-        return movieId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param movieId
+     * @param id
      */
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public void setId(int id) {
+        this.id = id;
     }
+
+    /**
+     * @return
+     */
+    public boolean isIs_favorite() {
+        return is_favorite;
+    }
+
+    /**
+     * @param is_favorite
+     */
+    public void setIs_favorite(boolean is_favorite) {
+        this.is_favorite = is_favorite;
+    }
+
+
 
     /**
      * @return

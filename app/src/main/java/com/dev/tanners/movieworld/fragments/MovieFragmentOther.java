@@ -14,7 +14,7 @@ import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
 /**
  * Contains top/opular movies data
  */
-public class MovieFragmentApi extends MovieFragmentNetwork {
+public class MovieFragmentOther extends MovieFragmentNetwork {
     public enum State {POP, TOP};
     private String mState;
     private static final String ARG = "STATE";
@@ -38,7 +38,7 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
 
     }
 
-    public MovieFragmentApi() {
+    public MovieFragmentOther() {
     }
 
     /**
@@ -47,8 +47,8 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
      *
      * @return A new instance of fragment MovieFragmentPopular.
      */
-    public static MovieFragmentApi newInstance(State mState) {
-        MovieFragmentApi fragment = new MovieFragmentApi();
+    public static MovieFragmentOther newInstance(State mState) {
+        MovieFragmentOther fragment = new MovieFragmentOther();
         Bundle args = new Bundle();
         args.putString(ARG, mState.name());
         fragment.setArguments(args);
@@ -58,7 +58,7 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
     /**
      * Common rest call setup
      */
-    private void setRestInterface()
+    private void setRestCall()
     {
         if(State.POP.name().equals(mState))
         {
@@ -101,14 +101,12 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
                 public void onScroll() {
                     // increase page number
                     mMovieApi.increasePage();
-
-
                     // show progress bar to show data "should" be loading
                     mProgressBar.setVisibility(View.VISIBLE);
                     // setbool to show data is already doing a request
                     loading = true;
-
-                    setRestInterface();
+                    // set up rest call
+                    setRestCall();
                 }
             },
               /*
@@ -126,13 +124,13 @@ public class MovieFragmentApi extends MovieFragmentNetwork {
                 @Override
                 public void onClick(MovieResult mMovieResult) {
                     Intent intent = new Intent(mContext, MovieActivity.class);
-                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getMovieId());
+                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
                     startActivity(intent);
                 }
             }
         );
-        // load rest
-        setRestInterface();
+        // set up rest call
+        setRestCall();
         // return view
         return view;
     }

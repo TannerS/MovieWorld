@@ -9,7 +9,7 @@ import android.content.Context;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.db.config.DBConfig;
 
-@Database(entities = {MovieResult.class}, version = 1, exportSchema = false)
+@Database(entities = {MovieResult.class}, version = DBConfig.DATABASE_VERISON, exportSchema = false)
 @TypeConverters(TimestampConverter.class)
 public abstract class MovieDatabase extends RoomDatabase {
     // used for synchronization

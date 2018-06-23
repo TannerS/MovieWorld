@@ -11,4 +11,6 @@ public class DBConfig {
     public final static String GET_MOVIE_BY_ID_QUERY = "SELECT * FROM" + " " + TABLE_NAME + " " + "WHERE id" + " = " + ":id";
     // name of database
     public static final String DATABASE_NAME = "favorite_movies";
+    // current version of db
+    public static final int DATABASE_VERISON = 1;
 }

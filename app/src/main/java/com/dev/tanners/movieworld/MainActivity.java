@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import com.dev.tanners.movieworld.fragments.MovieFragmentApi;
+import com.dev.tanners.movieworld.fragments.MovieFragmentOther;
 import com.dev.tanners.movieworld.fragments.MovieFragmentFavorite;
 
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity{
         mViewPager = findViewById(R.id.main_viewpager);
         TabbedFragmentPagerAdapter mViewPagerAdapter = new TabbedFragmentPagerAdapter(getSupportFragmentManager());
         // Add Fragments to adapter one by one
-        mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.POP), "Popular");
-        mViewPagerAdapter.addItem(MovieFragmentApi.newInstance(MovieFragmentApi.State.TOP), "Top Rated");
+        mViewPagerAdapter.addItem(MovieFragmentOther.newInstance(MovieFragmentOther.State.POP), "Popular");
+        mViewPagerAdapter.addItem(MovieFragmentOther.newInstance(MovieFragmentOther.State.TOP), "Top Rated");
         mViewPagerAdapter.addItem(MovieFragmentFavorite.newInstance(), "Favorites");
         // set adapter
         mViewPager.setAdapter(mViewPagerAdapter);

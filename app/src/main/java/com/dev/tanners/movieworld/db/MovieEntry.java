@@ -14,18 +14,18 @@ import java.util.Date;
 @TypeConverters(TimestampConverter.class)
 @Entity(tableName = DBConfig.TABLE_NAME)
 public class MovieEntry {
-    @PrimaryKey(autoGenerate = true)
+//    @PrimaryKey(autoGenerate = true)
     // primary key
-    protected int id;
+//    protected int id;
     protected Date timestamp;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public Date getTimestamp() {
         return timestamp;

@@ -52,8 +52,6 @@ public class MovieActivity extends AppCompatActivity {
     // list that will hold reviews and trailers
     private MovieAdapterReview mMixedAdapterReview;
     private MovieAdapterVideo mMixedAdapterVideo;
-    // TODO need to read database to set this later
-    private boolean mFavSelection;
     // instance to database
     private MovieDatabase mDb;
 
@@ -74,6 +72,10 @@ public class MovieActivity extends AppCompatActivity {
         finalSetUp();
 
         mDb = MovieDatabase.getInstance(getApplicationContext());
+
+
+        //TODO must checking for existing movie in db if this page is loaded from a non db list, and must change onclick below
+
     }
 
     /**
@@ -238,30 +240,36 @@ public class MovieActivity extends AppCompatActivity {
                 (ImageView) findViewById(R.id.backsplash_image)
         );
 
-        //TODO if already fav, change start below icon, based on what is in db
-
         final ImageView mFavStar = (ImageView) findViewById(R.id.favorite_star);
 
         mFavStar.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(!mFavSelection)
-                        {
-                            mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_outline));
-                            saveCurrentMovie();
-                            displayMessage(R.string.movie_saved_message);
-                        }
-                        else
-                        {
-                            mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
-                            delCurrentMovie();
-                            displayMessage(R.string.movie_removed_db);
-                        }
-
-                        mFavSelection = !mFavSelection;
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!mMovieResultAppend.isIs_favorite())
+                    {
+                        // change icon to show saved movie
+                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
+                        // save movie
+                        saveCurrentMovie();
+                        // display message to UI
+                        displayMessage(R.string.movie_saved_message);
+                        // change value to be used in this method for next onclick
+                        mMovieResultAppend.setIs_favorite(true);
+                    }
+                    else
+                    {
+                        // change icon to show removed movie
+                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_outline));
+                        // remove movie
+                        delCurrentMovie();
+                        // display message to UI
+                        displayMessage(R.string.movie_removed_message);
+                        // change value to be used in this method for next onclick
+                        mMovieResultAppend.setIs_favorite(false);
                     }
                 }
+            }
         );
     }
 
@@ -306,26 +314,20 @@ public class MovieActivity extends AppCompatActivity {
 
     private void saveCurrentMovie()
     {
-        try {
-            Date date = new Date();
-            mMovieResultAppend.setTimestamp(date);
-            mDb.getMovieDao().insertMovie((MovieResult) mMovieResultAppend);
-        }
-        catch (Exception e)
-        {
-            e.fillInStackTrace();
-            Log.i("MOVIES", "errrorororor");
-        }
-//        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
-//        mDb.getMovieDao().insertMovie(mMovieEntry);
-       ;
+        // create time stamp
+        mMovieResultAppend.setTimestamp(new Date());
+        // set fav bool for next time this object is loaded on this page
+        mMovieResultAppend.setIs_favorite(true);
+        // insert movie
+        mDb.getMovieDao().insertMovie((MovieResult) mMovieResultAppend);
+        // TODO need to update view, possible fragment->fragment talking
     }
 
     private void delCurrentMovie()
     {
-//        MovieEntry mMovieEntry = new MovieEntry(mMovieResultAppend.getMovieId(), mMovieResultAppend.getPoster_path(), new Date());
-//        mDb.getMovieDao().deleteMovie(mMovieEntry);
+        // now need to change the fav bool since it is just deleted
         mDb.getMovieDao().deleteMovie((MovieResult)mMovieResultAppend);
+        // TODO need to update view, possible fragment->fragment talking
     }
 }
 

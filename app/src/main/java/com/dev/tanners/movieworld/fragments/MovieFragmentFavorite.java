@@ -57,7 +57,7 @@ public class MovieFragmentFavorite extends MovieFragmentList {
                 @Override
                 public void onClick(MovieResult mMovieResult) {
                     Intent intent = new Intent(mContext, MovieActivity.class);
-                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getMovieId());
+                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
                     startActivity(intent);
                 }
             }
@@ -65,15 +65,15 @@ public class MovieFragmentFavorite extends MovieFragmentList {
 
         List<MovieResult> temp = fetchMovies();
 
-        if(temp != null) {
-
-            for (MovieResult movie : temp) {
-                Log.i("MOVIE", movie.getTitle());
-            }
-        }
+//        if(temp != null) {
+//
+//            for (MovieResult movie : temp) {
+//                Log.i("MOVIE", movie.getTitle());
+//            }
+//        }
 
         mMovieAdapter.updateAdapter(temp);
-    }
+        }
 
     private List<MovieResult> fetchMovies()
     {
@@ -81,5 +81,13 @@ public class MovieFragmentFavorite extends MovieFragmentList {
 
         Log.i("MSQL", DBConfig.GET_ALL_MOVIES_QUERY);
         return mDb.getMovieDao().loadAllFavoriteMovies();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // adding/removing movies from movie activity, need to update
+        // TODO remove after live data?
+        mMovieAdapter.notifyDataSetChanged();
     }
 }
