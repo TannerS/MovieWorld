@@ -1,44 +1,87 @@
 package com.dev.tanners.movieworld.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.dev.tanners.movieworld.MovieActivity;
+import com.dev.tanners.movieworld.MovieViewModel;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
-import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
+import static com.dev.tanners.movieworld.MovieViewModel.INIT_DATA_CALL;
+import static com.dev.tanners.movieworld.MovieViewModel.SCROLL_PLACEMENT;
 
 /**
  * Contains top/popular movies data
- * TODO check if favorites by db call here on page load
  */
-public class MovieFragment extends MovieFragmentNetwork {
+public class MovieFragment extends MovieFragmentList {
     public enum State {POP, TOP};
     private String mState;
     private static final String ARG = "STATE";
+    private MovieViewModel mMovieViewModel;
+    private Parcelable mRecyclerviewLayoutSavedState;
+    // keep track if method has been called atleast once
+    private boolean hasGotInitData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // get state to tell which state to use for the rest call
         if (getArguments() != null) {
             mState = getArguments().getString(ARG);
         }
+        // load the init data value
+        if(savedInstanceState != null)
+            hasGotInitData = savedInstanceState.getBoolean(INIT_DATA_CALL);
+        // load viewmodel
+        loadViewModelData();
+        // there are two calls to get data for the list
+        // init call and on scroll, so this handles the first call and only
+        // any other calls is when the continuous on scroll callback gets hit
+        if(!hasGotInitData) {
+            // need to run this once, any other call to this is in the scroll callback
+            setRestCall();
+            hasGotInitData = true;
+        }
+    }
 
-        loadRest(new OnResultCallback() {
+    /**
+     * Load view model functionality
+     */
+    private void loadViewModelData()
+    {
+        // create viewmodel
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+        mMovieViewModel.loadRest(new MovieViewModel.OnResultCallback() {
             @Override
             public void onPostResults() {
                 // show progress bar to show data "should" be loading
                 mProgressBar.setVisibility(View.GONE);
                 // setbool to show data is already doing a request
                 loading = false;
+                // update adapter from data inside the viewmodel
+                mMovieAdapter.updateAdapterRemovedOrAdded(mMovieViewModel.getMovies());
+                // since the data is in a background thread, you need to restore the state in that thread
+                // this was mentioned in here: https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+                mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerviewLayoutSavedState);
             }
         });
     }
 
-    public MovieFragment() {
+    /**
+     * During device rotation
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        // reload adapter with view model's cached movie data
+        mMovieAdapter.updateAdapterRemovedOrAdded(mMovieViewModel.getMovies());
     }
 
     /**
@@ -63,23 +106,47 @@ public class MovieFragment extends MovieFragmentNetwork {
         if(State.POP.name().equals(mState))
         {
             // in rest call to get more movies
-            mMovieApiListPaths.getPopular(
-                    mMovieApi.getQueries()
-            ).enqueue(
-                    mResponseCallback
-            );
+            mMovieViewModel.getPopular();
         }
         else if(State.TOP.name().equals(mState))
         {
             // in rest call to get more movies
-            mMovieApiListPaths.getTop(
-                    mMovieApi.getQueries()
-            ).enqueue(
-                    mResponseCallback
-            );
+            mMovieViewModel.getTop();
         }
         else
             throw new IllegalArgumentException();
+    }
+
+    /**
+     * Saves state of recyclerview position
+     *
+     * All credit goes too Patrick at https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save position state
+        outState.putParcelable(SCROLL_PLACEMENT, mMovieRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putBoolean(INIT_DATA_CALL, hasGotInitData);
+    }
+
+    /**
+     * Restores state of recyclerview position
+     *
+     * All credit goes too Patrick at https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            // restore position state
+            mRecyclerviewLayoutSavedState = savedInstanceState.getParcelable(SCROLL_PLACEMENT);
+            mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerviewLayoutSavedState);
+        }
     }
 
     /**
@@ -93,14 +160,12 @@ public class MovieFragment extends MovieFragmentNetwork {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        // set up object
-        mMovieApi = new MovieApiTopRated(mContext);
         // set up recycler view
         setUpRecycler(new ListScrollListenerCallback() {
                 @Override
                 public void onScroll() {
                     // increase page number
-                    mMovieApi.increasePage();
+                    mMovieViewModel.increasePage();
                     // show progress bar to show data "should" be loading
                     mProgressBar.setVisibility(View.VISIBLE);
                     // setbool to show data is already doing a request
@@ -132,8 +197,6 @@ public class MovieFragment extends MovieFragmentNetwork {
                 }
             }
         );
-        // set up rest call
-        setRestCall();
         // return view
         return view;
     }

@@ -1,14 +1,20 @@
-package com.dev.tanners.movieworld.fragments;
+package com.dev.tanners.movieworld;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import com.dev.tanners.movieworld.api.rest.MovieApi;
-import com.dev.tanners.movieworld.api.rest.MovieApiListPaths;
-import com.dev.tanners.movieworld.api.rest.MovieApiBase;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.api.model.movies.MovieResultBase;
+import com.dev.tanners.movieworld.api.rest.MovieApi;
+import com.dev.tanners.movieworld.api.rest.MovieApiBase;
+import com.dev.tanners.movieworld.api.rest.MovieApiListPaths;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,38 +22,53 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Base fragment class for common functionality for sub classes
- * */
-public class MovieFragmentNetwork extends MovieFragmentList {
+ * DISCLAIMER ***********************
+ * Originally, this functionality was in its own activity, but wanting it to work with viewmodel,
+ * would fix the caching issue on device rotation, this was implemented, but after research, it was known
+ * that viewmodel can help prevent mem leaks on activities destroyed when doing async network calls.
+ * With that said, I had to move all network functionality to this class to make this valid.
+ * There may be a better way to implement this later, but for now this works until a future version gets released
+ */
+public class MovieViewModel extends AndroidViewModel {
+    private List<MovieResult> mMovies;
     // retrofit interface object
     protected Callback<MovieResultBase> mResponseCallback;
     // interface for rest calls using retrofit
     protected MovieApiListPaths mMovieApiListPaths;
     // interface for rest calls
     protected MovieApi mMovieApi;
-
+    public static final String SCROLL_PLACEMENT = "SCROLL_POSITION";
+    public static final String INIT_DATA_CALL = "INIT_DATA_SET";
 
     /**
-     * @param savedInstanceState
+     * Constructor
+     *
+     * @param application
      */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public MovieViewModel(@NonNull Application application) {
+        super(application);
+        mMovies = new ArrayList<MovieResult>();
+        mMovieApi = new MovieApi(getApplication().getApplicationContext());
     }
 
     /**
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
+     * Get movies
+     *
      * @return
      */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
-        // set up rest helper
-        mMovieApi = new MovieApi(getContext());
-        // return view
-        return view;
+    public List<MovieResult> getMovies()
+    {
+        return mMovies;
+    }
+
+    /**
+     * Add data
+     *
+     * @param mMovies
+     */
+    public void addData(List<MovieResult> mMovies)
+    {
+        this.mMovies.addAll(mMovies);
     }
 
     /**
@@ -55,19 +76,18 @@ public class MovieFragmentNetwork extends MovieFragmentList {
      *
      * @param mOnResultCallback
      */
-    protected void loadRest(OnResultCallback mOnResultCallback)
+    public void loadRest(OnResultCallback mOnResultCallback)
     {
         // set up callbacks for rest calls for recyclerview
         setUpRestCallback(mOnResultCallback);
         // set up rest calls connection to json parser and callbacks per rest api endpoint
         createApiCall();
-        // set up rest helper
     }
 
     /**
      https://stackoverflow.com/questions/42636247/how-can-i-return-data-in-method-from-retrofit-onresponse?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
      */
-    protected void createApiCall() {
+    public void createApiCall() {
         // set up json parser for rest call
         ObjectMapper mMapper = new ObjectMapper();
         // build rest api call
@@ -77,6 +97,30 @@ public class MovieFragmentNetwork extends MovieFragmentList {
                 .build();
         // align object with api interface that says how to make calls
         mMovieApiListPaths = mRetrofit.create(MovieApiListPaths.class);
+    }
+
+    /**
+     * load popular movies
+     */
+    public void getPopular()
+    {
+        mMovieApiListPaths.getPopular(
+                mMovieApi.getQueries()
+        ).enqueue(
+                mResponseCallback
+        );
+    }
+
+    /**
+     * load top rated movies
+     */
+    public void getTop()
+    {
+        mMovieApiListPaths.getTop(
+                mMovieApi.getQueries()
+        ).enqueue(
+                mResponseCallback
+        );
     }
 
     /**
@@ -97,11 +141,13 @@ public class MovieFragmentNetwork extends MovieFragmentList {
             @Override
             public void onResponse(Call<MovieResultBase> call, Response<MovieResultBase> response) {
                 if (response.isSuccessful()) {
-                    // set up recyclerview
-                    mMovieAdapter.updateAdapterAdded(response.body().getResults());
+                    // add new movies to viewmodel
+                    addData(response.body().getResults());
+                    // call callback after getting data
                     mOnResultCallback.onPostResults();
                 } else {
-                    displayError();
+                    // TODO create snackbar for error
+//                    displayError();
                 }
             }
 
@@ -115,7 +161,8 @@ public class MovieFragmentNetwork extends MovieFragmentList {
             @Override
             public void onFailure(Call<MovieResultBase> call, Throwable t) {
                 t.printStackTrace();
-                displayError();
+                // TODO create snackbar for error
+//                displayError();
             }
         };
     }
@@ -128,5 +175,13 @@ public class MovieFragmentNetwork extends MovieFragmentList {
          * execute
          */
         public void onPostResults();
+    }
+
+    /**
+     * increase restful api call's page
+     */
+    public void increasePage()
+    {
+        mMovieApi.increasePage();
     }
 }

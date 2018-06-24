@@ -24,6 +24,8 @@ public class MovieApi extends MovieApiBase {
     public final static String ORIGINAL = "original";
 
     /**
+     * Constructor
+     *
      * @param mContext
      */
     public MovieApi(Context mContext) {

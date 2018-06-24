@@ -9,21 +9,19 @@ import java.util.HashMap;
  * Base class for common functionality upon the rest api
  */
 public class MovieApiBase {
-    // used to get application resources
-    protected Context mContext;
     // holds common rest queries
     public HashMap<String, String> queries;
     protected final static String API_KEY = "api_key";
     public final static String API_BASE = "https://api.themoviedb.org/3/";
     protected final static String API_QUERY_OPTIONS_LANG = "language";
     protected final static String API_QUERY_OPTIONS_LANG_ENG = "en-US";
+    private Context mContext;
 
     /**
-     * @param mContext
      */
     public MovieApiBase(Context mContext) {
-        this.mContext = mContext;
         queries = new HashMap<String, String>();
+        this.mContext = mContext;
     }
 
     /**
