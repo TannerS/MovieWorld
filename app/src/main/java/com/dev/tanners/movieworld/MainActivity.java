@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
+
 import com.dev.tanners.movieworld.fragments.MovieFragment;
 import com.dev.tanners.movieworld.fragments.MovieFragmentFavorite;
 
@@ -28,9 +30,16 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpToolBar();
         setUpFragments();
+    }
+
+    private void setUpToolBar()
+    {
         // load activity_toolbar
-        setSupportActionBar( (Toolbar) findViewById(R.id.main_toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+//        TextView mToolbarTitle = findViewById(R.id.main_toolbar_title);
+//        mToolbarTitle.setText(getString(R.string.app_name));
     }
 
     /**

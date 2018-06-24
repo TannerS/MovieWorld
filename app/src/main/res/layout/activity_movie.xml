@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/movie_header"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <include
                 android:id="@+id/movie_header"
@@ -81,7 +81,6 @@
         android:visibility="visible"/>
 
     </FrameLayout>
-
 
 </ScrollView>
 

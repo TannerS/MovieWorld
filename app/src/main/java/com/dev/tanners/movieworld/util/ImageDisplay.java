@@ -1,5 +1,6 @@
 package com.dev.tanners.movieworld.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.dev.tanners.movieworld.MainActivity;
 import com.dev.tanners.movieworld.R;
 
 /**
@@ -38,17 +40,20 @@ public class ImageDisplay
      * @param mImageView
      */
     public static void loadImage(Context mContext, String mResource, int mError, ImageView mImageView, int mPlaceHolder) {
-        Glide.with(mContext)
-                .load(mResource)
-                .apply(new RequestOptions()
-                        .fitCenter()
-                        .error(mError)
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .placeholder(mPlaceHolder)
-                )
-                .transition(new DrawableTransitionOptions()
-                        .crossFade())
-                .into(mImageView);
+        // https://github.com/bumptech/glide/issues/1484
+        if(!((Activity) mContext).isFinishing()) {
+            Glide.with(mContext)
+                    .load(mResource)
+                    .apply(new RequestOptions()
+                            .fitCenter()
+                            .error(mError)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .placeholder(mPlaceHolder)
+                    )
+                    .transition(new DrawableTransitionOptions()
+                            .crossFade())
+                    .into(mImageView);
+        }
     }
 
     /**

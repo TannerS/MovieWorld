@@ -85,7 +85,6 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         // load activity_toolbar
-        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
         mProgressBar = (ProgressBar) findViewById(R.id.movie_loading);
         mMainLayout = (ConstraintLayout) findViewById(R.id.main_container);
         setUpRecyclerViews();
@@ -162,14 +161,14 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
                 if (response.isSuccessful()) {
                     // get result
                     mMovieResultAppend = response.body();
-                    // load toolbar
-                    setUpToolbar();
                     // load page with newly fetched data
                     setUpPageDetails();
                     // load reviews and videos into adapter
                     setUpAdapterData();
                     // set loader to check for favorite object
                     loadLoader();
+                    // load toolbar
+                    setUpToolbar();
                 } else {
                     displayMessage(R.string.loading_reviews_error);
                 }
@@ -254,9 +253,13 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
      */
     private void setUpToolbar()
     {
+        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+//        TextView mToolbarTitle = findViewById(R.id.main_toolbar_title);
+//        mToolbarTitle.setText(this.mMovieResultAppend.getTitle());
         // set item_title of activity_toolbar for activity
-        getSupportActionBar().setTitle(this.mMovieResultAppend.getTitle());
-        getSupportActionBar().setSubtitle(this.mMovieResultAppend.getRelease_date());
+//        getSupportActionBar().setTitle(this.mMovieResultAppend.getTitle());
+//        getSupportActionBar().setSubtitle(this.mMovieResultAppend.getRelease_date());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**

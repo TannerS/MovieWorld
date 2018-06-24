@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.dev.tanners.movieworld.MovieActivity;
 import com.dev.tanners.movieworld.MovieViewModel;
+import com.dev.tanners.movieworld.R;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
+import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
+
 import static com.dev.tanners.movieworld.MovieViewModel.INIT_DATA_CALL;
 import static com.dev.tanners.movieworld.MovieViewModel.SCROLL_PLACEMENT;
 
@@ -70,6 +74,11 @@ public class MovieFragment extends MovieFragmentList {
                 // since the data is in a background thread, you need to restore the state in that thread
                 // this was mentioned in here: https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
                 mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerviewLayoutSavedState);
+            }
+
+            @Override
+            public void displayMessage() {
+                displayError();
             }
         });
     }
@@ -192,13 +201,23 @@ public class MovieFragment extends MovieFragmentList {
                     // here since data online can change, the only info sent to other activity
                     // is the movie id to load that data
                     intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
-//                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_FAVORITE_KEY, mMovieResult.isFavorite());
                     startActivity(intent);
                 }
             }
         );
         // return view
         return view;
+    }
+
+
+    /**
+     * Error snackbar
+     */
+    protected void displayError() {
+        SimpleSnackBarBuilder.createAndDisplaySnackBar(view.findViewById(R.id.main_root_container),
+                getString(R.string.loading_image_error),
+                Snackbar.LENGTH_INDEFINITE,
+                getString(R.string.loading_image_error_dismiss));
     }
 }
 

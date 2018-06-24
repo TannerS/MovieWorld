@@ -45,16 +45,6 @@ public class MovieFragmentList extends MovieFragmentRoot {
     }
 
     /**
-     * Error snackbar
-     */
-    protected void displayError() {
-        SimpleSnackBarBuilder.createAndDisplaySnackBar(view.findViewById(R.id.main_root_container),
-                getString(R.string.loading_image_error),
-                Snackbar.LENGTH_INDEFINITE,
-                getString(R.string.loading_image_error_dismiss));
-    }
-
-    /**
      * Load needed resources
      */
     protected void loadResources(View view)

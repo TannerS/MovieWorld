@@ -146,8 +146,8 @@ public class MovieViewModel extends AndroidViewModel {
                     // call callback after getting data
                     mOnResultCallback.onPostResults();
                 } else {
-                    // TODO create snackbar for error
-//                    displayError();
+                    // display error
+                    mOnResultCallback.displayMessage();
                 }
             }
 
@@ -161,8 +161,8 @@ public class MovieViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<MovieResultBase> call, Throwable t) {
                 t.printStackTrace();
-                // TODO create snackbar for error
-//                displayError();
+                // display error
+                mOnResultCallback.displayMessage();
             }
         };
     }
@@ -175,6 +175,7 @@ public class MovieViewModel extends AndroidViewModel {
          * execute
          */
         public void onPostResults();
+        public void displayMessage();
     }
 
     /**
