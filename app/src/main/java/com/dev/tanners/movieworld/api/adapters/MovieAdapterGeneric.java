@@ -33,10 +33,11 @@ public class MovieAdapterGeneric<I> extends MovieAdapterBase<I>{
      *
      * @param mItems
      */
-    public void updateAdapter(List<I> mItems) {
-
+    public void updateAdapterAdded(List<I> mItems) {
+        // check for null
         if(mItems != null && this.mItems != null)
         {
+            // check if fresh start of data
             if(this.mItems.size() == 0)
             {
                 // want to get pos of last item in list
@@ -54,6 +55,22 @@ public class MovieAdapterGeneric<I> extends MovieAdapterBase<I>{
                 // update recyclerview at position 'startPos'
                 notifyItemRangeInserted(startPos, this.mItems.size());
             }
+        }
+    }
+
+    /**
+     * Update adapter with new data, or start data
+     *
+     * @param mItems
+     */
+    public void updateAdapterRemovedOrAdded(List<I> mItems) {
+        // check for data
+        if(mItems != null && this.mItems != null)
+        {
+            // since we can't tell the data's position it was removed from, we will jsut load all items
+            this.mItems = mItems;
+            // update recyclerview
+            notifyDataSetChanged();
         }
     }
 

@@ -16,6 +16,8 @@ import java.util.Date;
  * Movie model, this is used to have all data
  * Basically, this will have all movie data loaded in
  * via rest call to show on the display activity
+ *
+ * Please see MovieResult to read about how this class is used
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(tableName = DBConfig.TABLE_NAME)
@@ -55,9 +57,8 @@ public class MovieResultFull extends MovieResult
      * @param overview
      * @param release_date
      * @param timestamp
-     * @param is_favorite
      */
-    public MovieResultFull(int id, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
+    public MovieResultFull(int id, float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
         this.id = id;
         this.vote_average = vote_average;
         this.title = title;
@@ -66,7 +67,6 @@ public class MovieResultFull extends MovieResult
         this.overview = overview;
         this.release_date = release_date;
         this.timestamp = timestamp;
-        this.is_favorite = is_favorite;
     }
 
     /**
@@ -81,10 +81,10 @@ public class MovieResultFull extends MovieResult
      * @param overview
      * @param release_date
      * @param timestamp
-     * @param is_favorite
      */
     @Ignore
-    public MovieResultFull(float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean is_favorite) {
+//    public MovieResultFull(float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp, boolean favorite) {
+    public MovieResultFull(float vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, Date timestamp) {
         this.vote_average = vote_average;
         this.title = title;
         this.poster_path = poster_path;
@@ -92,7 +92,6 @@ public class MovieResultFull extends MovieResult
         this.overview = overview;
         this.release_date = release_date;
         this.timestamp = timestamp;
-        this.is_favorite = is_favorite;
     }
 
     /**
@@ -107,20 +106,6 @@ public class MovieResultFull extends MovieResult
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return
-     */
-    public boolean isIs_favorite() {
-        return is_favorite;
-    }
-
-    /**
-     * @param is_favorite
-     */
-    public void setIs_favorite(boolean is_favorite) {
-        this.is_favorite = is_favorite;
     }
 
     /**

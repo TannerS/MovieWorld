@@ -17,6 +17,11 @@ public abstract class MovieDatabase extends RoomDatabase {
     // name of database
     private static MovieDatabase mInstance;
 
+    /**
+     * Get instance of database
+     * @param context
+     * @return
+     */
     public static MovieDatabase getInstance(Context context) {
         // check if instance already exist
         if (mInstance == null) {
@@ -26,8 +31,6 @@ public abstract class MovieDatabase extends RoomDatabase {
                 // create database instance using Room
                 mInstance = Room.databaseBuilder(context.getApplicationContext(),
                         MovieDatabase.class, DBConfig.DATABASE_NAME)
-                        // TODO remove
-                        .allowMainThreadQueries()
                         .build();
             }
         }

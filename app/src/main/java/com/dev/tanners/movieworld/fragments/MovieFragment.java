@@ -12,7 +12,8 @@ import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.api.rest.MovieApiTopRated;
 
 /**
- * Contains top/opular movies data
+ * Contains top/popular movies data
+ * TODO check if favorites by db call here on page load
  */
 public class MovieFragment extends MovieFragmentNetwork {
     public enum State {POP, TOP};
@@ -35,7 +36,6 @@ public class MovieFragment extends MovieFragmentNetwork {
                 loading = false;
             }
         });
-
     }
 
     public MovieFragment() {
@@ -127,6 +127,7 @@ public class MovieFragment extends MovieFragmentNetwork {
                     // here since data online can change, the only info sent to other activity
                     // is the movie id to load that data
                     intent.putExtra(MovieActivity.MOVIE_ACTIVITY_BUNDLE_KEY, mMovieResult.getId());
+//                    intent.putExtra(MovieActivity.MOVIE_ACTIVITY_FAVORITE_KEY, mMovieResult.isFavorite());
                     startActivity(intent);
                 }
             }

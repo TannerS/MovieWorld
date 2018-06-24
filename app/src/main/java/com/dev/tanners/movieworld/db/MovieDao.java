@@ -21,8 +21,7 @@ public interface MovieDao {
      * @return
      */
     @Query(DBConfig.GET_ALL_MOVIES_QUERY)
-//    LiveData<List<MovieResult>> loadAllFavoriteMovies();
-    List<MovieResult> loadAllFavoriteMovies();
+    LiveData<List<MovieResult>> loadAllFavoriteMovies();
 
     /**
      * Insert new favorite movie
@@ -51,11 +50,11 @@ public interface MovieDao {
     /**
      * Get favorite movie by id
      *
-     * @param movie_id
+     * @param id
      * @return
      */
     @Query(DBConfig.GET_MOVIE_BY_ID_QUERY)
-    LiveData<MovieResult> loadMovieById(int id);
+    MovieResult loadMovieById(int id);
 }
 
 

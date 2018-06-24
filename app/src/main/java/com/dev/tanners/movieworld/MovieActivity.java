@@ -1,7 +1,12 @@
 package com.dev.tanners.movieworld;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterBase;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterReview;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterVideo;
@@ -25,14 +28,14 @@ import com.dev.tanners.movieworld.api.rest.MovieApi;
 import com.dev.tanners.movieworld.api.rest.MovieApiMixed;
 import com.dev.tanners.movieworld.api.rest.MovieApiMixedPaths;
 import com.dev.tanners.movieworld.db.MovieDatabase;
-import com.dev.tanners.movieworld.db.MovieEntry;
+import com.dev.tanners.movieworld.db.MovieExecutor;
 import com.dev.tanners.movieworld.util.ImageDisplay;
+import com.dev.tanners.movieworld.util.MovieLoader;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,9 +45,12 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 /**
  * Details base class
  */
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Boolean>  {
+//public class MovieActivity extends AppCompatActivity  {
     // key to pass data between activities
     public static String MOVIE_ACTIVITY_BUNDLE_KEY = "ADDITIONAL_MOVIE_INFO";
+    // used for database to detect favorited movies
+    public static String MOVIE_ACTIVITY_FAVORITE_KEY = "FAVORITE_MOVIE";
     // data for current movie (and for db)
     private MovieResultAppend mMovieResultAppend;
     // interface for rest calls
@@ -54,6 +60,20 @@ public class MovieActivity extends AppCompatActivity {
     private MovieAdapterVideo mMixedAdapterVideo;
     // instance to database
     private MovieDatabase mDb;
+    // used to keep track of if movie is a favorite
+    private boolean isFavorite;
+    // reference to favorites icon
+    private ImageView mFavStar;
+    // movie id of current movie
+    private int mMovieId;
+    /*
+     * This number will uniquely identify our Loader
+     */
+    private final int MOVIE_LOADER = 2;
+    // used to show page is loading
+    private ProgressBar mProgressBar;
+    // basically the entire page's layout that will be visible after load
+    private ConstraintLayout mMainLayout;
 
     /**
      * Entry point to load methods needed for activity
@@ -66,15 +86,31 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
         // load activity_toolbar
         setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+        mProgressBar = (ProgressBar) findViewById(R.id.movie_loading);
+        mMainLayout = (ConstraintLayout) findViewById(R.id.main_container);
         setUpRecyclerViews();
+        dbInit();
+        getMovieId();
         createRestCall();
         getReviewsVideos();
-        finalSetUp();
-        dbInit();
+    }
 
-
-        //TODO must checking for existing movie in db if this page is loaded from a non db list, and must change onclick below
-
+    /**
+     * Load the loader (this will call data base for a query and wait to load page until finished)
+     */
+    private void loadLoader()
+    {
+        // create bundle to pass into loader
+        Bundle mBundle = new Bundle();
+        mBundle.putInt(MovieLoader.MOVIE_ID_BUNDLE_KEY, mMovieId);
+        // use loader to get page data
+        LoaderManager mLoaderManager = getSupportLoaderManager();
+        Loader<Boolean> mMovieLoader = mLoaderManager.getLoader(MOVIE_LOADER);
+        // check loader instance
+        if(mMovieLoader != null)
+            mLoaderManager.initLoader(MOVIE_LOADER, mBundle, this).forceLoad();
+        else
+            mLoaderManager.restartLoader(MOVIE_LOADER, mBundle, this).forceLoad();
     }
 
     /**
@@ -101,9 +137,9 @@ public class MovieActivity extends AppCompatActivity {
      *
      * @throws IOException
      */
-    private int getMovieId() {
+    private void getMovieId() {
         // get movie object json string
-        return getIntent().getIntExtra(MOVIE_ACTIVITY_BUNDLE_KEY, -1);
+        mMovieId = getIntent().getIntExtra(MOVIE_ACTIVITY_BUNDLE_KEY, -1);
     }
 
     /**
@@ -124,10 +160,16 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieResultAppend> call, Response<MovieResultAppend> response) {
                 if (response.isSuccessful()) {
+                    // get result
                     mMovieResultAppend = response.body();
+                    // load toolbar
                     setUpToolbar();
+                    // load page with newly fetched data
                     setUpPageDetails();
+                    // load reviews and videos into adapter
                     setUpAdapterData();
+                    // set loader to check for favorite object
+                    loadLoader();
                 } else {
                     displayMessage(R.string.loading_reviews_error);
                 }
@@ -199,7 +241,7 @@ public class MovieActivity extends AppCompatActivity {
     {
         // run callback and rest request in background as an initial start
         mMovieApiMixed.getReviewsVideos(
-                getMovieId(), (
+                mMovieId, (
                         new MovieApiMixed(this)
                 ).queries
         ).enqueue (
@@ -239,13 +281,13 @@ public class MovieActivity extends AppCompatActivity {
                 (ImageView) findViewById(R.id.backsplash_image)
         );
 
-        final ImageView mFavStar = (ImageView) findViewById(R.id.favorite_star);
+        mFavStar = (ImageView) findViewById(R.id.favorite_star);
 
         mFavStar.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!mMovieResultAppend.isIs_favorite())
+                    if(!isFavorite)
                     {
                         // change icon to show saved movie
                         mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
@@ -253,8 +295,6 @@ public class MovieActivity extends AppCompatActivity {
                         saveCurrentMovie();
                         // display message to UI
                         displayMessage(R.string.movie_saved_message);
-                        // change value to be used in this method for next onclick
-                        mMovieResultAppend.setIs_favorite(true);
                     }
                     else
                     {
@@ -264,9 +304,9 @@ public class MovieActivity extends AppCompatActivity {
                         delCurrentMovie();
                         // display message to UI
                         displayMessage(R.string.movie_removed_message);
-                        // change value to be used in this method for next onclick
-                        mMovieResultAppend.setIs_favorite(false);
                     }
+                    // be sure to toggle the value for every click
+                    isFavorite = !isFavorite;
                 }
             }
         );
@@ -280,58 +320,102 @@ public class MovieActivity extends AppCompatActivity {
         ArrayList<MovieReview> mReviews = mMovieResultAppend.getReviews().getResults();
         ArrayList<MovieVideo> mVideos = mMovieResultAppend.getVideos().getResults();
 
+        // display adapter if data, else textview message
         if(mReviews == null || mReviews.size() == 0) {
             ((TextView) findViewById(R.id.no_reviews)).setVisibility(View.VISIBLE);
             ((RecyclerView) findViewById(R.id.movie_reviews)).setVisibility(View.GONE);
         }
         else
-            mMixedAdapterReview.updateAdapter(mReviews);
+            mMixedAdapterReview.updateAdapterAdded(mReviews);
 
+        // display adapter if data, else textview message
         if(mVideos == null || mVideos.size() == 0) {
             ((TextView) findViewById(R.id.no_videos)).setVisibility(View.VISIBLE);
             ((RecyclerView) findViewById(R.id.movie_videos)).setVisibility(View.GONE);
         }
         else
-            mMixedAdapterVideo.updateAdapter(mVideos);
+            mMixedAdapterVideo.updateAdapterAdded(mVideos);
     }
 
     /**
-     * Fix for page loaded reviews and videos last causing the page to scroll to mid/bottom
+     * Init the database object
      */
-    private void finalSetUp()
-    {
-        // TODO change / fix later
-        // fix for late loading elements scrolling bar to bottom instead of on top
-        ((ScrollView) findViewById(R.id.movie_detail_root)).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((ScrollView) findViewById(R.id.movie_detail_root)).fullScroll(ScrollView.FOCUS_UP);
-            }
-        },
-        2000);
-    }
-
     private void dbInit()
     {
         mDb = MovieDatabase.getInstance(getApplicationContext());
     }
 
+    /**
+     * Save current movie to db
+     */
     private void saveCurrentMovie()
     {
-        // create time stamp
-        mMovieResultAppend.setTimestamp(new Date());
-        // set fav bool for next time this object is loaded on this page
-        mMovieResultAppend.setIs_favorite(true);
-        // insert movie
-        mDb.getMovieDao().insertMovie((MovieResult) mMovieResultAppend);
-        // TODO need to update view, possible fragment->fragment talking
+        // get executor to be able to run insert on separate thread
+        MovieExecutor.getInstance().mDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // create time stamp
+                mMovieResultAppend.setTimestamp(new Date());
+                // insert movie
+                mDb.getMovieDao().insertMovie((MovieResult) mMovieResultAppend);
+            }
+        });
     }
 
+    /**
+     * Del current movie from db
+     */
     private void delCurrentMovie()
     {
-        // now need to change the fav bool since it is just deleted
-        mDb.getMovieDao().deleteMovie((MovieResult)mMovieResultAppend);
-        // TODO need to update view, possible fragment->fragment talking
+        // get executor to be able to run insert on separate thread
+        MovieExecutor.getInstance().mDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // now need to change the fav bool since it is just deleted
+                mDb.getMovieDao().deleteMovie((MovieResult) mMovieResultAppend);
+            }
+        });
+    }
+
+    /**
+     * Load loader
+     * @param id
+     * @param args
+     * @return
+     */
+    @NonNull
+    @Override
+    public Loader<Boolean> onCreateLoader(int id, @Nullable Bundle args) {
+        return new MovieLoader(this, args);
+    }
+
+    /**
+     * The loader looks to see if movie is a favorite, this will do the needed
+     * task after those results
+     *
+     * @param loader
+     * @param data
+     */
+    @Override
+    public void onLoadFinished(@NonNull Loader<Boolean> loader, Boolean data) {
+        // data is the result if move is a favorite or not
+        if(data)
+        {
+            // set bool that will be used for the onclick to favorite or un-favorite a movie
+            isFavorite = true;
+            // set image to show it is a favorite
+            mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
+        }
+        // since everything is loaded at this point, show the page
+        mProgressBar.setVisibility(View.GONE);
+        mMainLayout.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * @param loader
+     */
+    @Override
+    public void onLoaderReset(@NonNull Loader<Boolean> loader) {
+        // not needed
     }
 }
-

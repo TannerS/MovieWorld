@@ -21,6 +21,27 @@ import java.util.Date;
  * the fact that the information can change, so we will update the fields
  * each time we load the page, while this data is only used in the list
  * to show the movie photo with its id, so we dont request the same data twice
+ *
+ * Below is the flow of how this data is used
+ *
+ * This object is filled up with the id, poster_path, and favorite variables from either
+ * the rest call, or the database call. Two ways (rest, local storage) use this class to
+ * display data on the list. Since we only need these at minimum.
+ *
+ * Once this data is used to display the list items, each click of these list items will
+ * transfer the movie id to the next activity which will use that to download the rest of the data
+ *
+ * the rest of the data may change, that is why I prefer it to re-download instead of saving all data locally
+ *
+ * the favorite is also used. data coming from rest favorite = false, while db data is favorite = true.
+ * the movie activity will use this boolean to determine if this is a favorite movie or not (which affects local
+ * UI settings and functionality on the page). since if the data comes from, db, it is favorite, else not
+ *
+ * When the movie actiivy page loads, it will use the class MovieResultFull (which MovieResult is a parent of)
+ * to store the rest of the page's data after making the rest call, and since this class is the child of MovieResult,
+ * we are using inheritance to use the same variables that are in MovieResult instead of redefining the member vairables
+ * in two separate classes that act the same
+ *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(tableName = DBConfig.TABLE_NAME)
@@ -35,9 +56,6 @@ public class MovieResult extends MovieEntry
     @PrimaryKey
     protected int id;
     protected String poster_path;
-    // used for UI to keep track of favorite movies and non favorite movies
-    // this will always be true in db, but other movies that use this class use it
-    protected boolean is_favorite;
 
     /**
      * Constructor
@@ -56,30 +74,11 @@ public class MovieResult extends MovieEntry
      * @param id
      * @param poster_path
      * @param timestamp
-     * @param is_favorite
      */
-    public MovieResult(int id, String poster_path, Date timestamp, boolean is_favorite) {
+    public MovieResult(int id, String poster_path, Date timestamp) {
         this.id = id;
         this.poster_path = poster_path;
         this.timestamp = timestamp;
-        this.is_favorite = is_favorite;
-    }
-
-    /**
-     * Constructor
-     *
-     * Used for internal
-     *
-     * @param title
-     * @param poster_path
-     * @param timestamp
-     * @param is_favorite
-     */
-    @Ignore
-    public MovieResult(String poster_path, Date timestamp, boolean is_favorite) {
-        this.poster_path = poster_path;
-        this.timestamp = timestamp;
-        this.is_favorite = is_favorite;
     }
 
     /**
@@ -94,20 +93,6 @@ public class MovieResult extends MovieEntry
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return
-     */
-    public boolean isIs_favorite() {
-        return is_favorite;
-    }
-
-    /**
-     * @param is_favorite
-     */
-    public void setIs_favorite(boolean is_favorite) {
-        this.is_favorite = is_favorite;
     }
 
 

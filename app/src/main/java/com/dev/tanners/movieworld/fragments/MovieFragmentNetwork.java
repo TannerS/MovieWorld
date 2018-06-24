@@ -26,11 +26,21 @@ public class MovieFragmentNetwork extends MovieFragmentList {
     // interface for rest calls
     protected MovieApi mMovieApi;
 
+
+    /**
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
@@ -40,6 +50,11 @@ public class MovieFragmentNetwork extends MovieFragmentList {
         return view;
     }
 
+    /**
+     * Load restful functionality
+     *
+     * @param mOnResultCallback
+     */
     protected void loadRest(OnResultCallback mOnResultCallback)
     {
         // set up callbacks for rest calls for recyclerview
@@ -83,7 +98,7 @@ public class MovieFragmentNetwork extends MovieFragmentList {
             public void onResponse(Call<MovieResultBase> call, Response<MovieResultBase> response) {
                 if (response.isSuccessful()) {
                     // set up recyclerview
-                    mMovieAdapter.updateAdapter(response.body().getResults());
+                    mMovieAdapter.updateAdapterAdded(response.body().getResults());
                     mOnResultCallback.onPostResults();
                 } else {
                     displayError();
