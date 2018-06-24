@@ -1,15 +1,15 @@
 package com.dev.tanners.movieworld.fragments;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dev.tanners.movieworld.FavoritesViewModel;
 import com.dev.tanners.movieworld.MovieActivity;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
@@ -45,6 +45,7 @@ public class MovieFragmentFavorite extends MovieFragmentList {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         init();
+        setupViewModel();
         // return view
         return view;
     }
@@ -64,10 +65,19 @@ public class MovieFragmentFavorite extends MovieFragmentList {
                 }
             }
         );
-        // get all database movies
-        LiveData<List<MovieResult>> movies = fetchMovies();
+    }
+
+    /**
+     * Get all favorites movies from db
+     *
+     * @return
+     */
+    private void setupViewModel()
+    {
+        // load view model
+        FavoritesViewModel mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
         // set observer that will update adapter if changes
-        movies.observe(getActivity(), new Observer<List<MovieResult>>() {
+        mFavoritesViewModel.getMovies().observe(this, new Observer<List<MovieResult>>() {
             /**
              * Will update adapter on change
              *
@@ -79,16 +89,5 @@ public class MovieFragmentFavorite extends MovieFragmentList {
                 mMovieAdapter.updateAdapterRemovedOrAdded(movieResults);
             }
         });
-    }
-
-    /**
-     * Get all favorites movies from db
-     *
-     * @return
-     */
-    private LiveData<List<MovieResult>> fetchMovies()
-    {
-        // load all favorite movies
-        return mDb.getMovieDao().loadAllFavoriteMovies();
     }
 }
