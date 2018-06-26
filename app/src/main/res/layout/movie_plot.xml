@@ -14,7 +14,6 @@
         android:text="Synopsis"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toTopOf="@+id/plot_divder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -24,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/section_plot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -47,7 +45,6 @@
             android:gravity="center"
             android:text="PLOT"
             android:textAlignment="center"
-            android:textColor="@color/colorBlack"
             android:layout_marginBottom="8dp"/>
 
         <TextView
@@ -60,7 +57,6 @@
             android:text="No Reviews"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
             android:visibility="gone"/>
 
     </LinearLayout>

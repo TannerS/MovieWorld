@@ -1,4 +1,4 @@
-package com.dev.tanners.movieworld.util;
+package com.dev.tanners.movieworld.support;
 
 import android.content.Context;
 import android.os.Bundle;

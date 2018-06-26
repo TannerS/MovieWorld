@@ -9,12 +9,12 @@
         android:id="@+id/section_title_videos"
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
         android:text="Videos"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/section_title_videos" />
@@ -57,7 +56,6 @@
             android:text="No Videos"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
             android:visibility="gone" />
 
     </LinearLayout>

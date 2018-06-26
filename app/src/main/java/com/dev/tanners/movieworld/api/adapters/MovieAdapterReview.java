@@ -58,7 +58,7 @@ public class MovieAdapterReview extends MovieAdapterGeneric<MovieReview> {
                 TabCreator.buildAndLaunchCustomTab(
                         mContext,
                         mItem.getUrl(),
-                        R.color.colorAccent
+                        R.color.primary_accent
                 );
             }
         });

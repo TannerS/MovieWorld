@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -15,21 +14,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!--http://www.gadgetsaint.com/android/create-viewpager-tabs-android/#.WvDfc9Yh0U4-->
-    <!--https://www.journaldev.com/10096/android-viewpager-example-tutorial-->
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        app:tabBackground="@color/color_primary"
         app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="#FFF" />
+        app:tabIndicatorHeight="4dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpager"
+        android:background="@color/color_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

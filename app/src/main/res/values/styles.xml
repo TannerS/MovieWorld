@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowActionBar">true</item>
+    <style name="MainTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!--<item name="android:windowActionBar">true</item>-->
+        <!--<item name="colorPrimary">pr</item>-->
+        <!--<item name="android:windowActionBar">true</item>-->
+        <!--<item name="android:windowActionBar">true</item>-->
+        <!--<item name="android:windowActionBar">true</item>-->
+        <!--<item name="android:windowActionBar">true</item>-->
+
+        <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorAccent">@color/primary_accent</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="android:colorForeground">@color/foreground</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
     </style>
 
+
     <!--https://materialdoc.com/components/buttons/-->
-    <style name="Button" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/colorPrimary</item>
-        <item name="colorButtonNormal">@color/colorAccent</item>
-    </style>
+    <!--<style name="Button" parent="Theme.AppCompat.Light">-->
+        <!--<item name="colorControlHighlight">@color/colorPrimary</item>-->
+        <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
+    <!--</style>-->
+
 </resources>

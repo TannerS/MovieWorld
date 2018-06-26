@@ -1,20 +1,24 @@
 package com.dev.tanners.movieworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterBase;
 import com.dev.tanners.movieworld.api.adapters.MovieAdapterReview;
@@ -29,8 +33,9 @@ import com.dev.tanners.movieworld.api.rest.MovieApiMixed;
 import com.dev.tanners.movieworld.api.rest.MovieApiMixedPaths;
 import com.dev.tanners.movieworld.db.MovieDatabase;
 import com.dev.tanners.movieworld.db.MovieExecutor;
+import com.dev.tanners.movieworld.util.DateFormatter;
 import com.dev.tanners.movieworld.util.ImageDisplay;
-import com.dev.tanners.movieworld.util.MovieLoader;
+import com.dev.tanners.movieworld.support.MovieLoader;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -92,6 +97,23 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         getMovieId();
         createRestCall();
         getReviewsVideos();
+    }
+
+    /**
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // https://developer.android.com/training/implementing-navigation/ancestral.html
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                NavUtils.navigateUpTo(this, upIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -253,13 +275,14 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
      */
     private void setUpToolbar()
     {
-        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
-//        TextView mToolbarTitle = findViewById(R.id.main_toolbar_title);
-//        mToolbarTitle.setText(this.mMovieResultAppend.getTitle());
-        // set item_title of activity_toolbar for activity
-//        getSupportActionBar().setTitle(this.mMovieResultAppend.getTitle());
-//        getSupportActionBar().setSubtitle(this.mMovieResultAppend.getRelease_date());
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // https://stackoverflow.com/questions/26788464/how-to-change-color-of-the-back-arrow-in-the-new-material-theme
+//        mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.primary_accent), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
+
     }
 
     /**
@@ -269,7 +292,9 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
     {
         // load views
         ((TextView) findViewById(R.id.plot_synopsis)).setText(this.mMovieResultAppend.getOverview());
-        ((TextView) findViewById(R.id.rating)).setText((String.valueOf(this.mMovieResultAppend.getVote_average()) + " / 10"));
+        ((RatingBar) findViewById(R.id.movie_rating_bar)).setRating(this.mMovieResultAppend.getVote_average());
+        ((TextView) findViewById(R.id.release_date)).setText(DateFormatter.formatDate(this.mMovieResultAppend.getRelease_date(),"yyyy-MM-dd","MMMM dd, yyyy"));
+        ((TextView) findViewById(R.id.movie_title)).setText(this.mMovieResultAppend.getTitle());
 
         // call helper method to load images
         // since image is passed in as relative path

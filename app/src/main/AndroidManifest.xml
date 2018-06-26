@@ -14,9 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MainTheme">
         <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +25,7 @@
         <activity
             android:name=".MovieActivity"
             android:parentActivityName="com.dev.tanners.movieworld.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/MainTheme">
         </activity>
     </application>
 </manifest>

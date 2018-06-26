@@ -7,16 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".fragments.MovieFragmentNetwork">
+    tools:context=".fragments.MovieFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_gridview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="3dp"
-        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/loading_progressbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

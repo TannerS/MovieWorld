@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#424242</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#76FF03</color>
-
-
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
-
-
-    <color name="colorBlack">#000000</color>
-    <color name="light_gray">#e4e9f0</color>
-    <!--https://stackoverflow.com/questions/1492554/set-transparent-background-of-an-imageview-on-android-->
     <color name="transparent">@android:color/transparent</color>
+    <!--https://medium.com/@magdamiu/android-transparent-colors-a2d55a9b4e66-->
+    <color name="transparent_80">#33757575</color>
 
     <!-- https://stackoverflow.com/questions/11285961/how-to-make-a-background-20-transparent-on-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa-->
-    <color name="transparent_black_75">#80000000</color>
-    <color name="transparent_black_50">#C0000000</color>
+    <!--<color name="accent_material_dark">#616762</color>-->
+    <!--<color name="primary_material_dark">#64dd17</color>-->
+    <!--<color name="primary_dark_material_dark">#20ac1d</color>-->
+    <!--<color name="background_material_dark">#e13b3b</color>-->
+    <!--<color name="accent_material_light">#0df511</color>-->
+    <!--<color name="primary_material_light">#cbc6c6</color>-->
+
+    <color name="white">#ffffff</color>
+    <color name="primary_accent">#0df511</color>
+    <color name="color_primary_dark">#757575</color>
+    <color name="color_primary">#efefef</color>
+    <color name="foreground">#000000</color>
 </resources>
