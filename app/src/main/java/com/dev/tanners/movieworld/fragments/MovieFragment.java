@@ -17,6 +17,8 @@ import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.util.SimpleSnackBarBuilder;
 
+import java.util.ArrayList;
+
 import static com.dev.tanners.movieworld.MovieViewModel.INIT_DATA_CALL;
 import static com.dev.tanners.movieworld.MovieViewModel.SCROLL_PLACEMENT;
 
@@ -64,13 +66,14 @@ public class MovieFragment extends MovieFragmentList {
 
         mMovieViewModel.loadRest(new MovieViewModel.OnResultCallback() {
             @Override
-            public void onPostResults() {
+            public void onPostResults(ArrayList<MovieResult> mData) {
                 // show progress bar to show data "should" be loading
                 mProgressBar.setVisibility(View.GONE);
                 // setbool to show data is already doing a request
                 loading = false;
-                // update adapter from data inside the viewmodel
-                mMovieAdapter.updateAdapterRemovedOrAdded(mMovieViewModel.getMovies());
+                // used adapter to update viewmodel
+                // the bview model holds reference to adapter
+                mMovieViewModel.getmMovieAdapter().updateAdapterAdded(mData);
                 // since the data is in a background thread, you need to restore the state in that thread
                 // this was mentioned in here: https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
                 mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerviewLayoutSavedState);
@@ -205,10 +208,12 @@ public class MovieFragment extends MovieFragmentList {
                 }
             }
         );
+        // due to adding this later, it needs to be done here
+        // instead of inside the loadViewModelData
+        mMovieViewModel.setmMovieAdapter(mMovieAdapter);
         // return view
         return view;
     }
-
 
     /**
      * Error snackbar

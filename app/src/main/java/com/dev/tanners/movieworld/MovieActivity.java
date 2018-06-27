@@ -71,9 +71,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
     private ImageView mFavStar;
     // movie id of current movie
     private int mMovieId;
-    /*
-     * This number will uniquely identify our Loader
-     */
+    // This number will uniquely identify our Loader
     private final int MOVIE_LOADER = 2;
     // used to show page is loading
     private ProgressBar mProgressBar;
@@ -279,10 +277,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // https://stackoverflow.com/questions/26788464/how-to-change-color-of-the-back-arrow-in-the-new-material-theme
-//        mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.primary_accent), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
-
     }
 
     /**
@@ -308,17 +303,21 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
                 R.drawable.ic_error,
                 (ImageView) findViewById(R.id.backsplash_image)
         );
-
+        // get reference to star button for adding/removing favorites
         mFavStar = (ImageView) findViewById(R.id.favorite_star);
-
+        // set actions when clicking button
         mFavStar.setOnClickListener(
             new View.OnClickListener() {
+                /**
+                 * Click action for favorites button
+                 * @param v
+                 */
                 @Override
                 public void onClick(View v) {
                     if(!isFavorite)
                     {
                         // change icon to show saved movie
-                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
+                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24px));
                         // save movie
                         saveCurrentMovie();
                         // display message to UI
@@ -327,7 +326,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
                     else
                     {
                         // change icon to show removed movie
-                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_outline));
+                        mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24px));
                         // remove movie
                         delCurrentMovie();
                         // display message to UI
@@ -432,7 +431,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
             // set bool that will be used for the onclick to favorite or un-favorite a movie
             isFavorite = true;
             // set image to show it is a favorite
-            mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_favorite_filled));
+            mFavStar.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24px));
         }
         // since everything is loaded at this point, show the page
         mProgressBar.setVisibility(View.GONE);

@@ -43,14 +43,6 @@ public abstract class MovieAdapterBase<I> extends RecyclerView.Adapter<RecyclerV
     public int getItemCount() {
         return mItems == null ? 0 : mItems.size();
     }
-
-    public List<I> getmItems() {
-        return mItems;
-    }
-
-//    public void setmItems(List<I> mItems) {
-//        this.mItems = mItems;
-//    }
 }
 
 

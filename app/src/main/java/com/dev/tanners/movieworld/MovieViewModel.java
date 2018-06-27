@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dev.tanners.movieworld.api.adapters.MovieAdapter;
 import com.dev.tanners.movieworld.api.model.movies.MovieResult;
 import com.dev.tanners.movieworld.api.model.movies.MovieResultBase;
 import com.dev.tanners.movieworld.api.rest.MovieApi;
@@ -39,6 +40,13 @@ public class MovieViewModel extends AndroidViewModel {
     protected MovieApi mMovieApi;
     public static final String SCROLL_PLACEMENT = "SCROLL_POSITION";
     public static final String INIT_DATA_CALL = "INIT_DATA_SET";
+    /**
+     * This will hold a reference to the adapter
+     * this is for 2 reasons,
+     * 1) hold the data (like a view model would)
+     * 2) update list using the insert range method
+     */
+    protected MovieAdapter mMovieAdapter;
 
     /**
      * Constructor
@@ -49,6 +57,20 @@ public class MovieViewModel extends AndroidViewModel {
         super(application);
         mMovies = new ArrayList<MovieResult>();
         mMovieApi = new MovieApi(getApplication().getApplicationContext());
+    }
+
+    /**
+     * @return
+     */
+    public MovieAdapter getmMovieAdapter() {
+        return mMovieAdapter;
+    }
+
+    /**
+     * @param mMovieAdapter
+     */
+    public void setmMovieAdapter(MovieAdapter mMovieAdapter) {
+        this.mMovieAdapter = mMovieAdapter;
     }
 
     /**
@@ -141,10 +163,8 @@ public class MovieViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<MovieResultBase> call, Response<MovieResultBase> response) {
                 if (response.isSuccessful()) {
-                    // add new movies to viewmodel
-                    addData(response.body().getResults());
                     // call callback after getting data
-                    mOnResultCallback.onPostResults();
+                    mOnResultCallback.onPostResults(response.body().getResults());
                 } else {
                     // display error
                     mOnResultCallback.displayMessage();
@@ -174,7 +194,7 @@ public class MovieViewModel extends AndroidViewModel {
         /**
          * execute
          */
-        public void onPostResults();
+        public void onPostResults(ArrayList<MovieResult> mData);
         public void displayMessage();
     }
 

@@ -20,6 +20,10 @@ import com.dev.tanners.movieworld.util.ImageDisplay;
 public class MovieAdapter extends MovieAdapterGeneric<MovieResult>{
     private OnClickListener mImageOnClickListener;
 
+    /**
+     * @param mContext
+     * @param mImageOnClickListener
+     */
     public MovieAdapter(@NonNull Context mContext, OnClickListener mImageOnClickListener) {
         super(mContext);
         this.mImageOnClickListener = mImageOnClickListener;

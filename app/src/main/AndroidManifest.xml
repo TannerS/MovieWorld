@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--https://stackoverflow.com/questions/3723823/i-want-my-android-application-to-be-only-run-in-portrait-mode?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa-->
     <!--TODO splash screen-->
 
     <application
